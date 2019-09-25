@@ -1,0 +1,16 @@
+script: example3_act_case_check.py
+
+description:
+this program loads the converted ruleset structure, and checks the
+formats of operators, actions, and transformations.
+
+ModSecurity allows to use the keywords above as case insensitive, so the
+@rx and @RX are same, tag and Tag are also same, and compressWhiteSpace and
+compressWhitespace also.
+
+The output shows the rule id's or the line numbers, if the given format
+isn't the preferred.
+
+Use:
+you have to run this script with argument YAML structured file. If you want
+to try, edit the original file and converts it with crs_read.py.

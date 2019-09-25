@@ -1,0 +1,8 @@
+script: test_lexer.py
+
+description:
+this program runs a lexical analisys on the given files, and show the
+recognized tokens.
+
+If you pass the "debug" as 2nd argument, then you can see the state of
+lexer, and the stack (which contains the previous states).
