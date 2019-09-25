@@ -1,0 +1,16 @@
+script: example4_act_order_check.py
+
+description:
+this program loads the converted ruleset structure, and checks the
+orders of the given actions.
+
+CRS has a recommended order of actions, see the relevant Wiki:
+
+https://github.com/SpiderLabs/owasp-modsecurity-crs/wiki/Order-of-ModSecurity-Actions-in-CRS-rules
+
+This script checks this order, and the output contains the rule id's or
+line numbers the actions what are in wrong places.
+
+Use:
+you have to run this script with argument YAML structured file. If you want
+to try, edit the original file and converts it with crs_read.py.

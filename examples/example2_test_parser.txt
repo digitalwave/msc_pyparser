@@ -1,0 +1,8 @@
+script: test_parser.py
+
+description:
+this program runs a syntactical analisys on the given files, and converts
+it to a predefined structure.
+
+If you pass the "debug" as 2nd argument, then you can see the applied
+grammar rules, this would be helpfull when you debug your modification.

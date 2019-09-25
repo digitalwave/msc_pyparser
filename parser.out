@@ -1,0 +1,1219 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    BACKSLASH
+
+Grammar
+
+Rule 0     S' -> modsec_config
+Rule 1     modsec_config -> comment_line
+Rule 2     modsec_config -> secrule_line
+Rule 3     modsec_config -> seccompsignature_line
+Rule 4     modsec_config -> secaction_line
+Rule 5     modsec_config -> modsec_config secaction_line
+Rule 6     modsec_config -> secmarker_line
+Rule 7     modsec_config -> modsec_config secmarker_line
+Rule 8     modsec_config -> modsec_config seccompsignature_line
+Rule 9     modsec_config -> modsec_config comment_line
+Rule 10    modsec_config -> modsec_config secrule_line
+Rule 11    comment_line -> COMMENT
+Rule 12    seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED
+Rule 13    secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED
+Rule 14    tok_confdir_secaction -> CONFDIR_SECACTION
+Rule 15    secmarker_line -> secmarker_line_quoted
+Rule 16    secmarker_line -> secmarker_line_noquoted
+Rule 17    secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED
+Rule 18    secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG
+Rule 19    secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
+Rule 20    secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED
+Rule 21    tok_confdir_secrule -> CONFDIR_SECRULE
+Rule 22    secvariable_expr_list -> secvariable_expr
+Rule 23    secvariable_expr_list -> secvariable_expr_list PIPE secvariable_expr
+Rule 24    secvariable_expr -> tok_secrule_variable
+Rule 25    secvariable_expr -> tok_secrule_variable_prefix
+Rule 26    secvariable_expr -> tok_secrule_variable_with_arg
+Rule 27    secvariable_expr -> tok_secrule_variable_prefix_with_arg
+Rule 28    tok_secrule_variable -> SECRULE_VARIABLE
+Rule 29    tok_secrule_variable_prefix -> secvariable_prefix tok_secrule_variable
+Rule 30    tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon secvariable_arg
+Rule 31    tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg
+Rule 32    tok_secrule_variable_colon -> COLON
+Rule 33    secvariable_prefix -> AND
+Rule 34    secvariable_prefix -> EXCLAMMARK
+Rule 35    secvariable_prefix -> EXCLAMMARK AND
+Rule 36    secvariable_arg -> tok_secrule_variable_arg
+Rule 37    secvariable_arg -> tok_secrule_variable_arg_quotes
+Rule 38    tok_secrule_variable_arg -> SECRULE_VARIABLE_ARG
+Rule 39    tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG QUOTES
+Rule 40    secoperator_expr -> tok_secoperator_group
+Rule 41    secoperator_expr -> tok_secoperator_group secoperator_arg_group
+Rule 42    secoperator_expr -> secoperator_arg_group
+Rule 43    tok_secoperator_group -> ATSIGN SECRULE_OPERATOR
+Rule 44    tok_secoperator_group -> EXCLAMMARK ATSIGN SECRULE_OPERATOR
+Rule 45    secoperator_arg_group -> SECRULE_OPERATOR_ARG
+Rule 46    secoperator_arg_group -> NUMBER
+Rule 47    secaction_expr_list -> secaction_expr
+Rule 48    secaction_expr_list -> secaction_expr_list COMMA secaction_expr
+Rule 49    secaction_expr -> tok_secrule_action
+Rule 50    secaction_expr -> tok_secrule_action COLON secrule_action_argument
+Rule 51    secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
+Rule 52    secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+Rule 53    secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+Rule 54    tok_secrule_action -> SECRULE_ACTION
+Rule 55    secrule_action_argument -> SECRULE_ACTION_ARG
+Rule 56    secrule_action_argument -> NUMBER
+Rule 57    secrule_action_argument -> SECRULE_ACTION_TRANSFORMS
+Rule 58    secrule_action_argument -> SECRULE_ACTION_CTLACTION
+Rule 59    secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG
+Rule 60    secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG
+Rule 61    secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG
+Rule 62    secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG
+Rule 63    secrule_action_argument_singlequoted -> NUMBER
+Rule 64    tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG
+Rule 65    tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM
+Rule 66    tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM
+
+Terminals, with rules where they appear
+
+AND                  : 33 35
+ATSIGN               : 43 44
+BACKSLASH            : 
+COLON                : 32 50 51 52 53
+COMMA                : 48
+COMMENT              : 11
+CONFDIR_SECACTION    : 14
+CONFDIR_SECCOMPSIGNATURE : 12
+CONFDIR_SECMARKER    : 17 18
+CONFDIR_SECRULE      : 21
+EQUALMARK            : 52 53
+EXCLAMMARK           : 34 35 44 62
+NUMBER               : 46 56 63
+PIPE                 : 23
+QUOTED               : 12 12 13 13 17 17 19 19 19 19 20 20
+QUOTES               : 39 39 51 51
+SECCOMPSIGNARG       : 12
+SECMARKERARG         : 17 18
+SECRULE_ACTION       : 54
+SECRULE_ACTION_ARG   : 55 61 62
+SECRULE_ACTION_CTLACTION : 58
+SECRULE_ACTION_CTLACTIONARG : 64
+SECRULE_ACTION_CTLACTIONARGPARAM : 66
+SECRULE_ACTION_INITCOLACTIONARG : 60
+SECRULE_ACTION_INITCOLACTIONARGPARAM : 65
+SECRULE_ACTION_SKIPAFTERACTIONARG : 59
+SECRULE_ACTION_TRANSFORMS : 57
+SECRULE_OPERATOR     : 43 44
+SECRULE_OPERATOR_ARG : 45
+SECRULE_VARIABLE     : 28
+SECRULE_VARIABLE_ARG : 38 39
+SEMICOLON            : 53
+error                : 
+
+Nonterminals, with rules where they appear
+
+comment_line         : 1 9
+modsec_config        : 5 7 8 9 10 0
+secaction_expr       : 47 48
+secaction_expr_list  : 13 19 48
+secaction_line       : 4 5
+seccompsignature_line : 3 8
+secmarker_line       : 6 7
+secmarker_line_noquoted : 16
+secmarker_line_quoted : 15
+secoperator_arg_group : 41 42
+secoperator_expr     : 19 20
+secrule_action_argument : 50 52 53
+secrule_action_argument_singlequoted : 51
+secrule_line         : 2 10
+secvariable_arg      : 30 31
+secvariable_expr     : 22 23
+secvariable_expr_list : 19 20 23
+secvariable_prefix   : 29 31
+tok_confdir_secaction : 13
+tok_confdir_secrule  : 19 20
+tok_secoperator_group : 40 41
+tok_secrule_action   : 49 50 51 52 53
+tok_secrule_action_ctlactionarg : 52 53
+tok_secrule_action_ctlactionargparam : 53
+tok_secrule_variable : 24 29 30 31
+tok_secrule_variable_arg : 36
+tok_secrule_variable_arg_quotes : 37
+tok_secrule_variable_colon : 30 31
+tok_secrule_variable_prefix : 25
+tok_secrule_variable_prefix_with_arg : 27
+tok_secrule_variable_with_arg : 26
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . modsec_config
+    (1) modsec_config -> . comment_line
+    (2) modsec_config -> . secrule_line
+    (3) modsec_config -> . seccompsignature_line
+    (4) modsec_config -> . secaction_line
+    (5) modsec_config -> . modsec_config secaction_line
+    (6) modsec_config -> . secmarker_line
+    (7) modsec_config -> . modsec_config secmarker_line
+    (8) modsec_config -> . modsec_config seccompsignature_line
+    (9) modsec_config -> . modsec_config comment_line
+    (10) modsec_config -> . modsec_config secrule_line
+    (11) comment_line -> . COMMENT
+    (19) secrule_line -> . tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
+    (20) secrule_line -> . tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED
+    (12) seccompsignature_line -> . CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED
+    (13) secaction_line -> . tok_confdir_secaction QUOTED secaction_expr_list QUOTED
+    (15) secmarker_line -> . secmarker_line_quoted
+    (16) secmarker_line -> . secmarker_line_noquoted
+    (21) tok_confdir_secrule -> . CONFDIR_SECRULE
+    (14) tok_confdir_secaction -> . CONFDIR_SECACTION
+    (17) secmarker_line_quoted -> . CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED
+    (18) secmarker_line_noquoted -> . CONFDIR_SECMARKER SECMARKERARG
+
+    COMMENT         shift and go to state 7
+    CONFDIR_SECCOMPSIGNATURE shift and go to state 9
+    CONFDIR_SECRULE shift and go to state 13
+    CONFDIR_SECACTION shift and go to state 14
+    CONFDIR_SECMARKER shift and go to state 15
+
+    modsec_config                  shift and go to state 1
+    comment_line                   shift and go to state 2
+    secrule_line                   shift and go to state 3
+    seccompsignature_line          shift and go to state 4
+    secaction_line                 shift and go to state 5
+    secmarker_line                 shift and go to state 6
+    tok_confdir_secrule            shift and go to state 8
+    tok_confdir_secaction          shift and go to state 10
+    secmarker_line_quoted          shift and go to state 11
+    secmarker_line_noquoted        shift and go to state 12
+
+state 1
+
+    (0) S' -> modsec_config .
+    (5) modsec_config -> modsec_config . secaction_line
+    (7) modsec_config -> modsec_config . secmarker_line
+    (8) modsec_config -> modsec_config . seccompsignature_line
+    (9) modsec_config -> modsec_config . comment_line
+    (10) modsec_config -> modsec_config . secrule_line
+    (13) secaction_line -> . tok_confdir_secaction QUOTED secaction_expr_list QUOTED
+    (15) secmarker_line -> . secmarker_line_quoted
+    (16) secmarker_line -> . secmarker_line_noquoted
+    (12) seccompsignature_line -> . CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED
+    (11) comment_line -> . COMMENT
+    (19) secrule_line -> . tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
+    (20) secrule_line -> . tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED
+    (14) tok_confdir_secaction -> . CONFDIR_SECACTION
+    (17) secmarker_line_quoted -> . CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED
+    (18) secmarker_line_noquoted -> . CONFDIR_SECMARKER SECMARKERARG
+    (21) tok_confdir_secrule -> . CONFDIR_SECRULE
+
+    CONFDIR_SECCOMPSIGNATURE shift and go to state 9
+    COMMENT         shift and go to state 7
+    CONFDIR_SECACTION shift and go to state 14
+    CONFDIR_SECMARKER shift and go to state 15
+    CONFDIR_SECRULE shift and go to state 13
+
+    secaction_line                 shift and go to state 16
+    secmarker_line                 shift and go to state 17
+    seccompsignature_line          shift and go to state 18
+    comment_line                   shift and go to state 19
+    secrule_line                   shift and go to state 20
+    tok_confdir_secaction          shift and go to state 10
+    secmarker_line_quoted          shift and go to state 11
+    secmarker_line_noquoted        shift and go to state 12
+    tok_confdir_secrule            shift and go to state 8
+
+state 2
+
+    (1) modsec_config -> comment_line .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 1 (modsec_config -> comment_line .)
+    COMMENT         reduce using rule 1 (modsec_config -> comment_line .)
+    CONFDIR_SECACTION reduce using rule 1 (modsec_config -> comment_line .)
+    CONFDIR_SECMARKER reduce using rule 1 (modsec_config -> comment_line .)
+    CONFDIR_SECRULE reduce using rule 1 (modsec_config -> comment_line .)
+    $end            reduce using rule 1 (modsec_config -> comment_line .)
+
+
+state 3
+
+    (2) modsec_config -> secrule_line .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 2 (modsec_config -> secrule_line .)
+    COMMENT         reduce using rule 2 (modsec_config -> secrule_line .)
+    CONFDIR_SECACTION reduce using rule 2 (modsec_config -> secrule_line .)
+    CONFDIR_SECMARKER reduce using rule 2 (modsec_config -> secrule_line .)
+    CONFDIR_SECRULE reduce using rule 2 (modsec_config -> secrule_line .)
+    $end            reduce using rule 2 (modsec_config -> secrule_line .)
+
+
+state 4
+
+    (3) modsec_config -> seccompsignature_line .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 3 (modsec_config -> seccompsignature_line .)
+    COMMENT         reduce using rule 3 (modsec_config -> seccompsignature_line .)
+    CONFDIR_SECACTION reduce using rule 3 (modsec_config -> seccompsignature_line .)
+    CONFDIR_SECMARKER reduce using rule 3 (modsec_config -> seccompsignature_line .)
+    CONFDIR_SECRULE reduce using rule 3 (modsec_config -> seccompsignature_line .)
+    $end            reduce using rule 3 (modsec_config -> seccompsignature_line .)
+
+
+state 5
+
+    (4) modsec_config -> secaction_line .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 4 (modsec_config -> secaction_line .)
+    COMMENT         reduce using rule 4 (modsec_config -> secaction_line .)
+    CONFDIR_SECACTION reduce using rule 4 (modsec_config -> secaction_line .)
+    CONFDIR_SECMARKER reduce using rule 4 (modsec_config -> secaction_line .)
+    CONFDIR_SECRULE reduce using rule 4 (modsec_config -> secaction_line .)
+    $end            reduce using rule 4 (modsec_config -> secaction_line .)
+
+
+state 6
+
+    (6) modsec_config -> secmarker_line .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 6 (modsec_config -> secmarker_line .)
+    COMMENT         reduce using rule 6 (modsec_config -> secmarker_line .)
+    CONFDIR_SECACTION reduce using rule 6 (modsec_config -> secmarker_line .)
+    CONFDIR_SECMARKER reduce using rule 6 (modsec_config -> secmarker_line .)
+    CONFDIR_SECRULE reduce using rule 6 (modsec_config -> secmarker_line .)
+    $end            reduce using rule 6 (modsec_config -> secmarker_line .)
+
+
+state 7
+
+    (11) comment_line -> COMMENT .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 11 (comment_line -> COMMENT .)
+    COMMENT         reduce using rule 11 (comment_line -> COMMENT .)
+    CONFDIR_SECACTION reduce using rule 11 (comment_line -> COMMENT .)
+    CONFDIR_SECMARKER reduce using rule 11 (comment_line -> COMMENT .)
+    CONFDIR_SECRULE reduce using rule 11 (comment_line -> COMMENT .)
+    $end            reduce using rule 11 (comment_line -> COMMENT .)
+
+
+state 8
+
+    (19) secrule_line -> tok_confdir_secrule . secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
+    (20) secrule_line -> tok_confdir_secrule . secvariable_expr_list QUOTED secoperator_expr QUOTED
+    (22) secvariable_expr_list -> . secvariable_expr
+    (23) secvariable_expr_list -> . secvariable_expr_list PIPE secvariable_expr
+    (24) secvariable_expr -> . tok_secrule_variable
+    (25) secvariable_expr -> . tok_secrule_variable_prefix
+    (26) secvariable_expr -> . tok_secrule_variable_with_arg
+    (27) secvariable_expr -> . tok_secrule_variable_prefix_with_arg
+    (28) tok_secrule_variable -> . SECRULE_VARIABLE
+    (29) tok_secrule_variable_prefix -> . secvariable_prefix tok_secrule_variable
+    (30) tok_secrule_variable_with_arg -> . tok_secrule_variable tok_secrule_variable_colon secvariable_arg
+    (31) tok_secrule_variable_prefix_with_arg -> . secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg
+    (33) secvariable_prefix -> . AND
+    (34) secvariable_prefix -> . EXCLAMMARK
+    (35) secvariable_prefix -> . EXCLAMMARK AND
+
+    SECRULE_VARIABLE shift and go to state 27
+    AND             shift and go to state 29
+    EXCLAMMARK      shift and go to state 30
+
+    secvariable_expr_list          shift and go to state 21
+    secvariable_expr               shift and go to state 22
+    tok_secrule_variable           shift and go to state 23
+    tok_secrule_variable_prefix    shift and go to state 24
+    tok_secrule_variable_with_arg  shift and go to state 25
+    tok_secrule_variable_prefix_with_arg shift and go to state 26
+    secvariable_prefix             shift and go to state 28
+
+state 9
+
+    (12) seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE . QUOTED SECCOMPSIGNARG QUOTED
+
+    QUOTED          shift and go to state 31
+
+
+state 10
+
+    (13) secaction_line -> tok_confdir_secaction . QUOTED secaction_expr_list QUOTED
+
+    QUOTED          shift and go to state 32
+
+
+state 11
+
+    (15) secmarker_line -> secmarker_line_quoted .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
+    COMMENT         reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
+    CONFDIR_SECACTION reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
+    CONFDIR_SECMARKER reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
+    CONFDIR_SECRULE reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
+    $end            reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
+
+
+state 12
+
+    (16) secmarker_line -> secmarker_line_noquoted .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
+    COMMENT         reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
+    CONFDIR_SECACTION reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
+    CONFDIR_SECMARKER reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
+    CONFDIR_SECRULE reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
+    $end            reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
+
+
+state 13
+
+    (21) tok_confdir_secrule -> CONFDIR_SECRULE .
+
+    SECRULE_VARIABLE reduce using rule 21 (tok_confdir_secrule -> CONFDIR_SECRULE .)
+    AND             reduce using rule 21 (tok_confdir_secrule -> CONFDIR_SECRULE .)
+    EXCLAMMARK      reduce using rule 21 (tok_confdir_secrule -> CONFDIR_SECRULE .)
+
+
+state 14
+
+    (14) tok_confdir_secaction -> CONFDIR_SECACTION .
+
+    QUOTED          reduce using rule 14 (tok_confdir_secaction -> CONFDIR_SECACTION .)
+
+
+state 15
+
+    (17) secmarker_line_quoted -> CONFDIR_SECMARKER . QUOTED SECMARKERARG QUOTED
+    (18) secmarker_line_noquoted -> CONFDIR_SECMARKER . SECMARKERARG
+
+    QUOTED          shift and go to state 33
+    SECMARKERARG    shift and go to state 34
+
+
+state 16
+
+    (5) modsec_config -> modsec_config secaction_line .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
+    COMMENT         reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
+    CONFDIR_SECACTION reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
+    CONFDIR_SECMARKER reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
+    CONFDIR_SECRULE reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
+    $end            reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
+
+
+state 17
+
+    (7) modsec_config -> modsec_config secmarker_line .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
+    COMMENT         reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
+    CONFDIR_SECACTION reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
+    CONFDIR_SECMARKER reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
+    CONFDIR_SECRULE reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
+    $end            reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
+
+
+state 18
+
+    (8) modsec_config -> modsec_config seccompsignature_line .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
+    COMMENT         reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
+    CONFDIR_SECACTION reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
+    CONFDIR_SECMARKER reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
+    CONFDIR_SECRULE reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
+    $end            reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
+
+
+state 19
+
+    (9) modsec_config -> modsec_config comment_line .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 9 (modsec_config -> modsec_config comment_line .)
+    COMMENT         reduce using rule 9 (modsec_config -> modsec_config comment_line .)
+    CONFDIR_SECACTION reduce using rule 9 (modsec_config -> modsec_config comment_line .)
+    CONFDIR_SECMARKER reduce using rule 9 (modsec_config -> modsec_config comment_line .)
+    CONFDIR_SECRULE reduce using rule 9 (modsec_config -> modsec_config comment_line .)
+    $end            reduce using rule 9 (modsec_config -> modsec_config comment_line .)
+
+
+state 20
+
+    (10) modsec_config -> modsec_config secrule_line .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    COMMENT         reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    CONFDIR_SECACTION reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    CONFDIR_SECMARKER reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    CONFDIR_SECRULE reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    $end            reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+
+
+state 21
+
+    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list . QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
+    (20) secrule_line -> tok_confdir_secrule secvariable_expr_list . QUOTED secoperator_expr QUOTED
+    (23) secvariable_expr_list -> secvariable_expr_list . PIPE secvariable_expr
+
+    QUOTED          shift and go to state 35
+    PIPE            shift and go to state 36
+
+
+state 22
+
+    (22) secvariable_expr_list -> secvariable_expr .
+
+    QUOTED          reduce using rule 22 (secvariable_expr_list -> secvariable_expr .)
+    PIPE            reduce using rule 22 (secvariable_expr_list -> secvariable_expr .)
+
+
+state 23
+
+    (24) secvariable_expr -> tok_secrule_variable .
+    (30) tok_secrule_variable_with_arg -> tok_secrule_variable . tok_secrule_variable_colon secvariable_arg
+    (32) tok_secrule_variable_colon -> . COLON
+
+    QUOTED          reduce using rule 24 (secvariable_expr -> tok_secrule_variable .)
+    PIPE            reduce using rule 24 (secvariable_expr -> tok_secrule_variable .)
+    COLON           shift and go to state 38
+
+    tok_secrule_variable_colon     shift and go to state 37
+
+state 24
+
+    (25) secvariable_expr -> tok_secrule_variable_prefix .
+
+    QUOTED          reduce using rule 25 (secvariable_expr -> tok_secrule_variable_prefix .)
+    PIPE            reduce using rule 25 (secvariable_expr -> tok_secrule_variable_prefix .)
+
+
+state 25
+
+    (26) secvariable_expr -> tok_secrule_variable_with_arg .
+
+    QUOTED          reduce using rule 26 (secvariable_expr -> tok_secrule_variable_with_arg .)
+    PIPE            reduce using rule 26 (secvariable_expr -> tok_secrule_variable_with_arg .)
+
+
+state 26
+
+    (27) secvariable_expr -> tok_secrule_variable_prefix_with_arg .
+
+    QUOTED          reduce using rule 27 (secvariable_expr -> tok_secrule_variable_prefix_with_arg .)
+    PIPE            reduce using rule 27 (secvariable_expr -> tok_secrule_variable_prefix_with_arg .)
+
+
+state 27
+
+    (28) tok_secrule_variable -> SECRULE_VARIABLE .
+
+    COLON           reduce using rule 28 (tok_secrule_variable -> SECRULE_VARIABLE .)
+    QUOTED          reduce using rule 28 (tok_secrule_variable -> SECRULE_VARIABLE .)
+    PIPE            reduce using rule 28 (tok_secrule_variable -> SECRULE_VARIABLE .)
+
+
+state 28
+
+    (29) tok_secrule_variable_prefix -> secvariable_prefix . tok_secrule_variable
+    (31) tok_secrule_variable_prefix_with_arg -> secvariable_prefix . tok_secrule_variable tok_secrule_variable_colon secvariable_arg
+    (28) tok_secrule_variable -> . SECRULE_VARIABLE
+
+    SECRULE_VARIABLE shift and go to state 27
+
+    tok_secrule_variable           shift and go to state 39
+
+state 29
+
+    (33) secvariable_prefix -> AND .
+
+    SECRULE_VARIABLE reduce using rule 33 (secvariable_prefix -> AND .)
+
+
+state 30
+
+    (34) secvariable_prefix -> EXCLAMMARK .
+    (35) secvariable_prefix -> EXCLAMMARK . AND
+
+    SECRULE_VARIABLE reduce using rule 34 (secvariable_prefix -> EXCLAMMARK .)
+    AND             shift and go to state 40
+
+
+state 31
+
+    (12) seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED . SECCOMPSIGNARG QUOTED
+
+    SECCOMPSIGNARG  shift and go to state 41
+
+
+state 32
+
+    (13) secaction_line -> tok_confdir_secaction QUOTED . secaction_expr_list QUOTED
+    (47) secaction_expr_list -> . secaction_expr
+    (48) secaction_expr_list -> . secaction_expr_list COMMA secaction_expr
+    (49) secaction_expr -> . tok_secrule_action
+    (50) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
+    (51) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
+    (52) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+    (53) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (54) tok_secrule_action -> . SECRULE_ACTION
+
+    SECRULE_ACTION  shift and go to state 45
+
+    secaction_expr_list            shift and go to state 42
+    secaction_expr                 shift and go to state 43
+    tok_secrule_action             shift and go to state 44
+
+state 33
+
+    (17) secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED . SECMARKERARG QUOTED
+
+    SECMARKERARG    shift and go to state 46
+
+
+state 34
+
+    (18) secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
+    COMMENT         reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
+    CONFDIR_SECACTION reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
+    CONFDIR_SECMARKER reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
+    CONFDIR_SECRULE reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
+    $end            reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
+
+
+state 35
+
+    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED . secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
+    (20) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED . secoperator_expr QUOTED
+    (40) secoperator_expr -> . tok_secoperator_group
+    (41) secoperator_expr -> . tok_secoperator_group secoperator_arg_group
+    (42) secoperator_expr -> . secoperator_arg_group
+    (43) tok_secoperator_group -> . ATSIGN SECRULE_OPERATOR
+    (44) tok_secoperator_group -> . EXCLAMMARK ATSIGN SECRULE_OPERATOR
+    (45) secoperator_arg_group -> . SECRULE_OPERATOR_ARG
+    (46) secoperator_arg_group -> . NUMBER
+
+    ATSIGN          shift and go to state 50
+    EXCLAMMARK      shift and go to state 51
+    SECRULE_OPERATOR_ARG shift and go to state 52
+    NUMBER          shift and go to state 53
+
+    secoperator_expr               shift and go to state 47
+    tok_secoperator_group          shift and go to state 48
+    secoperator_arg_group          shift and go to state 49
+
+state 36
+
+    (23) secvariable_expr_list -> secvariable_expr_list PIPE . secvariable_expr
+    (24) secvariable_expr -> . tok_secrule_variable
+    (25) secvariable_expr -> . tok_secrule_variable_prefix
+    (26) secvariable_expr -> . tok_secrule_variable_with_arg
+    (27) secvariable_expr -> . tok_secrule_variable_prefix_with_arg
+    (28) tok_secrule_variable -> . SECRULE_VARIABLE
+    (29) tok_secrule_variable_prefix -> . secvariable_prefix tok_secrule_variable
+    (30) tok_secrule_variable_with_arg -> . tok_secrule_variable tok_secrule_variable_colon secvariable_arg
+    (31) tok_secrule_variable_prefix_with_arg -> . secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg
+    (33) secvariable_prefix -> . AND
+    (34) secvariable_prefix -> . EXCLAMMARK
+    (35) secvariable_prefix -> . EXCLAMMARK AND
+
+    SECRULE_VARIABLE shift and go to state 27
+    AND             shift and go to state 29
+    EXCLAMMARK      shift and go to state 30
+
+    secvariable_expr               shift and go to state 54
+    tok_secrule_variable           shift and go to state 23
+    tok_secrule_variable_prefix    shift and go to state 24
+    tok_secrule_variable_with_arg  shift and go to state 25
+    tok_secrule_variable_prefix_with_arg shift and go to state 26
+    secvariable_prefix             shift and go to state 28
+
+state 37
+
+    (30) tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon . secvariable_arg
+    (36) secvariable_arg -> . tok_secrule_variable_arg
+    (37) secvariable_arg -> . tok_secrule_variable_arg_quotes
+    (38) tok_secrule_variable_arg -> . SECRULE_VARIABLE_ARG
+    (39) tok_secrule_variable_arg_quotes -> . QUOTES SECRULE_VARIABLE_ARG QUOTES
+
+    SECRULE_VARIABLE_ARG shift and go to state 58
+    QUOTES          shift and go to state 59
+
+    secvariable_arg                shift and go to state 55
+    tok_secrule_variable_arg       shift and go to state 56
+    tok_secrule_variable_arg_quotes shift and go to state 57
+
+state 38
+
+    (32) tok_secrule_variable_colon -> COLON .
+
+    SECRULE_VARIABLE_ARG reduce using rule 32 (tok_secrule_variable_colon -> COLON .)
+    QUOTES          reduce using rule 32 (tok_secrule_variable_colon -> COLON .)
+
+
+state 39
+
+    (29) tok_secrule_variable_prefix -> secvariable_prefix tok_secrule_variable .
+    (31) tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable . tok_secrule_variable_colon secvariable_arg
+    (32) tok_secrule_variable_colon -> . COLON
+
+    QUOTED          reduce using rule 29 (tok_secrule_variable_prefix -> secvariable_prefix tok_secrule_variable .)
+    PIPE            reduce using rule 29 (tok_secrule_variable_prefix -> secvariable_prefix tok_secrule_variable .)
+    COLON           shift and go to state 38
+
+    tok_secrule_variable_colon     shift and go to state 60
+
+state 40
+
+    (35) secvariable_prefix -> EXCLAMMARK AND .
+
+    SECRULE_VARIABLE reduce using rule 35 (secvariable_prefix -> EXCLAMMARK AND .)
+
+
+state 41
+
+    (12) seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG . QUOTED
+
+    QUOTED          shift and go to state 61
+
+
+state 42
+
+    (13) secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list . QUOTED
+    (48) secaction_expr_list -> secaction_expr_list . COMMA secaction_expr
+
+    QUOTED          shift and go to state 62
+    COMMA           shift and go to state 63
+
+
+state 43
+
+    (47) secaction_expr_list -> secaction_expr .
+
+    QUOTED          reduce using rule 47 (secaction_expr_list -> secaction_expr .)
+    COMMA           reduce using rule 47 (secaction_expr_list -> secaction_expr .)
+
+
+state 44
+
+    (49) secaction_expr -> tok_secrule_action .
+    (50) secaction_expr -> tok_secrule_action . COLON secrule_action_argument
+    (51) secaction_expr -> tok_secrule_action . COLON QUOTES secrule_action_argument_singlequoted QUOTES
+    (52) secaction_expr -> tok_secrule_action . COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+    (53) secaction_expr -> tok_secrule_action . COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+
+    QUOTED          reduce using rule 49 (secaction_expr -> tok_secrule_action .)
+    COMMA           reduce using rule 49 (secaction_expr -> tok_secrule_action .)
+    COLON           shift and go to state 64
+
+
+state 45
+
+    (54) tok_secrule_action -> SECRULE_ACTION .
+
+    COLON           reduce using rule 54 (tok_secrule_action -> SECRULE_ACTION .)
+    QUOTED          reduce using rule 54 (tok_secrule_action -> SECRULE_ACTION .)
+    COMMA           reduce using rule 54 (tok_secrule_action -> SECRULE_ACTION .)
+
+
+state 46
+
+    (17) secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG . QUOTED
+
+    QUOTED          shift and go to state 65
+
+
+state 47
+
+    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr . QUOTED QUOTED secaction_expr_list QUOTED
+    (20) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr . QUOTED
+
+    QUOTED          shift and go to state 66
+
+
+state 48
+
+    (40) secoperator_expr -> tok_secoperator_group .
+    (41) secoperator_expr -> tok_secoperator_group . secoperator_arg_group
+    (45) secoperator_arg_group -> . SECRULE_OPERATOR_ARG
+    (46) secoperator_arg_group -> . NUMBER
+
+    QUOTED          reduce using rule 40 (secoperator_expr -> tok_secoperator_group .)
+    SECRULE_OPERATOR_ARG shift and go to state 52
+    NUMBER          shift and go to state 53
+
+    secoperator_arg_group          shift and go to state 67
+
+state 49
+
+    (42) secoperator_expr -> secoperator_arg_group .
+
+    QUOTED          reduce using rule 42 (secoperator_expr -> secoperator_arg_group .)
+
+
+state 50
+
+    (43) tok_secoperator_group -> ATSIGN . SECRULE_OPERATOR
+
+    SECRULE_OPERATOR shift and go to state 68
+
+
+state 51
+
+    (44) tok_secoperator_group -> EXCLAMMARK . ATSIGN SECRULE_OPERATOR
+
+    ATSIGN          shift and go to state 69
+
+
+state 52
+
+    (45) secoperator_arg_group -> SECRULE_OPERATOR_ARG .
+
+    QUOTED          reduce using rule 45 (secoperator_arg_group -> SECRULE_OPERATOR_ARG .)
+
+
+state 53
+
+    (46) secoperator_arg_group -> NUMBER .
+
+    QUOTED          reduce using rule 46 (secoperator_arg_group -> NUMBER .)
+
+
+state 54
+
+    (23) secvariable_expr_list -> secvariable_expr_list PIPE secvariable_expr .
+
+    QUOTED          reduce using rule 23 (secvariable_expr_list -> secvariable_expr_list PIPE secvariable_expr .)
+    PIPE            reduce using rule 23 (secvariable_expr_list -> secvariable_expr_list PIPE secvariable_expr .)
+
+
+state 55
+
+    (30) tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon secvariable_arg .
+
+    QUOTED          reduce using rule 30 (tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
+    PIPE            reduce using rule 30 (tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
+
+
+state 56
+
+    (36) secvariable_arg -> tok_secrule_variable_arg .
+
+    QUOTED          reduce using rule 36 (secvariable_arg -> tok_secrule_variable_arg .)
+    PIPE            reduce using rule 36 (secvariable_arg -> tok_secrule_variable_arg .)
+
+
+state 57
+
+    (37) secvariable_arg -> tok_secrule_variable_arg_quotes .
+
+    QUOTED          reduce using rule 37 (secvariable_arg -> tok_secrule_variable_arg_quotes .)
+    PIPE            reduce using rule 37 (secvariable_arg -> tok_secrule_variable_arg_quotes .)
+
+
+state 58
+
+    (38) tok_secrule_variable_arg -> SECRULE_VARIABLE_ARG .
+
+    QUOTED          reduce using rule 38 (tok_secrule_variable_arg -> SECRULE_VARIABLE_ARG .)
+    PIPE            reduce using rule 38 (tok_secrule_variable_arg -> SECRULE_VARIABLE_ARG .)
+
+
+state 59
+
+    (39) tok_secrule_variable_arg_quotes -> QUOTES . SECRULE_VARIABLE_ARG QUOTES
+
+    SECRULE_VARIABLE_ARG shift and go to state 70
+
+
+state 60
+
+    (31) tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon . secvariable_arg
+    (36) secvariable_arg -> . tok_secrule_variable_arg
+    (37) secvariable_arg -> . tok_secrule_variable_arg_quotes
+    (38) tok_secrule_variable_arg -> . SECRULE_VARIABLE_ARG
+    (39) tok_secrule_variable_arg_quotes -> . QUOTES SECRULE_VARIABLE_ARG QUOTES
+
+    SECRULE_VARIABLE_ARG shift and go to state 58
+    QUOTES          shift and go to state 59
+
+    secvariable_arg                shift and go to state 71
+    tok_secrule_variable_arg       shift and go to state 56
+    tok_secrule_variable_arg_quotes shift and go to state 57
+
+state 61
+
+    (12) seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
+    COMMENT         reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
+    CONFDIR_SECACTION reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
+    CONFDIR_SECMARKER reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
+    CONFDIR_SECRULE reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
+    $end            reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
+
+
+state 62
+
+    (13) secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
+    COMMENT         reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
+    CONFDIR_SECACTION reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
+    CONFDIR_SECMARKER reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
+    CONFDIR_SECRULE reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
+    $end            reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
+
+
+state 63
+
+    (48) secaction_expr_list -> secaction_expr_list COMMA . secaction_expr
+    (49) secaction_expr -> . tok_secrule_action
+    (50) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
+    (51) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
+    (52) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+    (53) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (54) tok_secrule_action -> . SECRULE_ACTION
+
+    SECRULE_ACTION  shift and go to state 45
+
+    secaction_expr                 shift and go to state 72
+    tok_secrule_action             shift and go to state 44
+
+state 64
+
+    (50) secaction_expr -> tok_secrule_action COLON . secrule_action_argument
+    (51) secaction_expr -> tok_secrule_action COLON . QUOTES secrule_action_argument_singlequoted QUOTES
+    (52) secaction_expr -> tok_secrule_action COLON . secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+    (53) secaction_expr -> tok_secrule_action COLON . secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (55) secrule_action_argument -> . SECRULE_ACTION_ARG
+    (56) secrule_action_argument -> . NUMBER
+    (57) secrule_action_argument -> . SECRULE_ACTION_TRANSFORMS
+    (58) secrule_action_argument -> . SECRULE_ACTION_CTLACTION
+    (59) secrule_action_argument -> . SECRULE_ACTION_SKIPAFTERACTIONARG
+    (60) secrule_action_argument -> . SECRULE_ACTION_INITCOLACTIONARG
+
+    QUOTES          shift and go to state 74
+    SECRULE_ACTION_ARG shift and go to state 75
+    NUMBER          shift and go to state 76
+    SECRULE_ACTION_TRANSFORMS shift and go to state 77
+    SECRULE_ACTION_CTLACTION shift and go to state 78
+    SECRULE_ACTION_SKIPAFTERACTIONARG shift and go to state 79
+    SECRULE_ACTION_INITCOLACTIONARG shift and go to state 80
+
+    secrule_action_argument        shift and go to state 73
+
+state 65
+
+    (17) secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
+    COMMENT         reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
+    CONFDIR_SECACTION reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
+    CONFDIR_SECMARKER reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
+    CONFDIR_SECRULE reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
+    $end            reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
+
+
+state 66
+
+    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED . QUOTED secaction_expr_list QUOTED
+    (20) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .
+
+    QUOTED          shift and go to state 81
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
+    COMMENT         reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
+    CONFDIR_SECACTION reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
+    CONFDIR_SECMARKER reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
+    CONFDIR_SECRULE reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
+    $end            reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
+
+
+state 67
+
+    (41) secoperator_expr -> tok_secoperator_group secoperator_arg_group .
+
+    QUOTED          reduce using rule 41 (secoperator_expr -> tok_secoperator_group secoperator_arg_group .)
+
+
+state 68
+
+    (43) tok_secoperator_group -> ATSIGN SECRULE_OPERATOR .
+
+    SECRULE_OPERATOR_ARG reduce using rule 43 (tok_secoperator_group -> ATSIGN SECRULE_OPERATOR .)
+    NUMBER          reduce using rule 43 (tok_secoperator_group -> ATSIGN SECRULE_OPERATOR .)
+    QUOTED          reduce using rule 43 (tok_secoperator_group -> ATSIGN SECRULE_OPERATOR .)
+
+
+state 69
+
+    (44) tok_secoperator_group -> EXCLAMMARK ATSIGN . SECRULE_OPERATOR
+
+    SECRULE_OPERATOR shift and go to state 82
+
+
+state 70
+
+    (39) tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG . QUOTES
+
+    QUOTES          shift and go to state 83
+
+
+state 71
+
+    (31) tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg .
+
+    QUOTED          reduce using rule 31 (tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
+    PIPE            reduce using rule 31 (tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
+
+
+state 72
+
+    (48) secaction_expr_list -> secaction_expr_list COMMA secaction_expr .
+
+    QUOTED          reduce using rule 48 (secaction_expr_list -> secaction_expr_list COMMA secaction_expr .)
+    COMMA           reduce using rule 48 (secaction_expr_list -> secaction_expr_list COMMA secaction_expr .)
+
+
+state 73
+
+    (50) secaction_expr -> tok_secrule_action COLON secrule_action_argument .
+    (52) secaction_expr -> tok_secrule_action COLON secrule_action_argument . EQUALMARK tok_secrule_action_ctlactionarg
+    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument . EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+
+    QUOTED          reduce using rule 50 (secaction_expr -> tok_secrule_action COLON secrule_action_argument .)
+    COMMA           reduce using rule 50 (secaction_expr -> tok_secrule_action COLON secrule_action_argument .)
+    EQUALMARK       shift and go to state 84
+
+
+state 74
+
+    (51) secaction_expr -> tok_secrule_action COLON QUOTES . secrule_action_argument_singlequoted QUOTES
+    (61) secrule_action_argument_singlequoted -> . SECRULE_ACTION_ARG
+    (62) secrule_action_argument_singlequoted -> . EXCLAMMARK SECRULE_ACTION_ARG
+    (63) secrule_action_argument_singlequoted -> . NUMBER
+
+    SECRULE_ACTION_ARG shift and go to state 86
+    EXCLAMMARK      shift and go to state 87
+    NUMBER          shift and go to state 88
+
+    secrule_action_argument_singlequoted shift and go to state 85
+
+state 75
+
+    (55) secrule_action_argument -> SECRULE_ACTION_ARG .
+
+    EQUALMARK       reduce using rule 55 (secrule_action_argument -> SECRULE_ACTION_ARG .)
+    QUOTED          reduce using rule 55 (secrule_action_argument -> SECRULE_ACTION_ARG .)
+    COMMA           reduce using rule 55 (secrule_action_argument -> SECRULE_ACTION_ARG .)
+
+
+state 76
+
+    (56) secrule_action_argument -> NUMBER .
+
+    EQUALMARK       reduce using rule 56 (secrule_action_argument -> NUMBER .)
+    QUOTED          reduce using rule 56 (secrule_action_argument -> NUMBER .)
+    COMMA           reduce using rule 56 (secrule_action_argument -> NUMBER .)
+
+
+state 77
+
+    (57) secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .
+
+    EQUALMARK       reduce using rule 57 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
+    QUOTED          reduce using rule 57 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
+    COMMA           reduce using rule 57 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
+
+
+state 78
+
+    (58) secrule_action_argument -> SECRULE_ACTION_CTLACTION .
+
+    EQUALMARK       reduce using rule 58 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
+    QUOTED          reduce using rule 58 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
+    COMMA           reduce using rule 58 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
+
+
+state 79
+
+    (59) secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .
+
+    EQUALMARK       reduce using rule 59 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
+    QUOTED          reduce using rule 59 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
+    COMMA           reduce using rule 59 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
+
+
+state 80
+
+    (60) secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .
+
+    EQUALMARK       reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
+    QUOTED          reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
+    COMMA           reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
+
+
+state 81
+
+    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED . secaction_expr_list QUOTED
+    (47) secaction_expr_list -> . secaction_expr
+    (48) secaction_expr_list -> . secaction_expr_list COMMA secaction_expr
+    (49) secaction_expr -> . tok_secrule_action
+    (50) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
+    (51) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
+    (52) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+    (53) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (54) tok_secrule_action -> . SECRULE_ACTION
+
+    SECRULE_ACTION  shift and go to state 45
+
+    secaction_expr_list            shift and go to state 89
+    secaction_expr                 shift and go to state 43
+    tok_secrule_action             shift and go to state 44
+
+state 82
+
+    (44) tok_secoperator_group -> EXCLAMMARK ATSIGN SECRULE_OPERATOR .
+
+    SECRULE_OPERATOR_ARG reduce using rule 44 (tok_secoperator_group -> EXCLAMMARK ATSIGN SECRULE_OPERATOR .)
+    NUMBER          reduce using rule 44 (tok_secoperator_group -> EXCLAMMARK ATSIGN SECRULE_OPERATOR .)
+    QUOTED          reduce using rule 44 (tok_secoperator_group -> EXCLAMMARK ATSIGN SECRULE_OPERATOR .)
+
+
+state 83
+
+    (39) tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG QUOTES .
+
+    QUOTED          reduce using rule 39 (tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG QUOTES .)
+    PIPE            reduce using rule 39 (tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG QUOTES .)
+
+
+state 84
+
+    (52) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK . tok_secrule_action_ctlactionarg
+    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK . tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (64) tok_secrule_action_ctlactionarg -> . SECRULE_ACTION_CTLACTIONARG
+    (65) tok_secrule_action_ctlactionarg -> . SECRULE_ACTION_INITCOLACTIONARGPARAM
+
+    SECRULE_ACTION_CTLACTIONARG shift and go to state 91
+    SECRULE_ACTION_INITCOLACTIONARGPARAM shift and go to state 92
+
+    tok_secrule_action_ctlactionarg shift and go to state 90
+
+state 85
+
+    (51) secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted . QUOTES
+
+    QUOTES          shift and go to state 93
+
+
+state 86
+
+    (61) secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG .
+
+    QUOTES          reduce using rule 61 (secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG .)
+
+
+state 87
+
+    (62) secrule_action_argument_singlequoted -> EXCLAMMARK . SECRULE_ACTION_ARG
+
+    SECRULE_ACTION_ARG shift and go to state 94
+
+
+state 88
+
+    (63) secrule_action_argument_singlequoted -> NUMBER .
+
+    QUOTES          reduce using rule 63 (secrule_action_argument_singlequoted -> NUMBER .)
+
+
+state 89
+
+    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list . QUOTED
+    (48) secaction_expr_list -> secaction_expr_list . COMMA secaction_expr
+
+    QUOTED          shift and go to state 95
+    COMMA           shift and go to state 63
+
+
+state 90
+
+    (52) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .
+    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg . SEMICOLON tok_secrule_action_ctlactionargparam
+
+    QUOTED          reduce using rule 52 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .)
+    COMMA           reduce using rule 52 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .)
+    SEMICOLON       shift and go to state 96
+
+
+state 91
+
+    (64) tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .
+
+    SEMICOLON       reduce using rule 64 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
+    QUOTED          reduce using rule 64 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
+    COMMA           reduce using rule 64 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
+
+
+state 92
+
+    (65) tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .
+
+    SEMICOLON       reduce using rule 65 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
+    QUOTED          reduce using rule 65 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
+    COMMA           reduce using rule 65 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
+
+
+state 93
+
+    (51) secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .
+
+    QUOTED          reduce using rule 51 (secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .)
+    COMMA           reduce using rule 51 (secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .)
+
+
+state 94
+
+    (62) secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG .
+
+    QUOTES          reduce using rule 62 (secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG .)
+
+
+state 95
+
+    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .
+
+    CONFDIR_SECCOMPSIGNATURE reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
+    COMMENT         reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
+    CONFDIR_SECACTION reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
+    CONFDIR_SECMARKER reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
+    CONFDIR_SECRULE reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
+    $end            reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
+
+
+state 96
+
+    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON . tok_secrule_action_ctlactionargparam
+    (66) tok_secrule_action_ctlactionargparam -> . SECRULE_ACTION_CTLACTIONARGPARAM
+
+    SECRULE_ACTION_CTLACTIONARGPARAM shift and go to state 98
+
+    tok_secrule_action_ctlactionargparam shift and go to state 97
+
+state 97
+
+    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .
+
+    QUOTED          reduce using rule 53 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .)
+    COMMA           reduce using rule 53 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .)
+
+
+state 98
+
+    (66) tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .
+
+    QUOTED          reduce using rule 66 (tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .)
+    COMMA           reduce using rule 66 (tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .)
+

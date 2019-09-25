@@ -1,0 +1,21 @@
+script: example5_beautifier.py
+
+description:
+this program loads the converted ruleset structure, and modify the lineno
+keys. Then if you write the structure back to the config, the rules will
+indented.
+
+SecRule REQUEST_BODY "@rx foo" "id:0001,t:none,tag:OWASP_CRS"
+
+new data:
+SecRule REQUEST_BODY "@rx foo" \
+    "id:0001, \
+    t:none, \
+    tag:OWASP_CRS"
+
+Use:
+you have to run this script with argument YAML structured file. If you want
+to try, edit the original file and converts it with crs_read.py. Don't forget
+to write out to file with crs_write.py.
+
+You can try this with the secrule_inline.conf file in this directory.

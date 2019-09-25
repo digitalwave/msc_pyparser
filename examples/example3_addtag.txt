@@ -1,0 +1,30 @@
+script: example1_addtag.py
+
+description:
+this program loads the converted ruleset structure, and searches the rules
+what contains 'tag:OWASP_CRS'. If the rule founded, then inserts a new tag
+with value: 'tag:OWASP_CRS_NEW'.
+
+transformation:
+
+old data:
+SecRule REQUEST_BODY "@rx foo" \
+    "id:0001, \
+    t:none, \
+    tag:OWASP_CRS"
+
+new data:
+SecRule REQUEST_BODY "@rx foo" \
+    "id:0001, \
+    t:none, \
+    tag:OWASP_CRS_NEW, \
+    tag:OWASP_CRS"
+
+Note, that this example shows how can you modify a part of your ruleset
+depending of context. Here, we searched only one action (tag) with only one
+value (OWASP_CRS), nothing more.
+
+Use:
+you have to run this script with argument YAML structured file. The script
+will save a copy of the given input. To see the differences, you have to
+write back the structure with crs_write.py.

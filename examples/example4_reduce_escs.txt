@@ -1,0 +1,34 @@
+script: example2_reduce_escs.py
+
+description:
+this program loads the converted ruleset structure, and searches the '\\\\'
+sequences in all operator arguments. This can be used to align the ruleset
+for ModSecurity3, because it doesn't stripped the sequences.
+
+For more information, see issue #2148 on ModSecurity3's Github page.
+
+transformation:
+
+old data:
+SecRule ARGS "@rx (?i:[\"'][ ]*(?:[^a-z0-9~_:' ]|in).*?(?:(?:l|\\\\u006C)))" \
+    "id:941330,\
+    phase:2,\
+    block,\
+    capture"
+
+new data:
+SecRule ARGS "@rx (?i:[\"'][ ]*(?:[^a-z0-9~_:' ]|in).*?(?:(?:l|\\u006C)))" \
+    "id:941330,\
+    phase:2,\
+    block,\
+    capture"
+
+Note, that this example shows how can you modify a part of your ruleset
+depending of context. Here, we just replaces the pattern in operator arguments,
+nowhere else.
+
+Use:
+you have to run this script with argument YAML structured file. The script
+will save a copy of the given input. The rules in example exists in file
+REQUEST-941-APPLICATION-ATTACK-XSS.conf. To see the differences, you have to
+write back the structure with crs_write.py.
