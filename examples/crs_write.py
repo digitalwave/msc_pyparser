@@ -49,7 +49,10 @@ for c in configs:
 
     try:
         with open(c) as file:
-            data = yaml.load(file, Loader=yaml.FullLoader)
+            if yaml.__version__ >= "5.1":
+                data = yaml.load(file, Loader=yaml.FullLoader)
+            else:
+                data = yaml.load(file)
             # data = json.load(file)
     except:
         print("Exception catched - ", sys.exc_info())
