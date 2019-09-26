@@ -39,6 +39,20 @@ Contents of module
 * MSCWriter
 * MSCUtils
 
+**Module version**
+
+Before you start to work with it, please check the used version - the current is '0.1':
+
+```
+$ python3
+...
+>>> import msc_pyparser
+>>> print(msc_pyparser.__version__)
+0.1
+>>> 
+
+```
+
 Here are the details:
 
 **MSCLexer**
