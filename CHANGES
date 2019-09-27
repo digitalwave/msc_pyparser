@@ -1,3 +1,8 @@
+v0.2 - YYYY-MM-DD
+-----------------
+  * Choose a valid loader depending on yaml version in crs_write.py example
+  * Added version number with value '0.1'
+
 v0.1 - 2019-09-23
 -----------------
   * Initial release
