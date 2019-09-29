@@ -1,0 +1,18 @@
+script: example8_check_ver_act.py
+
+description:
+this program loads the converted ruleset structure, and check that
+the 'ver' action exist or not. The algorithm looks the chained rules,
+which means if there are a chained ruleset, and if one contains the
+action at least, that's enough.
+
+The mandatory argument is the directory where the converted files are.
+
+The output will the a collection of CSV strucred lines.
+
+Use:
+you have to run this script with argument YAML structured file. If you want
+to try, edit the original file and converts it with crs_read.py. Don't forget
+to write out to file with crs_write.py.
+
+

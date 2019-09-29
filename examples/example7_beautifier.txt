@@ -1,4 +1,4 @@
-script: example5_beautifier.py
+script: example7_beautifier.py
 
 description:
 this program loads the converted ruleset structure, and modify the lineno
