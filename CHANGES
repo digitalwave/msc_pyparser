@@ -1,6 +1,7 @@
 v0.2 - YYYY-MM-DD
 -----------------
-  * Added example8
+  * Added example9 - collect transformations
+  * Added example8 - collect the `ver` action
   * Choose a valid loader depending on yaml version in crs_write.py example
   * Added version number with value '0.1'
 

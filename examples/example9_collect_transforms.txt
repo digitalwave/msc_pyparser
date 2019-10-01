@@ -1,0 +1,17 @@
+script: example9_collect_transforms.py
+
+description:
+this program loads the converted ruleset structure, searches the
+transformations at rules, and listed them in a CSV table. This code
+also handles the chained rules.
+
+The mandatory argument is the directory where the converted files are.
+
+The output will the a collection of CSV strucred lines.
+
+Use:
+you have to run this script with argument YAML structured file. If you want
+to try, edit the original file and converts it with crs_read.py. Don't forget
+to write out to file with crs_write.py.
+
+
