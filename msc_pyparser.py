@@ -274,7 +274,7 @@ class MSCLexer(object):
         return t
 
     def t_secruleactionarg_SECRULE_ACTION_ARG(self, t):
-        r"((?:\\'|[^,])+)"
+        r"((?:\\'|[^,\"])+)"
         t.lexer.pop_state()
         return t
 
