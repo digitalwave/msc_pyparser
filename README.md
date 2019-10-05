@@ -486,10 +486,9 @@ This will read your rulesets, and converts all of them to the directory `export`
 Then you can write back the parsed rules from `yaml` (or `json`) to back:
 
 ```
+mkdir import
 ./crs_write.py export import
 ```
-
-Note, that the destination directory `import` will created.
 
 Now check the differences between the original and converted versions:
 ```
