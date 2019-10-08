@@ -6,12 +6,12 @@ Welcome to the `modsec_parser` documentation.
 Prerequisites
 =============
 
-`modsec_parser` was written in Python3 - it wasn't tested on Python2.
+`modsec_parser` was written in Python 3 and has not been tested with Python 2.
 
 To run the parser, you need:
 
-+ a **Python3** interpreter
-+ **YAML** and/or **JSON** for **Python3**
++ a **Python 3** interpreter
++ **YAML** and/or **JSON** for **Python 3**
 + **Ply** - the Python Ley Yacc library
 
 You can install these packages on Debian with this command:
@@ -23,25 +23,27 @@ sudo apt install python3-ply python3-yaml python3-ubjson
 Install the module
 ==================
 
-After you downloaded the yource, you have to type:
+After you downloaded the source, install the module like this:
+
 ```
 sudo python3 setup.py install
 ```
-That's it.
 
-Contents of module
-==================
+🎉 That's it!
 
-`modsec_parser` contains four class what you can use:
+Module Contents
+===============
+
+`modsec_parser` contains these classes:
 
 * MSCLexer
 * MSCParser
 * MSCWriter
 * MSCUtils
 
-**Module version**
+### Module version
 
-Before you start to work with it, please check the used version - the current is '0.1':
+Before you start to work with `msc_pyparser`, please check the version to make sure you have the current one (`0.1`):
 
 ```
 $ python3
@@ -53,13 +55,11 @@ $ python3
 
 ```
 
-Here are the details:
+### MSCLexer
 
-**MSCLexer**
+The `MSCLexer` class is a wrapper for Ply's `lexer` object. You can use it independently, to **check** and **see** what tokens are in your `ModSecurity` ruleset.
 
-The `MSCLexer` is a wrapper class for the Ply's `lexer` object. You can use it independently, to **check** and **see** what tokens are in your `ModSecurity` ruleset.
-
-A simple usage:
+Here is a simple example:
 
 ```
 $ python3
@@ -105,13 +105,13 @@ LexToken(QUOTED,'"',1,120)
 
 ```
 
-For a detailed use see the `test_lexer.py` program in the source directory.
+For a more detailed example, see `test_lexer.py` in the `examples` directory.
 
-**MSCParser**
+### MSCParser
 
-The `MSCParser` is a wrapper class for the Ply's `parser` object. The parser object needs a lexer, but `MSCParser` invokes the `MSCLexer` and set it up.
+The `MSCParser` class is a wrapper for Ply's `parser` object. The parser object needs a lexer, but `MSCParser` invokes `MSCLexer` and sets it up.
 
-A simple usage:
+Here is a simple example:
 
 ```
 $ python3
@@ -139,13 +139,13 @@ PLY: PARSE DEBUG END
 
 ```
 
-For a detailed use see the `test_parser.py` program in the source directory.
+For a detailed example, see `test_parser.py` program in the `examples` directory.
 
-**MSCWriter**
+### MSCWriter
 
-This class transforms the inside structure to the string. You can save the result to a file. To put it simply, this class can converts back your YAML/JSON/... to config file. See the crs_writer.py example how does it works.
+This class transforms the inside structure to the string. You can save the result to a file. This class converts YAML, JSON, etc, to a config file. See the example file `crs_writer.py` for how it works.
 
-A simple usage:
+Here is a simple example:
 
 ```
 $ python3
@@ -160,16 +160,16 @@ Type "help", "copyright", "credits" or "license" for more information.
 ['SecRule TX:EXECUTING_PARANOIA_LEVEL "@lt 1" "id:920011,phase:1,pass,nolog,skipAfter:END-REQUEST-920-PROTOCOL-ENFORCEMENT"']
 ```
 
-**MSCUtils**
+### MSCUtils
 
-This class contains the helper function(s) (currently only one), which can helps you to make the IO functions.
+This class contains IO helper functions (currently only one function).
 
 Inside of structure
 ===================
 
-As you can see, the `MSCParser` class reads the `ModSecurity` rulesets, and transforms it to a Python object, especially to a Python `list`. Every item in this list is a `dictionary`. Every dict item has a `type` and a `lineno` keys, and some others - depends what's the value of `type`.
+The `MSCParser` class reads the `ModSecurity` rulesets, and transforms them into a Python `list`. Every item in this list is a `dictionary`. Every dictionary item has the keys `type` and `lineno`. Depending on the `type` there might be additional keys.
 
-There are four type what actually supported:
+These are the supported types:
 
 * Comment
 * SecRule
@@ -177,7 +177,7 @@ There are four type what actually supported:
 * SecComponentSignature
 * SecMarker
 
-There are two types of dictionary:
+There are two types of dictionary objects:
 
 ```
 {
@@ -201,6 +201,7 @@ and
   'actions': <class 'list'> of <class 'dict'>
 }
 ```
+
 and the dict of `actions`:
 ```
 {
@@ -213,7 +214,6 @@ and the dict of `actions`:
 }
 
 ```
-
 
 type
 ----
@@ -251,11 +251,11 @@ lineno
 
 argument
 --------
-**Description**: the string what next to the directive
+**Description**: the string next to the directive
 
 **Syntax:** `'argument': <class 'str'>`
 
-**Example Usage:** `'arguemnt': '# this is a comment'`
+**Example Usage:** `'argument': '# this is a comment'`
 
 **Default Value:** no default value
 
@@ -268,7 +268,7 @@ argument
 
 quoted
 ------
-**Description**: stores that the argument was quoted or not
+**Description**: indicates if the argument was quoted or not
 
 **Syntax:** `'quoted': <class 'str'>`
 
@@ -276,7 +276,7 @@ quoted
 
 **Default Value:** `no_quoted`
 
-**Possible value:** `no_quoted`, `quoted` (quoted with DOUBLE sign `"`), `quotes` (quoted with SINGLE sign `'`)
+**Possible value:** `no_quoted`, `quoted` (quoted with DOUBLE quotes `"`), `quotes` (quoted with SINGLE quotes `'`)
 
 **Scope:** `Comment`, `SecComponentsSignature`, `SecMarker`
 
@@ -311,7 +311,7 @@ operator
 
 **Default Value:** no default value
 
-**Possible value:** could be emtpy (means `@rx`, or any valid operator - see the ModSecurity [reference](https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-(v2.x)#Operators))
+**Possible value:** could be empty (means `@rx`, or any valid operator - see the ModSecurity [reference](https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-(v2.x)#Operators))
 
 **Scope:** `SecAction`, `SecRule`
 
@@ -320,7 +320,7 @@ operator
 
 oplineno
 --------
-**Description**: number of line in original file of operator of `SecAction` or `SecRule`, if that's different than the config directive
+**Description**: number of lines in the original file of operator of `SecAction` or `SecRule` if that's different than the config directive
 
 **Syntax:** `'oplineno': <class 'int'>`
 
@@ -328,7 +328,7 @@ oplineno
 
 **Default Value:** any positive integer
 
-**Possible value:** could be emtpy (means operator is in same line as configuration keyword)
+**Possible value:** could be empty (which means the operator is in the same line as the configuration keyword)
 
 **Scope:** `SecAction`, `SecRule`
 
@@ -395,7 +395,7 @@ act_arg
 
 **Default Value:** no default value
 
-**Possible value:** depend the type of arg_name - see reference
+**Possible value:** depends on the type of arg_name - see reference
 
 **Scope:** `actions` list of `SecAction`, `SecRule`
 
@@ -404,7 +404,7 @@ act_arg
 
 act_quote
 ---------
-**Description**: holds the information about quoted state of action argument in item of list of actions of `SecRule` or `SecAction`, eg. argument of `msg` actions typically quoted with `'`
+**Description**: holds the information about the quoted state of action argument initem of list of actions of `SecRule` or `SecAction`, e.g., the argument of `msg` actions is typically quoted with `'`
 
 **Syntax:** `'act_quote': <class 'str'>`
 
@@ -421,7 +421,7 @@ act_quote
 
 lineno
 ------
-**Description**: number of line of item in actions of `SecRule` or `SecAction`
+**Description**: number of lines of the item in actions of `SecRule` or `SecAction`
 
 **Syntax:** `'lineno': <class 'int'>`
 
@@ -438,7 +438,7 @@ lineno
 
 act_ctl_arg
 -----------
-**Description**: holds the argument of action item in actions of `SecRule` or `SecAction` contains arguments (eg: `ctl:ruleRemovebyId=1234`)
+**Description**: holds the argument of the action item in actions of `SecRule` or `SecAction` contains arguments (e.g.: `ctl:ruleRemovebyId=1234`)
 
 **Syntax:** `'act_ctl_arg': <class 'str'>`
 
@@ -455,7 +455,7 @@ act_ctl_arg
 
 act_ctl_argparam
 ----------------
-**Description**: holds the parameter of argument of action item in actions of `SecRule` or `SecAction` contains arguments (eg: `ctl:ruleRemovebyTargetById=1234;ARGS:form_build_id`)
+**Description**: holds the parameter of the argument of the action item in actions of `SecRule` or `SecAction` contains arguments (e.g.: `ctl:ruleRemovebyTargetById=1234;ARGS:form_build_id`)
 
 **Syntax:** `'act_ctl_argparam': <class 'str'>`
 
@@ -472,7 +472,7 @@ act_ctl_argparam
 Examples
 ========
 
-There is the `examples/` subdirectory with some examples, datas and description which code does what.
+There is the `examples/` subdirectory with some examples, data, and descriptions in the code.
 
 After you installed the module with `sudo python3 setup.py install`, your first steps could be:
 
@@ -481,40 +481,44 @@ mkdir export
 ./crs_read.py /path/to/owasp-modsecurity-crs/rules export
 ```
 
-This will read your rulesets, and converts all of them to the directory `export`, with same name as original, but the extension will `.yaml`. To change the `yaml` to `json`, see the source.
+This command will read your rulesets and convert all of them to the directory `export`. Note that the ruleset names are the same as the original and now the extension is `.yaml`. To change the extension from `yaml` to `json`, see the source.
 
-Then you can write back the parsed rules from `yaml` (or `json`) to back:
+Now you can write the parsed rules from `yaml` (or `json`) to ModSecurity:
 
 ```
 mkdir import
 ./crs_write.py export import
 ```
 
-Now check the differences between the original and converted versions:
+Now look at the differences between the original and converted versions:
 ```
 for f in `ls -1 import/*.conf`; do f=`basename ${f}`; diff import/${f} ~/src/owasp-modsecurity-crs/rules/${f}; done
 ```
 
-If you get back the prompt without any diffed lines, then the rulesets are same.
+If there are no differences, then the rulesets are the same.
 
-Also you can check how the module works with `test_lexer.py` and `test_parser.py`:
+### Module Tests
+
+The test files also show how this module works, and are a helpful reference if you wish to extend this module.
+
+Looking at `examples/test_lexer.py`, the following command will show you how and what tokens are found in your config:
 
 ```
-./test_lexer.py /path/to/owasp-modsecurity-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.conf debug
+./examples/test_lexer.py /path/to/owasp-modsecurity-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.conf debug
 ```
-This will show you how and what tokens found in your config. If you wants to extend the module, this will be very helpfull.
+
+Run the following command to see how the parser applies language rules to the tokens:
 
 ```
-./test_parser.py /path/to/owasp-modsecurity-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.conf debug
+./examples/test_parser.py /path/to/owasp-modsecurity-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.conf debug
 ```
-This will show you how parser applies the language rules to the tokens. Also can be very helpfully when you extend the code.
 
-Now go into the `examples/` directory, and see the text files.
+The output from the above commands will be in the `examples/` directory.
 
 Reporting issues
 ================
 
-If you ran an unexpected behavior, found a bug, or have a feature request, just open an issue here, or drop an e-mail to us: modsecurity at digitalwave dot hu.
+If you run into unexpected behavior, found a bug, or have a feature request, just open an issue here, or drop an e-mail to us: modsecurity at digitalwave dot hu.
 
 Todo
 ====
