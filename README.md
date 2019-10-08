@@ -66,9 +66,9 @@ $ python3
 Python 3.7.4 (default, Jul 11 2019, 10:43:21) 
 [GCC 8.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
->>> import msc_parser
+>>> import msc_pyparser
 >>> rule = """SecRule TX:EXECUTING_PARANOIA_LEVEL "@lt 1" "id:920011,phase:1,pass,nolog,skipAfter:END-REQUEST-920-PROTOCOL-ENFORCEMENT" """
->>> mlexer = msc_parser.MSCLexer()
+>>> mlexer = msc_pyparser.MSCLexer()
 >>> mlexer.lexer.input(rule)
 >>> while True:
 ...     tok = mlexer.lexer.token()
@@ -118,9 +118,9 @@ $ python3
 Python 3.7.4 (default, Jul 11 2019, 10:43:21) 
 [GCC 8.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
->>> import msc_parser
+>>> import msc_pyparser
 >>> rule = """SecRule TX:EXECUTING_PARANOIA_LEVEL "@lt 1" "id:920011,phase:1,pass,nolog,skipAfter:END-REQUEST-920-PROTOCOL-ENFORCEMENT" """
->>> mparser = msc_parser.MSCParser()
+>>> mparser = msc_pyparser.MSCParser()
 >>> mparser.parser.parse(rule, debug = True)
 PLY: PARSE DEBUG START
 
@@ -152,9 +152,9 @@ $ python3
 Python 3.7.4 (default, Jul 11 2019, 10:43:21) 
 [GCC 8.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
->>> import msc_parser
+>>> import msc_pyparser
 >>> data = [{'type': 'SecRule', 'lineno': 1, 'variables': ['TX:EXECUTING_PARANOIA_LEVEL'], 'operator': '@lt', 'operator_argument': '1', 'actions': [{'act_name': 'id', 'lineno': 1, 'act_quote': 'no_quote', 'act_arg': '920011'}, {'act_name': 'phase', 'lineno': 1, 'act_quote': 'no_quote', 'act_arg': '1'}, {'act_name': 'pass', 'lineno': 1, 'act_quote': 'no_quote'}, {'act_name': 'nolog', 'lineno': 1, 'act_quote': 'no_quote'}, {'act_name': 'skipAfter', 'lineno': 1, 'act_quote': 'no_quote', 'act_arg': 'END-REQUEST-920-PROTOCOL-ENFORCEMENT'}], 'chained': False, 'oplineno': 1}]
->>> mwriter = msc_parser.MSCWriter(data)
+>>> mwriter = msc_pyparser.MSCWriter(data)
 >>> mwriter.generate()
 >>> print(mwriter.output)
 ['SecRule TX:EXECUTING_PARANOIA_LEVEL "@lt 1" "id:920011,phase:1,pass,nolog,skipAfter:END-REQUEST-920-PROTOCOL-ENFORCEMENT"']
