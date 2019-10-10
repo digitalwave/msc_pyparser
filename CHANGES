@@ -1,5 +1,7 @@
 v0.2 - YYYY-MM-DD
 -----------------
+  * Text and attribute corrections in setup.py, remove commented lines
+  * Fixed typos, text correction (@annawinkler, @theMiddleBlue)
   * Modified pattern for unquoted SECRULE_ACTION_ARG
   * Added example9 - collect transformations
   * Added example8 - collect the `ver` action

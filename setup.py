@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(name = "msc_pyparser",
-            description="A ModSecurity config parser in Python3",
+            description="A ModSecurity config parser for Python 3",
             long_description = """
-msc_pymodsecurity is a parser, which uses PLY (Python Lex and Yacc). It
+msc_pyparser is a parser, which uses PLY (Python Lex and Yacc). It
 tokenizes the given text, and applies the language rules. If it's done, then
 builds an own structure: a list of dictionary items.
 
@@ -20,9 +20,7 @@ write back the modified config.
             author_email = "airween@digitalwave.hu",
             maintainer = "Ervin Hegedus",
             maintainer_email = "airween@digitalwave.hu",
-            url = "",
-#            packages = ,
-#            scripts = ['msc_pyparser.py'],
+            url = "https://github.com/digitalwave/msc_pyparser",
             py_modules = ['msc_pyparser'],
             install_requires=[
               "ply >= 3.0"
@@ -30,13 +28,6 @@ write back the modified config.
             classifiers = [
               'Topic :: Text Processing'
             ],
-            #packages = ["msc_pyparser"],
-            #package_dir = {'msc_pyparser': 'msc_pyparser'},
-            #py_modules = ["msc_pyparser"],
-            #packages = find_packages(),
-#            package_data = {
-#              'msc_pyparser': ['parsetab.py', 'parser.out']
-#            },
             data_files = [
               ('', ['parsetab.py', 'parser.out'])
             ],
