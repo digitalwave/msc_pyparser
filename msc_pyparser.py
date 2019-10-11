@@ -21,7 +21,7 @@ import ply.yacc
 import re
 import os
 
-__version__ = "0.1"
+__version__ = "0.2"
 
 class MSCLexer(object):
     """Lexer class"""

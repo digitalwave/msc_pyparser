@@ -14,8 +14,9 @@ the configuration line and structure.
 Therefore, you can make many transformations on the structured data, and can
 write back the modified config.
 """,
+            python_requires=">=3",
             license="""GPLv3""",
-            version = "0.1",
+            version = "0.2",
             author = "Ervin Hegedus",
             author_email = "airween@digitalwave.hu",
             maintainer = "Ervin Hegedus",

@@ -1,5 +1,9 @@
-v0.2 - YYYY-MM-DD
+v0.2 - 2019-10-11
 -----------------
+
+v0.2 - 2019-10-11
+-----------------
+  * Changed and released version v0.2
   * Text and attribute corrections in setup.py, remove commented lines
   * Fixed typos, text correction (@annawinkler, @theMiddleBlue)
   * Modified pattern for unquoted SECRULE_ACTION_ARG
