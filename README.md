@@ -43,7 +43,7 @@ Module Contents
 
 ### Module version
 
-Before you start to work with `msc_pyparser`, please check the version to make sure you have the current one (`0.1`):
+Before you start to work with `msc_pyparser`, please check the version to make sure you have the current one (`0.2`):
 
 ```
 $ python3
