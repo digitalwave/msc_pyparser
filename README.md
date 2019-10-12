@@ -23,13 +23,30 @@ sudo apt install python3-ply python3-yaml python3-ubjson
 Install the module
 ==================
 
-After you downloaded the source, install the module like this:
+After you download the source, you can either install dependencies system-wide or in a virtual environment.
+
+To install this module and its dependencies system-wide, run the following command:
 
 ```
 sudo python3 setup.py install
 ```
 
 🎉 That's it!
+
+If you'd like to use a virtual environment for the dependencies, first make sure you have `virtualenv` installed:
+
+```bash
+pip3 install virtualenv
+```
+
+Then create the virtual environment and install dependencies:
+```bash
+cd msc_pyparser
+mkdir ~/virtualenvs
+virtualenv ~/virtualenvs/msc_pyparser
+source ~/virtualenvs/msc_pyparser/bin/activate
+python3 setup.py install
+```
 
 Module Contents
 ===============

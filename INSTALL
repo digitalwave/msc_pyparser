@@ -1,5 +1,5 @@
 
-To install the msc_pyparser as system wide module, just run the commands:
+To install the msc_pyparser as system-wide module, run the commands:
 
 sudo python3 setup.py install
 
