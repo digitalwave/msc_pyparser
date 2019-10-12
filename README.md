@@ -404,7 +404,7 @@ act_arg
 
 act_quote
 ---------
-**Description**: holds the information about the quoted state of action argument initem of list of actions of `SecRule` or `SecAction`, e.g., the argument of `msg` actions is typically quoted with `'`
+**Description**: holds the information about the quoted state of the action argument in the list of actions in `SecRule` or `SecAction`, e.g., the argument of `msg` actions is typically quoted with `'`
 
 **Syntax:** `'act_quote': <class 'str'>`
 
@@ -421,7 +421,7 @@ act_quote
 
 lineno
 ------
-**Description**: number of lines of the item in actions of `SecRule` or `SecAction`
+**Description**: the action line number from a `SecRule` or `SecAction`
 
 **Syntax:** `'lineno': <class 'int'>`
 
