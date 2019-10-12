@@ -2,3 +2,4 @@ build
 dist
 msc_pyparser.egg-info/
 __pycache__
+.idea/
