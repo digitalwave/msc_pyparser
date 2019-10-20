@@ -67,7 +67,7 @@ $ python3
 ...
 >>> import msc_pyparser
 >>> print(msc_pyparser.__version__)
-0.1
+0.2
 >>> 
 
 ```
