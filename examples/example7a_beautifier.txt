@@ -1,0 +1,41 @@
+script: example7a_beautifier.py
+
+description:
+this program loads the converted ruleset structure, and modify the lineno
+keys. Then if you write the structure back to the config, the rules will
+indented. Note, that this script works as example7_beautifier.py, but in
+this case the transformation actions will writed in one line.
+
+SecRule REQUEST_BODY "@rx foo" "id:0001,t:none,t:urlDecodeUni,tag:OWASP_CRS"
+
+new data:
+SecRule REQUEST_BODY "@rx foo" \
+    "id:0001, \
+    t:none,t:urlDecodeUni, \
+    tag:OWASP_CRS"
+
+Use:
+you have to run this script with argument YAML structured file. If you want
+to try, edit the original file and converts it with crs_read.py. Don't forget
+to write out to file with crs_write.py.
+
+You can try this with the secrule_inline.conf file in this directory - it also
+contains a rule which has more transformations.
+
+Here are the steps:
+
+./crs_read.py secrule_inline.conf .
+./example7a_beautifier.py secrule_inline.yaml secrule_inline_tags.yaml
+./crs_write.py secrule_inline_tags.yaml .
+
+Check the line numbering (see the `lineno` values):
+
+less secrule_inline_tags.yaml
+
+  - {act_name: block, act_quote: no_quote, lineno: 105}
+  - {act_arg: none, act_name: t, act_quote: no_quote, lineno: 106}
+  - {act_arg: urlDecodeUni, act_name: t, act_quote: no_quote, lineno: 106}
+  - {act_arg: Attempted multipart/form-data bypass, act_name: msg, act_quote: quotes,
+    lineno: 107}
+
+
