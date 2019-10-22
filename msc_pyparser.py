@@ -50,6 +50,7 @@ class MSCLexer(object):
         'CONFDIR_SECRULE',
         'CONFDIR_SECACTION',
         'CONFDIR_SECMARKER',
+        'CONFDIR_SECRULEENGINE',
         'SECRULE_VARIABLE',
         'SECRULE_VARIABLE_ARG',
 
@@ -69,6 +70,7 @@ class MSCLexer(object):
         'SECRULE_ACTION_INITCOLACTIONARGPARAM',
 
         'SECMARKERARG',
+        'SECRULEENGINEARG',
 
     ]
 
@@ -94,6 +96,8 @@ class MSCLexer(object):
         ('secmarker',                     'exclusive'),
 
         ('continue',                      'inclusive'),
+
+        ('secruleengine',                 'exclusive'),
 
     )
 
@@ -215,6 +219,11 @@ class MSCLexer(object):
         t.lexer.pop_state()
         return t
 
+    def t_CONFDIR_SECRULEENGINE(self, t):
+        r'SecRuleEngine'
+        t.lexer.push_state('secruleengine')
+        return t
+
     def t_CONFDIR_SECRULE(self, t):
         r'SecRule'
         t.lexer.push_state('dirsecrule')
@@ -332,6 +341,10 @@ class MSCLexer(object):
         r'[^"\n]{1,}'
         return t
 
+    def t_secruleengine_SECRULEENGINEARG(self, t):
+        r'On|Off|DetectOnly'
+        return t
+
 class MSCParser(object):
     tokens = MSCLexer.tokens
 
@@ -385,7 +398,8 @@ class MSCParser(object):
                         | modsec_config secmarker_line
                         | modsec_config seccompsignature_line
                         | modsec_config comment_line
-                        | modsec_config secrule_line"""
+                        | modsec_config secrule_line
+                        | secruleengine_line"""
     def p_comment_line(self, p):
         """comment_line : COMMENT"""
         self.add_comment(p)
@@ -571,6 +585,23 @@ class MSCParser(object):
             self.secaction['actions'][-1]['act_ctl_argparam'] = p[1]
 
     ### END SecRule ###
+
+    ### SecRuleEngine ###
+
+    def p_secruleengine_line(self, p):
+        """secruleengine_line  : secruleengine_line_quoted
+                               | secruleengine_line_noquoted"""
+        pass
+
+    def p_secruleengine_line_quoted(self, p):
+        """secruleengine_line_quoted  : CONFDIR_SECRULEENGINE QUOTED SECRULEENGINEARG QUOTED"""
+        self.add_directive_quoted_argument(p)
+
+    def p_secruleengine_line_noquoted(self, p):
+        """secruleengine_line_noquoted  : CONFDIR_SECRULEENGINE SECRULEENGINEARG"""
+        self.add_directive_noquoted_argument(p)
+
+    ### END SecMarker ###
 
     def p_error(self, p):
         if p:
