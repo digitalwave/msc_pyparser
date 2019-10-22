@@ -602,7 +602,7 @@ class MSCParser(object):
         """secruleengine_line_noquoted  : CONFDIR_SECRULEENGINE SECRULEENGINEARG"""
         self.add_directive_noquoted_argument(p)
 
-    ### END SecMarker ###
+    ### END SecRuleEngine ###
 
     def p_error(self, p):
         if p:
