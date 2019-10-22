@@ -395,11 +395,12 @@ class MSCParser(object):
                         | secaction_line
                         | modsec_config secaction_line
                         | secmarker_line
+                        | secruleengine_line
                         | modsec_config secmarker_line
                         | modsec_config seccompsignature_line
                         | modsec_config comment_line
                         | modsec_config secrule_line
-                        | secruleengine_line"""
+                        | modsec_config secruleengine_line"""
     def p_comment_line(self, p):
         """comment_line : COMMENT"""
         self.add_comment(p)
