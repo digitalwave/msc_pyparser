@@ -51,71 +51,72 @@ Rule 41    secoperator_expr -> tok_secoperator_group secoperator_arg_group
 Rule 42    secoperator_expr -> secoperator_arg_group
 Rule 43    tok_secoperator_group -> ATSIGN SECRULE_OPERATOR
 Rule 44    tok_secoperator_group -> EXCLAMMARK ATSIGN SECRULE_OPERATOR
-Rule 45    secoperator_arg_group -> SECRULE_OPERATOR_ARG
-Rule 46    secoperator_arg_group -> NUMBER
-Rule 47    secaction_expr_list -> secaction_expr
-Rule 48    secaction_expr_list -> secaction_expr_list COMMA secaction_expr
-Rule 49    secaction_expr -> tok_secrule_action
-Rule 50    secaction_expr -> tok_secrule_action COLON secrule_action_argument
-Rule 51    secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
-Rule 52    secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-Rule 53    secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-Rule 54    tok_secrule_action -> SECRULE_ACTION
-Rule 55    secrule_action_argument -> SECRULE_ACTION_ARG
-Rule 56    secrule_action_argument -> NUMBER
-Rule 57    secrule_action_argument -> SECRULE_ACTION_TRANSFORMS
-Rule 58    secrule_action_argument -> SECRULE_ACTION_CTLACTION
-Rule 59    secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG
-Rule 60    secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG
-Rule 61    secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG
-Rule 62    secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG
-Rule 63    secrule_action_argument_singlequoted -> NUMBER
-Rule 64    tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG
-Rule 65    tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM
-Rule 66    tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM
+Rule 45    tok_secoperator_group -> EXCLAMMARK
+Rule 46    secoperator_arg_group -> SECRULE_OPERATOR_ARG
+Rule 47    secoperator_arg_group -> NUMBER
+Rule 48    secaction_expr_list -> secaction_expr
+Rule 49    secaction_expr_list -> secaction_expr_list COMMA secaction_expr
+Rule 50    secaction_expr -> tok_secrule_action
+Rule 51    secaction_expr -> tok_secrule_action COLON secrule_action_argument
+Rule 52    secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
+Rule 53    secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+Rule 54    secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+Rule 55    tok_secrule_action -> SECRULE_ACTION
+Rule 56    secrule_action_argument -> SECRULE_ACTION_ARG
+Rule 57    secrule_action_argument -> NUMBER
+Rule 58    secrule_action_argument -> SECRULE_ACTION_TRANSFORMS
+Rule 59    secrule_action_argument -> SECRULE_ACTION_CTLACTION
+Rule 60    secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG
+Rule 61    secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG
+Rule 62    secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG
+Rule 63    secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG
+Rule 64    secrule_action_argument_singlequoted -> NUMBER
+Rule 65    tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG
+Rule 66    tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM
+Rule 67    tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM
 
 Terminals, with rules where they appear
 
 AND                  : 33 35
 ATSIGN               : 43 44
 BACKSLASH            : 
-COLON                : 32 50 51 52 53
-COMMA                : 48
+COLON                : 32 51 52 53 54
+COMMA                : 49
 COMMENT              : 11
 CONFDIR_SECACTION    : 14
 CONFDIR_SECCOMPSIGNATURE : 12
 CONFDIR_SECMARKER    : 17 18
 CONFDIR_SECRULE      : 21
-EQUALMARK            : 52 53
-EXCLAMMARK           : 34 35 44 62
-NUMBER               : 46 56 63
+EQUALMARK            : 53 54
+EXCLAMMARK           : 34 35 44 45 63
+NUMBER               : 47 57 64
 PIPE                 : 23
 QUOTED               : 12 12 13 13 17 17 19 19 19 19 20 20
-QUOTES               : 39 39 51 51
+QUOTES               : 39 39 52 52
 SECCOMPSIGNARG       : 12
 SECMARKERARG         : 17 18
-SECRULE_ACTION       : 54
-SECRULE_ACTION_ARG   : 55 61 62
-SECRULE_ACTION_CTLACTION : 58
-SECRULE_ACTION_CTLACTIONARG : 64
-SECRULE_ACTION_CTLACTIONARGPARAM : 66
-SECRULE_ACTION_INITCOLACTIONARG : 60
-SECRULE_ACTION_INITCOLACTIONARGPARAM : 65
-SECRULE_ACTION_SKIPAFTERACTIONARG : 59
-SECRULE_ACTION_TRANSFORMS : 57
+SECRULE_ACTION       : 55
+SECRULE_ACTION_ARG   : 56 62 63
+SECRULE_ACTION_CTLACTION : 59
+SECRULE_ACTION_CTLACTIONARG : 65
+SECRULE_ACTION_CTLACTIONARGPARAM : 67
+SECRULE_ACTION_INITCOLACTIONARG : 61
+SECRULE_ACTION_INITCOLACTIONARGPARAM : 66
+SECRULE_ACTION_SKIPAFTERACTIONARG : 60
+SECRULE_ACTION_TRANSFORMS : 58
 SECRULE_OPERATOR     : 43 44
-SECRULE_OPERATOR_ARG : 45
+SECRULE_OPERATOR_ARG : 46
 SECRULE_VARIABLE     : 28
 SECRULE_VARIABLE_ARG : 38 39
-SEMICOLON            : 53
+SEMICOLON            : 54
 error                : 
 
 Nonterminals, with rules where they appear
 
 comment_line         : 1 9
 modsec_config        : 5 7 8 9 10 0
-secaction_expr       : 47 48
-secaction_expr_list  : 13 19 48
+secaction_expr       : 48 49
+secaction_expr_list  : 13 19 49
 secaction_line       : 4 5
 seccompsignature_line : 3 8
 secmarker_line       : 6 7
@@ -123,8 +124,8 @@ secmarker_line_noquoted : 16
 secmarker_line_quoted : 15
 secoperator_arg_group : 41 42
 secoperator_expr     : 19 20
-secrule_action_argument : 50 52 53
-secrule_action_argument_singlequoted : 51
+secrule_action_argument : 51 53 54
+secrule_action_argument_singlequoted : 52
 secrule_line         : 2 10
 secvariable_arg      : 30 31
 secvariable_expr     : 22 23
@@ -133,9 +134,9 @@ secvariable_prefix   : 29 31
 tok_confdir_secaction : 13
 tok_confdir_secrule  : 19 20
 tok_secoperator_group : 40 41
-tok_secrule_action   : 49 50 51 52 53
-tok_secrule_action_ctlactionarg : 52 53
-tok_secrule_action_ctlactionargparam : 53
+tok_secrule_action   : 50 51 52 53 54
+tok_secrule_action_ctlactionarg : 53 54
+tok_secrule_action_ctlactionargparam : 54
 tok_secrule_variable : 24 29 30 31
 tok_secrule_variable_arg : 36
 tok_secrule_variable_arg_quotes : 37
@@ -548,14 +549,14 @@ state 31
 state 32
 
     (13) secaction_line -> tok_confdir_secaction QUOTED . secaction_expr_list QUOTED
-    (47) secaction_expr_list -> . secaction_expr
-    (48) secaction_expr_list -> . secaction_expr_list COMMA secaction_expr
-    (49) secaction_expr -> . tok_secrule_action
-    (50) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
-    (51) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
-    (52) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-    (53) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-    (54) tok_secrule_action -> . SECRULE_ACTION
+    (48) secaction_expr_list -> . secaction_expr
+    (49) secaction_expr_list -> . secaction_expr_list COMMA secaction_expr
+    (50) secaction_expr -> . tok_secrule_action
+    (51) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
+    (52) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
+    (53) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+    (54) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (55) tok_secrule_action -> . SECRULE_ACTION
 
     SECRULE_ACTION  shift and go to state 45
 
@@ -591,8 +592,9 @@ state 35
     (42) secoperator_expr -> . secoperator_arg_group
     (43) tok_secoperator_group -> . ATSIGN SECRULE_OPERATOR
     (44) tok_secoperator_group -> . EXCLAMMARK ATSIGN SECRULE_OPERATOR
-    (45) secoperator_arg_group -> . SECRULE_OPERATOR_ARG
-    (46) secoperator_arg_group -> . NUMBER
+    (45) tok_secoperator_group -> . EXCLAMMARK
+    (46) secoperator_arg_group -> . SECRULE_OPERATOR_ARG
+    (47) secoperator_arg_group -> . NUMBER
 
     ATSIGN          shift and go to state 50
     EXCLAMMARK      shift and go to state 51
@@ -681,7 +683,7 @@ state 41
 state 42
 
     (13) secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list . QUOTED
-    (48) secaction_expr_list -> secaction_expr_list . COMMA secaction_expr
+    (49) secaction_expr_list -> secaction_expr_list . COMMA secaction_expr
 
     QUOTED          shift and go to state 62
     COMMA           shift and go to state 63
@@ -689,32 +691,32 @@ state 42
 
 state 43
 
-    (47) secaction_expr_list -> secaction_expr .
+    (48) secaction_expr_list -> secaction_expr .
 
-    QUOTED          reduce using rule 47 (secaction_expr_list -> secaction_expr .)
-    COMMA           reduce using rule 47 (secaction_expr_list -> secaction_expr .)
+    QUOTED          reduce using rule 48 (secaction_expr_list -> secaction_expr .)
+    COMMA           reduce using rule 48 (secaction_expr_list -> secaction_expr .)
 
 
 state 44
 
-    (49) secaction_expr -> tok_secrule_action .
-    (50) secaction_expr -> tok_secrule_action . COLON secrule_action_argument
-    (51) secaction_expr -> tok_secrule_action . COLON QUOTES secrule_action_argument_singlequoted QUOTES
-    (52) secaction_expr -> tok_secrule_action . COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-    (53) secaction_expr -> tok_secrule_action . COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (50) secaction_expr -> tok_secrule_action .
+    (51) secaction_expr -> tok_secrule_action . COLON secrule_action_argument
+    (52) secaction_expr -> tok_secrule_action . COLON QUOTES secrule_action_argument_singlequoted QUOTES
+    (53) secaction_expr -> tok_secrule_action . COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+    (54) secaction_expr -> tok_secrule_action . COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
 
-    QUOTED          reduce using rule 49 (secaction_expr -> tok_secrule_action .)
-    COMMA           reduce using rule 49 (secaction_expr -> tok_secrule_action .)
+    QUOTED          reduce using rule 50 (secaction_expr -> tok_secrule_action .)
+    COMMA           reduce using rule 50 (secaction_expr -> tok_secrule_action .)
     COLON           shift and go to state 64
 
 
 state 45
 
-    (54) tok_secrule_action -> SECRULE_ACTION .
+    (55) tok_secrule_action -> SECRULE_ACTION .
 
-    COLON           reduce using rule 54 (tok_secrule_action -> SECRULE_ACTION .)
-    QUOTED          reduce using rule 54 (tok_secrule_action -> SECRULE_ACTION .)
-    COMMA           reduce using rule 54 (tok_secrule_action -> SECRULE_ACTION .)
+    COLON           reduce using rule 55 (tok_secrule_action -> SECRULE_ACTION .)
+    QUOTED          reduce using rule 55 (tok_secrule_action -> SECRULE_ACTION .)
+    COMMA           reduce using rule 55 (tok_secrule_action -> SECRULE_ACTION .)
 
 
 state 46
@@ -736,8 +738,8 @@ state 48
 
     (40) secoperator_expr -> tok_secoperator_group .
     (41) secoperator_expr -> tok_secoperator_group . secoperator_arg_group
-    (45) secoperator_arg_group -> . SECRULE_OPERATOR_ARG
-    (46) secoperator_arg_group -> . NUMBER
+    (46) secoperator_arg_group -> . SECRULE_OPERATOR_ARG
+    (47) secoperator_arg_group -> . NUMBER
 
     QUOTED          reduce using rule 40 (secoperator_expr -> tok_secoperator_group .)
     SECRULE_OPERATOR_ARG shift and go to state 52
@@ -762,22 +764,26 @@ state 50
 state 51
 
     (44) tok_secoperator_group -> EXCLAMMARK . ATSIGN SECRULE_OPERATOR
+    (45) tok_secoperator_group -> EXCLAMMARK .
 
     ATSIGN          shift and go to state 69
+    SECRULE_OPERATOR_ARG reduce using rule 45 (tok_secoperator_group -> EXCLAMMARK .)
+    NUMBER          reduce using rule 45 (tok_secoperator_group -> EXCLAMMARK .)
+    QUOTED          reduce using rule 45 (tok_secoperator_group -> EXCLAMMARK .)
 
 
 state 52
 
-    (45) secoperator_arg_group -> SECRULE_OPERATOR_ARG .
+    (46) secoperator_arg_group -> SECRULE_OPERATOR_ARG .
 
-    QUOTED          reduce using rule 45 (secoperator_arg_group -> SECRULE_OPERATOR_ARG .)
+    QUOTED          reduce using rule 46 (secoperator_arg_group -> SECRULE_OPERATOR_ARG .)
 
 
 state 53
 
-    (46) secoperator_arg_group -> NUMBER .
+    (47) secoperator_arg_group -> NUMBER .
 
-    QUOTED          reduce using rule 46 (secoperator_arg_group -> NUMBER .)
+    QUOTED          reduce using rule 47 (secoperator_arg_group -> NUMBER .)
 
 
 state 54
@@ -868,13 +874,13 @@ state 62
 
 state 63
 
-    (48) secaction_expr_list -> secaction_expr_list COMMA . secaction_expr
-    (49) secaction_expr -> . tok_secrule_action
-    (50) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
-    (51) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
-    (52) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-    (53) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-    (54) tok_secrule_action -> . SECRULE_ACTION
+    (49) secaction_expr_list -> secaction_expr_list COMMA . secaction_expr
+    (50) secaction_expr -> . tok_secrule_action
+    (51) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
+    (52) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
+    (53) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+    (54) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (55) tok_secrule_action -> . SECRULE_ACTION
 
     SECRULE_ACTION  shift and go to state 45
 
@@ -883,16 +889,16 @@ state 63
 
 state 64
 
-    (50) secaction_expr -> tok_secrule_action COLON . secrule_action_argument
-    (51) secaction_expr -> tok_secrule_action COLON . QUOTES secrule_action_argument_singlequoted QUOTES
-    (52) secaction_expr -> tok_secrule_action COLON . secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-    (53) secaction_expr -> tok_secrule_action COLON . secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-    (55) secrule_action_argument -> . SECRULE_ACTION_ARG
-    (56) secrule_action_argument -> . NUMBER
-    (57) secrule_action_argument -> . SECRULE_ACTION_TRANSFORMS
-    (58) secrule_action_argument -> . SECRULE_ACTION_CTLACTION
-    (59) secrule_action_argument -> . SECRULE_ACTION_SKIPAFTERACTIONARG
-    (60) secrule_action_argument -> . SECRULE_ACTION_INITCOLACTIONARG
+    (51) secaction_expr -> tok_secrule_action COLON . secrule_action_argument
+    (52) secaction_expr -> tok_secrule_action COLON . QUOTES secrule_action_argument_singlequoted QUOTES
+    (53) secaction_expr -> tok_secrule_action COLON . secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+    (54) secaction_expr -> tok_secrule_action COLON . secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (56) secrule_action_argument -> . SECRULE_ACTION_ARG
+    (57) secrule_action_argument -> . NUMBER
+    (58) secrule_action_argument -> . SECRULE_ACTION_TRANSFORMS
+    (59) secrule_action_argument -> . SECRULE_ACTION_CTLACTION
+    (60) secrule_action_argument -> . SECRULE_ACTION_SKIPAFTERACTIONARG
+    (61) secrule_action_argument -> . SECRULE_ACTION_INITCOLACTIONARG
 
     QUOTES          shift and go to state 74
     SECRULE_ACTION_ARG shift and go to state 75
@@ -970,29 +976,29 @@ state 71
 
 state 72
 
-    (48) secaction_expr_list -> secaction_expr_list COMMA secaction_expr .
+    (49) secaction_expr_list -> secaction_expr_list COMMA secaction_expr .
 
-    QUOTED          reduce using rule 48 (secaction_expr_list -> secaction_expr_list COMMA secaction_expr .)
-    COMMA           reduce using rule 48 (secaction_expr_list -> secaction_expr_list COMMA secaction_expr .)
+    QUOTED          reduce using rule 49 (secaction_expr_list -> secaction_expr_list COMMA secaction_expr .)
+    COMMA           reduce using rule 49 (secaction_expr_list -> secaction_expr_list COMMA secaction_expr .)
 
 
 state 73
 
-    (50) secaction_expr -> tok_secrule_action COLON secrule_action_argument .
-    (52) secaction_expr -> tok_secrule_action COLON secrule_action_argument . EQUALMARK tok_secrule_action_ctlactionarg
-    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument . EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (51) secaction_expr -> tok_secrule_action COLON secrule_action_argument .
+    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument . EQUALMARK tok_secrule_action_ctlactionarg
+    (54) secaction_expr -> tok_secrule_action COLON secrule_action_argument . EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
 
-    QUOTED          reduce using rule 50 (secaction_expr -> tok_secrule_action COLON secrule_action_argument .)
-    COMMA           reduce using rule 50 (secaction_expr -> tok_secrule_action COLON secrule_action_argument .)
+    QUOTED          reduce using rule 51 (secaction_expr -> tok_secrule_action COLON secrule_action_argument .)
+    COMMA           reduce using rule 51 (secaction_expr -> tok_secrule_action COLON secrule_action_argument .)
     EQUALMARK       shift and go to state 84
 
 
 state 74
 
-    (51) secaction_expr -> tok_secrule_action COLON QUOTES . secrule_action_argument_singlequoted QUOTES
-    (61) secrule_action_argument_singlequoted -> . SECRULE_ACTION_ARG
-    (62) secrule_action_argument_singlequoted -> . EXCLAMMARK SECRULE_ACTION_ARG
-    (63) secrule_action_argument_singlequoted -> . NUMBER
+    (52) secaction_expr -> tok_secrule_action COLON QUOTES . secrule_action_argument_singlequoted QUOTES
+    (62) secrule_action_argument_singlequoted -> . SECRULE_ACTION_ARG
+    (63) secrule_action_argument_singlequoted -> . EXCLAMMARK SECRULE_ACTION_ARG
+    (64) secrule_action_argument_singlequoted -> . NUMBER
 
     SECRULE_ACTION_ARG shift and go to state 86
     EXCLAMMARK      shift and go to state 87
@@ -1002,69 +1008,69 @@ state 74
 
 state 75
 
-    (55) secrule_action_argument -> SECRULE_ACTION_ARG .
+    (56) secrule_action_argument -> SECRULE_ACTION_ARG .
 
-    EQUALMARK       reduce using rule 55 (secrule_action_argument -> SECRULE_ACTION_ARG .)
-    QUOTED          reduce using rule 55 (secrule_action_argument -> SECRULE_ACTION_ARG .)
-    COMMA           reduce using rule 55 (secrule_action_argument -> SECRULE_ACTION_ARG .)
+    EQUALMARK       reduce using rule 56 (secrule_action_argument -> SECRULE_ACTION_ARG .)
+    QUOTED          reduce using rule 56 (secrule_action_argument -> SECRULE_ACTION_ARG .)
+    COMMA           reduce using rule 56 (secrule_action_argument -> SECRULE_ACTION_ARG .)
 
 
 state 76
 
-    (56) secrule_action_argument -> NUMBER .
+    (57) secrule_action_argument -> NUMBER .
 
-    EQUALMARK       reduce using rule 56 (secrule_action_argument -> NUMBER .)
-    QUOTED          reduce using rule 56 (secrule_action_argument -> NUMBER .)
-    COMMA           reduce using rule 56 (secrule_action_argument -> NUMBER .)
+    EQUALMARK       reduce using rule 57 (secrule_action_argument -> NUMBER .)
+    QUOTED          reduce using rule 57 (secrule_action_argument -> NUMBER .)
+    COMMA           reduce using rule 57 (secrule_action_argument -> NUMBER .)
 
 
 state 77
 
-    (57) secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .
+    (58) secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .
 
-    EQUALMARK       reduce using rule 57 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
-    QUOTED          reduce using rule 57 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
-    COMMA           reduce using rule 57 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
+    EQUALMARK       reduce using rule 58 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
+    QUOTED          reduce using rule 58 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
+    COMMA           reduce using rule 58 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
 
 
 state 78
 
-    (58) secrule_action_argument -> SECRULE_ACTION_CTLACTION .
+    (59) secrule_action_argument -> SECRULE_ACTION_CTLACTION .
 
-    EQUALMARK       reduce using rule 58 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
-    QUOTED          reduce using rule 58 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
-    COMMA           reduce using rule 58 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
+    EQUALMARK       reduce using rule 59 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
+    QUOTED          reduce using rule 59 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
+    COMMA           reduce using rule 59 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
 
 
 state 79
 
-    (59) secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .
+    (60) secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .
 
-    EQUALMARK       reduce using rule 59 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
-    QUOTED          reduce using rule 59 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
-    COMMA           reduce using rule 59 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
+    EQUALMARK       reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
+    QUOTED          reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
+    COMMA           reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
 
 
 state 80
 
-    (60) secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .
+    (61) secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .
 
-    EQUALMARK       reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
-    QUOTED          reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
-    COMMA           reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
+    EQUALMARK       reduce using rule 61 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
+    QUOTED          reduce using rule 61 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
+    COMMA           reduce using rule 61 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
 
 
 state 81
 
     (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED . secaction_expr_list QUOTED
-    (47) secaction_expr_list -> . secaction_expr
-    (48) secaction_expr_list -> . secaction_expr_list COMMA secaction_expr
-    (49) secaction_expr -> . tok_secrule_action
-    (50) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
-    (51) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
-    (52) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-    (53) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-    (54) tok_secrule_action -> . SECRULE_ACTION
+    (48) secaction_expr_list -> . secaction_expr
+    (49) secaction_expr_list -> . secaction_expr_list COMMA secaction_expr
+    (50) secaction_expr -> . tok_secrule_action
+    (51) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
+    (52) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
+    (53) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
+    (54) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (55) tok_secrule_action -> . SECRULE_ACTION
 
     SECRULE_ACTION  shift and go to state 45
 
@@ -1091,10 +1097,10 @@ state 83
 
 state 84
 
-    (52) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK . tok_secrule_action_ctlactionarg
-    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK . tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-    (64) tok_secrule_action_ctlactionarg -> . SECRULE_ACTION_CTLACTIONARG
-    (65) tok_secrule_action_ctlactionarg -> . SECRULE_ACTION_INITCOLACTIONARGPARAM
+    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK . tok_secrule_action_ctlactionarg
+    (54) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK . tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (65) tok_secrule_action_ctlactionarg -> . SECRULE_ACTION_CTLACTIONARG
+    (66) tok_secrule_action_ctlactionarg -> . SECRULE_ACTION_INITCOLACTIONARGPARAM
 
     SECRULE_ACTION_CTLACTIONARG shift and go to state 91
     SECRULE_ACTION_INITCOLACTIONARGPARAM shift and go to state 92
@@ -1103,36 +1109,36 @@ state 84
 
 state 85
 
-    (51) secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted . QUOTES
+    (52) secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted . QUOTES
 
     QUOTES          shift and go to state 93
 
 
 state 86
 
-    (61) secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG .
+    (62) secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG .
 
-    QUOTES          reduce using rule 61 (secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG .)
+    QUOTES          reduce using rule 62 (secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG .)
 
 
 state 87
 
-    (62) secrule_action_argument_singlequoted -> EXCLAMMARK . SECRULE_ACTION_ARG
+    (63) secrule_action_argument_singlequoted -> EXCLAMMARK . SECRULE_ACTION_ARG
 
     SECRULE_ACTION_ARG shift and go to state 94
 
 
 state 88
 
-    (63) secrule_action_argument_singlequoted -> NUMBER .
+    (64) secrule_action_argument_singlequoted -> NUMBER .
 
-    QUOTES          reduce using rule 63 (secrule_action_argument_singlequoted -> NUMBER .)
+    QUOTES          reduce using rule 64 (secrule_action_argument_singlequoted -> NUMBER .)
 
 
 state 89
 
     (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list . QUOTED
-    (48) secaction_expr_list -> secaction_expr_list . COMMA secaction_expr
+    (49) secaction_expr_list -> secaction_expr_list . COMMA secaction_expr
 
     QUOTED          shift and go to state 95
     COMMA           shift and go to state 63
@@ -1140,45 +1146,45 @@ state 89
 
 state 90
 
-    (52) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .
-    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg . SEMICOLON tok_secrule_action_ctlactionargparam
+    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .
+    (54) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg . SEMICOLON tok_secrule_action_ctlactionargparam
 
-    QUOTED          reduce using rule 52 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .)
-    COMMA           reduce using rule 52 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .)
+    QUOTED          reduce using rule 53 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .)
+    COMMA           reduce using rule 53 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .)
     SEMICOLON       shift and go to state 96
 
 
 state 91
 
-    (64) tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .
+    (65) tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .
 
-    SEMICOLON       reduce using rule 64 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
-    QUOTED          reduce using rule 64 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
-    COMMA           reduce using rule 64 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
+    SEMICOLON       reduce using rule 65 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
+    QUOTED          reduce using rule 65 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
+    COMMA           reduce using rule 65 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
 
 
 state 92
 
-    (65) tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .
+    (66) tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .
 
-    SEMICOLON       reduce using rule 65 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
-    QUOTED          reduce using rule 65 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
-    COMMA           reduce using rule 65 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
+    SEMICOLON       reduce using rule 66 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
+    QUOTED          reduce using rule 66 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
+    COMMA           reduce using rule 66 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
 
 
 state 93
 
-    (51) secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .
+    (52) secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .
 
-    QUOTED          reduce using rule 51 (secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .)
-    COMMA           reduce using rule 51 (secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .)
+    QUOTED          reduce using rule 52 (secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .)
+    COMMA           reduce using rule 52 (secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .)
 
 
 state 94
 
-    (62) secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG .
+    (63) secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG .
 
-    QUOTES          reduce using rule 62 (secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG .)
+    QUOTES          reduce using rule 63 (secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG .)
 
 
 state 95
@@ -1195,8 +1201,8 @@ state 95
 
 state 96
 
-    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON . tok_secrule_action_ctlactionargparam
-    (66) tok_secrule_action_ctlactionargparam -> . SECRULE_ACTION_CTLACTIONARGPARAM
+    (54) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON . tok_secrule_action_ctlactionargparam
+    (67) tok_secrule_action_ctlactionargparam -> . SECRULE_ACTION_CTLACTIONARGPARAM
 
     SECRULE_ACTION_CTLACTIONARGPARAM shift and go to state 98
 
@@ -1204,16 +1210,16 @@ state 96
 
 state 97
 
-    (53) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .
+    (54) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .
 
-    QUOTED          reduce using rule 53 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .)
-    COMMA           reduce using rule 53 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .)
+    QUOTED          reduce using rule 54 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .)
+    COMMA           reduce using rule 54 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .)
 
 
 state 98
 
-    (66) tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .
+    (67) tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .
 
-    QUOTED          reduce using rule 66 (tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .)
-    COMMA           reduce using rule 66 (tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .)
+    QUOTED          reduce using rule 67 (tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .)
+    COMMA           reduce using rule 67 (tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .)
 

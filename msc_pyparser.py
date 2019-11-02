@@ -500,7 +500,8 @@ class MSCParser(object):
 
     def p_tok_secoperator_group(self, p):
         """tok_secoperator_group : ATSIGN SECRULE_OPERATOR
-                                | EXCLAMMARK ATSIGN SECRULE_OPERATOR"""
+                                | EXCLAMMARK ATSIGN SECRULE_OPERATOR
+                                | EXCLAMMARK"""
         self.secrule['operator'] = "".join(p[1:])
         self.secrule['oplineno'] = p.lineno(1)
 
