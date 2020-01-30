@@ -57,6 +57,7 @@ class MSCLexer(object):
 
         'SECRULE_OPERATOR',
         'SECRULE_OPERATOR_ARG',
+        'SECRULE_OPERATOR_ARG_NOQUOTE',
 
         'SECRULE_ACTION',
         'SECRULE_ACTION_ARG',
@@ -120,13 +121,13 @@ class MSCLexer(object):
         r'\#.*'
         return t
 
-    def t_ANY_COLON(self, t):
+    def t_secrulesecvar_secruleaction_secruleactionarg_secruleactiontrans_secruleactionctl_secruleactioninitcolarg_secruleactionskipafter_COLON(self, t):
         r':'
         if t.lexer.lexstate == 'secrulesecvar':
             t.lexer.push_state('secrulesecvararg')
         return t
 
-    def t_ANY_PIPE(self, t):
+    def t_dirsecrule_secrulesecvar_PIPE(self, t):
         r'\|'
         if t.lexer.lexstate == 'secrulesecvar':
             t.lexer.pop_state()
@@ -166,8 +167,10 @@ class MSCLexer(object):
         else:
             t.lexer.push_state('continue')
 
-    def t_secruleaction_secruleactionarg_secruleactionctlargeq_secruleactionctlargparam_secruleactionctlarg_COMMA(self, t):
+    def t_secrulesecvar_secruleaction_secruleactionarg_secruleactionctlargeq_secruleactionctlargparam_secruleactionctlarg_COMMA(self, t):
         r','
+        if t.lexer.lexstate == 'secrulesecvar':
+            t.lexer.pop_state()
         if t.lexer.lexstate == 'secruleactionarg':
             t.lexer.pop_state()
         elif t.lexer.lexstate == 'secruleactionctlargeq':
@@ -252,6 +255,11 @@ class MSCLexer(object):
 
     def t_secrulesecop_secrulesecoparg_SECRULE_OPERATOR_ARG(self, t):
         r'((?:\\"|[^"])+)'
+        return t
+
+    def t_dirsecrule_SECRULE_OPERATOR_ARG_NOQUOTE(self, t):
+        r'[^ ]+'
+        t.lexer.push_state('secruleaction')
         return t
 
     def t_secruleaction_SECRULE_ACTION(self, t):
@@ -432,7 +440,9 @@ class MSCParser(object):
 
     def p_secrule_line(self, p):
         """secrule_line  : tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
-                        | tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED"""
+                        | tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED
+                        | tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED
+                        | tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote"""
         self.configlines.insert(self.secrule['lineno'], self.secrule)
 
     def p_tok_confdir_secrule(self, p):
@@ -442,7 +452,8 @@ class MSCParser(object):
 
     def p_secvariable_expr_list(self, p):
         """secvariable_expr_list  : secvariable_expr
-                                | secvariable_expr_list PIPE secvariable_expr"""
+                                | secvariable_expr_list PIPE secvariable_expr
+                                | secvariable_expr_list COMMA secvariable_expr"""
         pass
 
     def p_secvariable_expr(self, p):
@@ -510,6 +521,10 @@ class MSCParser(object):
                                 | NUMBER"""
         self.secrule['operator_argument'] = p[1]
 
+    def p_secoperatorarg_noquote(self, p):
+        """secoperatorarg_noquote : SECRULE_OPERATOR_ARG_NOQUOTE"""
+        self.secrule['operator_argument'] = p[1]
+        self.secrule['oplineno'] = p.lineno(1)
 
     def p_secaction_expr_list(self, p):
         """secaction_expr_list  : secaction_expr
