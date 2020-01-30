@@ -133,6 +133,12 @@ class MSCLexer(object):
             t.lexer.pop_state()
         return t
 
+    def t_secrulesecoparg_QUOTED(self, t):
+        r'"'
+        if t.lexer.lexstate == "secrulesecoparg":
+            t.lexer.push_state('secruleaction')
+        return t
+
     def t_ANY_QUOTED(self, t):
         r'(?<!\\)"'
         if t.lexer.lexstate == "secrulesecoparg":
@@ -254,7 +260,7 @@ class MSCLexer(object):
         return t
 
     def t_secrulesecop_secrulesecoparg_SECRULE_OPERATOR_ARG(self, t):
-        r'((?:\\"|[^"])+)'
+        r'((?:[^"\\]|\\.)+)'
         return t
 
     def t_dirsecrule_SECRULE_OPERATOR_ARG_NOQUOTE(self, t):
