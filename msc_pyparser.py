@@ -173,7 +173,7 @@ class MSCLexer(object):
         else:
             t.lexer.push_state('continue')
 
-    def t_secrulesecvar_secruleaction_secruleactionarg_secruleactionctlargeq_secruleactionctlargparam_secruleactionctlarg_COMMA(self, t):
+    def t_dirsecrule_secrulesecvar_secruleaction_secruleactionarg_secruleactionctlargeq_secruleactionctlargparam_secruleactionctlarg_COMMA(self, t):
         r','
         if t.lexer.lexstate == 'secrulesecvar':
             t.lexer.pop_state()
