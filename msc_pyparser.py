@@ -140,7 +140,7 @@ class MSCLexer(object):
         return t
 
     def t_secrulesecvararg_SECRULE_VARIABLE_ARG(self, t):
-        r'([^ \s\t\n\|\'|]{1,})|(\'.*\')'
+        r"([^\s|']+)|('(\.|[^'\\])*')"
         t.lexer.pop_state()
         return t
 
