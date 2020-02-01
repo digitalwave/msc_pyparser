@@ -139,6 +139,11 @@ class MSCLexer(object):
             t.lexer.push_state('secruleaction')
         return t
 
+    def t_secrulesecvararg_SECRULE_VARIABLE_ARG(self, t):
+        r'([^ \s\t\n\|\'|]{1,})|(\'.*\')'
+        t.lexer.pop_state()
+        return t
+
     def t_ANY_QUOTED(self, t):
         r'(?<!\\)"'
         if t.lexer.lexstate == "secrulesecoparg":
@@ -248,11 +253,6 @@ class MSCLexer(object):
     def t_secrulesecvar_end(self, t):
         r'[ \n\t\|]'
         t.lexer.pop_state()
-
-    def t_secrulesecvararg_SECRULE_VARIABLE_ARG(self, t):
-        r'[^ \s\t\n\|\'|]{1,}'
-        t.lexer.pop_state()
-        return t
 
     def t_secrulesecop_SECRULE_OPERATOR(self, t):
         r'beginsWith|containsWord|contains|detectSQLi|detectXSS|endsWith|eq|fuzzyHash|geoLookup|ge|gsbLookup|gt|inspectFile|ipMatch|ipMatchF|ipMatchFromFile|le|lt|noMatch|pmFromFile|pmf|pm|rbl|rsub|rx|streq|strmatch|unconditionalMatch|validateByteRange|validateDTD|validateHash|validateSchema|validateUrlEncoding|validateUtf8Encoding|verifyCC|verifyCPF|verifySSN|within'
