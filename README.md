@@ -20,6 +20,11 @@ You can install these packages on Debian with this command:
 sudo apt install python3-ply python3-yaml python3-ubjson
 ```
 
+Important notes after 0.2
+=========================
+
+After v0.2 there was an issue (#9), where were so many rules with different syntax than CRS used. The parser was modified, but this has no effect on parser, just extend it.
+
 Install the module
 ==================
 
