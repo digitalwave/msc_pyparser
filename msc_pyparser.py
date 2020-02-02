@@ -526,6 +526,7 @@ class MSCParser(object):
         """secoperator_arg_group : SECRULE_OPERATOR_ARG
                                 | NUMBER"""
         self.secrule['operator_argument'] = p[1]
+        self.secrule['oplineno'] = p.lineno(1)
 
     def p_secoperatorarg_noquote(self, p):
         """secoperatorarg_noquote : SECRULE_OPERATOR_ARG_NOQUOTE"""
