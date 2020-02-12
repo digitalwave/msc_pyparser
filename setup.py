@@ -30,7 +30,7 @@ write back the modified config.
               'Topic :: Text Processing'
             ],
             data_files = [
-              ('', ['parsetab.py', 'parser.out'])
+              ('../../', ['parsetab.py', 'parser.out'])
             ],
             include_package_data = True,
             zip_safe = False
