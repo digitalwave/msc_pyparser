@@ -33,7 +33,7 @@ The module is published as a pip module.
 **Method 1** You can install it using:
 
 ```
-pip install msc-pyparser==0.2
+pip install msc-pyparser==0.3
 ```
 
 That will install it system-wide.
@@ -62,7 +62,7 @@ pipenv install msc-pyparser
 
 That will create the proper virtual environment and you can now switch to it using `pipenv shell`.
 
-#### :point_right: Important notes after 0.2 :point_left:
+#### :point_right: Important notes after 0.3 :point_left:
 
 After v0.2 there was an issue (#9), where were so many rules with different syntax than CRS used. The parser was modified, but this has no effect on parser, just extend it.
 
@@ -83,14 +83,14 @@ Module Contents
 
 ## Module version
 
-Before you start to work with `msc_pyparser`, please check the version to make sure you have the current one (`0.2`):
+Before you start to work with `msc_pyparser`, please check the version to make sure you have the current one (`0.3`):
 
 ```python
 $ python3
 ...
 >>> import msc_pyparser
 >>> print(msc_pyparser.__version__)
-0.2
+0.3
 >>>
 
 ```
