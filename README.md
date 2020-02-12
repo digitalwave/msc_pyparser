@@ -1,44 +1,44 @@
-modsec_parser
-=============
+[![Latest Version](https://img.shields.io/pypi/v/msc-pyparser.svg)](https://pypi.python.org/pypi/msc-pyparser)
+[![License](https://img.shields.io/badge/License-GPLv3-green.svg)](https://pypi.python.org/pypi/msc-pyparser)
+
+# modsec_parser
 
 Welcome to the `modsec_parser` documentation.
 
-Prerequisites
-=============
+The parser runs under Python 3.6+ on Linux, Windows and Mac.
 
-`modsec_parser` was written in Python 3 and has not been tested with Python 2.
+Installation
+============
 
-To run the parser, you need:
+The parser relies on *Ply* as its underlying parsing library.
 
-+ a **Python 3** interpreter
-+ **YAML** and/or **JSON** for **Python 3**
-+ **Ply** - the Python Ley Yacc library
+Therefore, to run it you will need:
+
+* a **Python 3** interpreter
+* **Ply** - the Python Ley Yacc library
+* **YAML** and/or **JSON** it you want your output to be either of those
+
+### Debian install
 
 You can install these packages on Debian with this command:
 
-```
+```bash
 sudo apt install python3-ply python3-yaml python3-ubjson
 ```
 
-Important notes after 0.2
-=========================
+### Installing using pip
 
-After v0.2 there was an issue (#9), where were so many rules with different syntax than CRS used. The parser was modified, but this has no effect on parser, just extend it.
+The module is published as a pip module.
 
-Install the module
-==================
-
-After you download the source, you can either install dependencies system-wide or in a virtual environment.
-
-To install this module and its dependencies system-wide, run the following command:
+**Method 1** You can install it using:
 
 ```
-sudo python3 setup.py install
+pip install msc-pyparser==0.2
 ```
 
-🎉 That's it!
+That will install it system-wide.
 
-If you'd like to use a virtual environment for the dependencies, first make sure you have `virtualenv` installed:
+**Method 2** If you want to use a virtualenv:
 
 ```bash
 pip3 install virtualenv
@@ -53,6 +53,24 @@ source ~/virtualenvs/msc_pyparser/bin/activate
 python3 setup.py install
 ```
 
+**Method 3** Another option is to use [pipenv](https://pipenv.org) that will give you isolation and dependency management:
+
+```
+pip3 install pipenv
+pipenv install msc-pyparser
+```
+
+That will create the proper virtual environment and you can now switch to it using `pipenv shell`.
+
+#### :point_right: Important notes after 0.2 :point_left:
+
+After v0.2 there was an issue (#9), where were so many rules with different syntax than CRS used. The parser was modified, but this has no effect on parser, just extend it.
+
+
+🎉 That's it!
+
+Try to keep the module updated, because it is under heavy development now.
+
 Module Contents
 ===============
 
@@ -63,29 +81,30 @@ Module Contents
 * MSCWriter
 * MSCUtils
 
-### Module version
+## Module version
 
 Before you start to work with `msc_pyparser`, please check the version to make sure you have the current one (`0.2`):
 
-```
+```python
 $ python3
 ...
 >>> import msc_pyparser
 >>> print(msc_pyparser.__version__)
 0.2
->>> 
+>>>
 
 ```
 
-### MSCLexer
+MSCLexer
+========
 
 The `MSCLexer` class is a wrapper for Ply's `lexer` object. You can use it independently, to **check** and **see** what tokens are in your `ModSecurity` ruleset.
 
 Here is a simple example:
 
-```
+```python
 $ python3
-Python 3.7.4 (default, Jul 11 2019, 10:43:21) 
+Python 3.7.4 (default, Jul 11 2019, 10:43:21)
 [GCC 8.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import msc_pyparser
@@ -97,7 +116,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 ...     if not tok:
 ...         break
 ...     print(tok)
-... 
+...
 LexToken(CONFDIR_SECRULE,'SecRule',1,0)
 LexToken(SECRULE_VARIABLE,'TX',1,8)
 LexToken(COLON,':',1,10)
@@ -129,15 +148,16 @@ LexToken(QUOTED,'"',1,120)
 
 For a more detailed example, see `test_lexer.py` in the `examples` directory.
 
-### MSCParser
+MSCParser
+=========
 
 The `MSCParser` class is a wrapper for Ply's `parser` object. The parser object needs a lexer, but `MSCParser` invokes `MSCLexer` and sets it up.
 
 Here is a simple example:
 
-```
+```python
 $ python3
-Python 3.7.4 (default, Jul 11 2019, 10:43:21) 
+Python 3.7.4 (default, Jul 11 2019, 10:43:21)
 [GCC 8.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import msc_pyparser
@@ -169,9 +189,9 @@ This class transforms the inside structure to the string. You can save the resul
 
 Here is a simple example:
 
-```
+```python
 $ python3
-Python 3.7.4 (default, Jul 11 2019, 10:43:21) 
+Python 3.7.4 (default, Jul 11 2019, 10:43:21)
 [GCC 8.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import msc_pyparser
@@ -201,7 +221,7 @@ These are the supported types:
 
 There are two types of dictionary objects:
 
-```
+```python
 {
   'type': <class 'str'>
   'lineno': <class 'int'>,
@@ -211,7 +231,7 @@ There are two types of dictionary objects:
 ```
 and
 
-```
+```python
 {
   'type': <class 'str'>,
   'lineno': <class 'int'>,
@@ -225,7 +245,7 @@ and
 ```
 
 and the dict of `actions`:
-```
+```python
 {
   'act_name': <class 'str'>,
   'act_arg': <class 'str'>,
@@ -256,7 +276,7 @@ type
 
 lineno
 ------
-**Description**: number of line in the original file
+**Description**: line number in the original file
 
 **Syntax:** `'lineno': <class 'int'>`
 
@@ -426,7 +446,7 @@ act_arg
 
 act_quote
 ---------
-**Description**: holds the information about the quoted state of the action argument in the list of actions in `SecRule` or `SecAction`, e.g., the argument of `msg` actions is typically quoted with `'`
+**Description**: holds the information about the quoted state of action argument for the list of actions of `SecRule` or `SecAction`, e.g., the argument of `msg` actions is typically quoted with `'`
 
 **Syntax:** `'act_quote': <class 'str'>`
 
@@ -440,10 +460,9 @@ act_quote
 
 **Added Version:** 0.1
 
-
 lineno
 ------
-**Description**: the action line number from a `SecRule` or `SecAction`
+**Description**: Same as previous `lineno`.
 
 **Syntax:** `'lineno': <class 'int'>`
 
@@ -456,7 +475,6 @@ lineno
 **Scope:** `actions` list of `SecAction`, `SecRule`
 
 **Added Version:** 0.1
-
 
 act_ctl_arg
 -----------
@@ -491,14 +509,16 @@ act_ctl_argparam
 
 **Added Version:** 0.1
 
+
+
 Examples
 ========
 
 There is the `examples/` subdirectory with some examples, data, and descriptions in the code.
 
-After you installed the module with `sudo python3 setup.py install`, your first steps could be:
+To execute the examples:
 
-```
+```bash
 mkdir export
 ./crs_read.py /path/to/owasp-modsecurity-crs/rules export
 ```
@@ -507,7 +527,7 @@ This command will read your rulesets and convert all of them to the directory `e
 
 Now you can write the parsed rules from `yaml` (or `json`) to ModSecurity:
 
-```
+```bash
 mkdir import
 ./crs_write.py export import
 ```
@@ -519,28 +539,33 @@ for f in `ls -1 import/*.conf`; do f=`basename ${f}`; diff import/${f} ~/src/owa
 
 If there are no differences, then the rulesets are the same.
 
-### Module Tests
+### Module Examples
 
-The test files also show how this module works, and are a helpful reference if you wish to extend this module.
+The examples files also show how this module works, and are a helpful reference if you wish to extend this module.
 
 Looking at `examples/test_lexer.py`, the following command will show you how and what tokens are found in your config:
 
-```
+```bash
 ./examples/test_lexer.py /path/to/owasp-modsecurity-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.conf debug
 ```
 
 Run the following command to see how the parser applies language rules to the tokens:
 
-```
+```bash
 ./examples/test_parser.py /path/to/owasp-modsecurity-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.conf debug
 ```
 
 The output from the above commands will be in the `examples/` directory.
 
+### Development
+
+If you are using pipenv, just install development modules by running `pipenv install --dev`.  Tests were written using `pytest`.
+Just execute `pytest -v tests` in the top directory and tests will be run.
+
 Reporting issues
 ================
 
-If you run into unexpected behavior, found a bug, or have a feature request, just open an issue here, or drop an e-mail to us: modsecurity at digitalwave dot hu.
+If you run into unexpected behavior, found a bug, or have a feature request, just [create a new issue](https://github.com/digitalwave/msc_pyparser/issues/new), or drop an e-mail to us: modsecurity at digitalwave dot hu.
 
 Todo
 ====
