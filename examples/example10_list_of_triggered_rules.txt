@@ -1,0 +1,60 @@
+script: example10_list_of_triggered_rules.py
+
+description:
+this program loads the converted ruleset structure, and make these modifications:
+* add a new rule to the end of REQUEST-901-INITIALIZATON.conf
+  with given ID, which will create a new transaction variable
+* add a new `setvar` action to every rule, which contains another and increments
+  any anomaly_score transaction variable; the new action will append the rule ID
+  as string
+* checks the `msg` actions, and if the message contains the pattern
+  'tx.anomaly_score...', then concatenates the list of collected ID's
+
+The mandatory arguments: converted rules, new directory for modified rule, used RULEID
+for initialization rule.
+
+Use:
+
+# set the CRS rules directory, eg:
+
+CRSRULES=/usr/share/modsecurity-crs/rules
+
+# make a backup :)
+
+sudo cp -Rp ${CRSRULES} ${CRSRULES}.BAK
+
+# read the rules, create a structure
+
+$ cd PATH/TO/msc_pyparser/examples
+$ mkdir export
+$ ./crs_read.py ${CRSRULES} export
+Parsing CRS config: /usr/share/modsecurity-crs/rules/REQUEST-901-INITIALIZATION.conf
+Parsing CRS config: /usr/share/modsecurity-crs/rules/REQUEST-903.9001-DRUPAL-EXCLUSION-RULES.conf
+...
+Parsing CRS config: /usr/share/modsecurity-crs/rules/RESPONSE-959-BLOCKING-EVALUATION.conf
+Parsing CRS config: /usr/share/modsecurity-crs/rules/RESPONSE-980-CORRELATION.conf
+
+# make the modification
+
+$ ./example10_list_of_triggered_rules.py export exportmod 901170
+Reading file: export/REQUEST-901-INITIALIZATION.yaml
+Reading file: export/REQUEST-903.9001-DRUPAL-EXCLUSION-RULES.yaml
+...
+Reading file: export/RESPONSE-959-BLOCKING-EVALUATION.yaml
+Reading file: export/RESPONSE-980-CORRELATION.yaml
+
+# write back the modified structure into SecLang format
+
+$ ./crs_write.py exportmod import
+Parsing CRS structure: exportmod/REQUEST-901-INITIALIZATION.yaml
+Parsing CRS structure: exportmod/REQUEST-903.9001-DRUPAL-EXCLUSION-RULES.yaml
+...
+Parsing CRS structure: exportmod/RESPONSE-959-BLOCKING-EVALUATION.yaml
+Parsing CRS structure: exportmod/RESPONSE-980-CORRELATION.yaml
+
+# overwrite the rules
+
+$ sudo cp -Rp import/* ${CRSRULES}/
+
+# restart your webserver, enjoy :)
+
