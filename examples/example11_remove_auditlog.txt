@@ -1,0 +1,75 @@
+script: example10_remove_auditlog.py
+
+description:
+this program loads the converted ruleset structure, and searches the rules
+what contains 'ctl:auditLogParts=+E'. If the rule founded, then removes
+this action.
+
+transformation:
+
+old data:
+SecRule REQUEST_URI|REQUEST_HEADERS|ARGS|ARGS_NAMES "@rx (?:^|[^\\\\])\\\\[cdeghijklmpqwxyz123456789]" \
+    "id:920460,\
+    phase:2,\
+    block,\
+    capture,\
+    t:none,t:urlDecodeUni,t:htmlEntityDecode,t:lowercase,\
+    log,\
+    msg:'Abnormal character escapes in request',\
+    logdata:'Matched Data: %{TX.0} found within %{MATCHED_VAR_NAME}: %{MATCHED_VAR}',\
+    tag:'application-multi',\
+    tag:'language-multi',\
+    tag:'platform-multi',\
+    tag:'attack-protocol',\
+    tag:'paranoia-level/4',\
+    tag:'OWASP_CRS',\
+    tag:'capec/1000/153/267',\
+    ctl:auditLogParts=+E,\
+    ver:'OWASP_CRS/3.3.0',\
+    severity:'CRITICAL',\
+    setvar:'tx.http_violation_score=+%{tx.critical_anomaly_score}',\
+    setvar:'tx.anomaly_score_pl4=+%{tx.critical_anomaly_score}'"
+
+new data:
+SecRule REQUEST_URI|REQUEST_HEADERS|ARGS|ARGS_NAMES "@rx (?:^|[^\\\\])\\\\[cdeghijklmpqwxyz123456789]" \
+    "id:920460,\
+    phase:2,\
+    block,\
+    capture,\
+    t:none,t:urlDecodeUni,t:htmlEntityDecode,t:lowercase,\
+    log,\
+    msg:'Abnormal character escapes in request',\
+    logdata:'Matched Data: %{TX.0} found within %{MATCHED_VAR_NAME}: %{MATCHED_VAR}',\
+    tag:'application-multi',\
+    tag:'language-multi',\
+    tag:'platform-multi',\
+    tag:'attack-protocol',\
+    tag:'paranoia-level/4',\
+    tag:'OWASP_CRS',\
+    tag:'capec/1000/153/267',\
+    ver:'OWASP_CRS/3.3.0',\
+    severity:'CRITICAL',\
+    setvar:'tx.http_violation_score=+%{tx.critical_anomaly_score}',\
+    setvar:'tx.anomaly_score_pl4=+%{tx.critical_anomaly_score}'"
+
+Note, that this example shows how can you modify a part of your ruleset
+depending of context. Here, we searched only one action (ctl:auditLogParts in this case)
+and remove it.
+
+Use:
+you have to run this script with argument YAML structured file. The script
+will save a copy of the given input. To see the differences, you have to
+write back the structure with crs_write.py.
+
+The steps:
+
+cd /path/to/msc_pyparser/examples
+mkdir export
+./crs_read.py /path/to/coreruleset/rules/ export
+mkdir noauditlog
+for y in `ls -1 export/*.yaml`; do f=`basename ${y}`; ./example11_remove_auditlog.py export/${f} noauditlog/${f}; done
+mkdir newrules
+./crs_write.py noauditlog/ newrules/
+
+check the result:
+for f in `ls -1 newrules/*.conf`; do fn=`basename ${f}`; echo ${fn}; diff newrules/${fn} /path/to/coreruleset/rules/${fn}; done | less
