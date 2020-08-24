@@ -26,14 +26,14 @@ You can install these packages on Debian with this command:
 sudo apt install python3-ply python3-yaml python3-ubjson
 ```
 
-### Installing using pip
+### Installing using pip3
 
-The module is published as a pip module.
+The module is published as a pip3 module.
 
 **Method 1** You can install it using:
 
 ```
-pip install msc-pyparser==0.3
+pip3 install msc-pyparser==0.3
 ```
 
 That will install it system-wide.
