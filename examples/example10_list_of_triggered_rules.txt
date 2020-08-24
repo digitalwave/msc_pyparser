@@ -26,8 +26,8 @@ sudo cp -Rp ${CRSRULES} ${CRSRULES}.BAK
 # read the rules, create a structure
 
 $ cd PATH/TO/msc_pyparser/examples
-$ mkdir export
-$ ./crs_read.py ${CRSRULES} export
+$ mkdir crsyaml
+$ ./crs_read.py ${CRSRULES} crsyaml
 Parsing CRS config: /usr/share/modsecurity-crs/rules/REQUEST-901-INITIALIZATION.conf
 Parsing CRS config: /usr/share/modsecurity-crs/rules/REQUEST-903.9001-DRUPAL-EXCLUSION-RULES.conf
 ...
@@ -36,21 +36,21 @@ Parsing CRS config: /usr/share/modsecurity-crs/rules/RESPONSE-980-CORRELATION.co
 
 # make the modification
 
-$ ./example10_list_of_triggered_rules.py export exportmod 901170
-Reading file: export/REQUEST-901-INITIALIZATION.yaml
-Reading file: export/REQUEST-903.9001-DRUPAL-EXCLUSION-RULES.yaml
+$ ./example10_list_of_triggered_rules.py crsyaml crschanged 901170
+Reading file: crsyaml/REQUEST-901-INITIALIZATION.yaml
+Reading file: crsyaml/REQUEST-903.9001-DRUPAL-EXCLUSION-RULES.yaml
 ...
-Reading file: export/RESPONSE-959-BLOCKING-EVALUATION.yaml
-Reading file: export/RESPONSE-980-CORRELATION.yaml
+Reading file: crsyaml/RESPONSE-959-BLOCKING-EVALUATION.yaml
+Reading file: crsyaml/RESPONSE-980-CORRELATION.yaml
 
 # write back the modified structure into SecLang format
 
-$ ./crs_write.py exportmod import
-Parsing CRS structure: exportmod/REQUEST-901-INITIALIZATION.yaml
-Parsing CRS structure: exportmod/REQUEST-903.9001-DRUPAL-EXCLUSION-RULES.yaml
+$ ./crs_write.py crschanged crsmod
+Parsing CRS structure: crsmod/REQUEST-901-INITIALIZATION.yaml
+Parsing CRS structure: crsmod/REQUEST-903.9001-DRUPAL-EXCLUSION-RULES.yaml
 ...
-Parsing CRS structure: exportmod/RESPONSE-959-BLOCKING-EVALUATION.yaml
-Parsing CRS structure: exportmod/RESPONSE-980-CORRELATION.yaml
+Parsing CRS structure: crsmod/RESPONSE-959-BLOCKING-EVALUATION.yaml
+Parsing CRS structure: crsmod/RESPONSE-980-CORRELATION.yaml
 
 # overwrite the rules
 

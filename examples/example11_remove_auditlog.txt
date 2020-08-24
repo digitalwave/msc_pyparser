@@ -64,10 +64,10 @@ write back the structure with crs_write.py.
 The steps:
 
 cd /path/to/msc_pyparser/examples
-mkdir export
-./crs_read.py /path/to/coreruleset/rules/ export
+mkdir crsyaml
+./crs_read.py /path/to/coreruleset/rules/ crsyaml
 mkdir noauditlog
-for y in `ls -1 export/*.yaml`; do f=`basename ${y}`; ./example11_remove_auditlog.py export/${f} noauditlog/${f}; done
+for y in `ls -1 crsyaml/*.yaml`; do f=`basename ${y}`; ./example11_remove_auditlog.py crsyaml/${f} noauditlog/${f}; done
 mkdir newrules
 ./crs_write.py noauditlog/ newrules/
 
