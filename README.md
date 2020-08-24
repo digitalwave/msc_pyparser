@@ -519,22 +519,22 @@ There is the `examples/` subdirectory with some examples, data, and descriptions
 To execute the examples:
 
 ```bash
-mkdir export
-./crs_read.py /path/to/owasp-modsecurity-crs/rules export
+mkdir crsyaml
+./crs_read.py /path/to/owasp-modsecurity-crs/rules crsyamp
 ```
 
-This command will read your rulesets and convert all of them to the directory `export`. Note that the ruleset names are the same as the original and now the extension is `.yaml`. To change the extension from `yaml` to `json`, see the source.
+This command will read your rulesets and convert all of them to the directory `crsyaml`. Note that the ruleset names are the same as the original and now the extension is `.yaml`. To change the extension from `yaml` to `json`, see the source.
 
 Now you can write the parsed rules from `yaml` (or `json`) to ModSecurity:
 
 ```bash
-mkdir import
-./crs_write.py export import
+mkdir crschanged
+./crs_write.py crsyaml crschanged
 ```
 
 Now look at the differences between the original and converted versions:
 ```
-for f in `ls -1 import/*.conf`; do f=`basename ${f}`; diff import/${f} ~/src/owasp-modsecurity-crs/rules/${f}; done
+for f in `ls -1 crschanged/*.conf`; do f=`basename ${f}`; diff crschanged/${f} ~/src/owasp-modsecurity-crs/rules/${f}; done
 ```
 
 If there are no differences, then the rulesets are the same.
