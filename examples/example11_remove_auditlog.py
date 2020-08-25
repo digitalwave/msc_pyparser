@@ -29,12 +29,15 @@ if __name__ == "__main__":
     oname = sys.argv[2]
     try:
         with open(fname, 'r') as inputfile:
-            data = inputfile.read()
+            if yaml.__version__ >= "5.1":
+                data = yaml.load(fname, Loader=yaml.FullLoader)
+            else:
+                data = yaml.load(fname)
     except:
         print("Can't open file: %s" % (fname))
         sys.exit()
 
-    t = Transform(yaml.load(data))
+    t = Transform(data)
     t.removeaction()
 
     try:
