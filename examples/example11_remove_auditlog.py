@@ -30,9 +30,9 @@ if __name__ == "__main__":
     try:
         with open(fname, 'r') as inputfile:
             if yaml.__version__ >= "5.1":
-                data = yaml.load(fname, Loader=yaml.FullLoader)
+                data = yaml.load(inputfile, Loader=yaml.FullLoader)
             else:
-                data = yaml.load(fname)
+                data = yaml.load(inputfile)
     except:
         print("Can't open file: %s" % (fname))
         sys.exit()
