@@ -1,4 +1,4 @@
-script: example9_collect_transforms.py
+script: example09_collect_transforms.py
 
 description:
 this program loads the converted ruleset structure, searches the

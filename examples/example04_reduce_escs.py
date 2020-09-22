@@ -6,19 +6,22 @@ import os
 
 class Transform(object):
     def __init__(self, data):
-        self.data = data
         self.lineno = 1
-        self.lineno_shift = 0
+        self.data = data
 
-    def removeaction(self):
+    def stripescape(self):
         for d in self.data:
-            if "actions" in d:
-                aidx = 0
-                while aidx < len(d['actions']):
-                    a = d['actions'][aidx]
-                    if a['act_name'] == "ctl" and a['act_arg'] == "auditLogParts" and a['act_arg_val'] == "+E":
-                        d['actions'].remove(a)
-                    aidx += 1
+            if "operator_argument" in d:
+                d['operator_argument'] = d['operator_argument'].replace("\\\\", "\\")
+
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print("Argument missing!")
+        print("This script converts the '\\\\\\\\' to '\\\\' in rule 941330")
+        print("Use: %s REQUEST-941-APPLICATION-ATTACK-XSS.yml output" % (sys.argv[0]))
+        sys.exit(-1)
+
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
@@ -49,7 +52,7 @@ if __name__ == "__main__":
                 sys.exit()
 
             t = Transform(data)
-            t.removeaction()
+            t.stripescape()
             if otype == "dir":
                 ofile = os.path.join(oname, os.path.basename(fname))
             else:
@@ -61,4 +64,3 @@ if __name__ == "__main__":
             except:
                 print("Can't open file: %s" % (oname))
                 sys.exit()
-

@@ -1,4 +1,4 @@
-script: example10_remove_auditlog.py
+script: example11_remove_auditlog.py
 
 description:
 this program loads the converted ruleset structure, and searches the rules
@@ -67,7 +67,7 @@ cd /path/to/msc_pyparser/examples
 mkdir crsyaml
 ./crs_read.py /path/to/coreruleset/rules/ crsyaml
 mkdir noauditlog
-for y in `ls -1 crsyaml/*.yaml`; do f=`basename ${y}`; ./example11_remove_auditlog.py crsyaml/${f} noauditlog/${f}; done
+./example11_remove_auditlog.py crsyaml/*.yaml noauditlog/
 mkdir newrules
 ./crs_write.py noauditlog/ newrules/
 

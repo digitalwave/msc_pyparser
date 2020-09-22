@@ -1,4 +1,4 @@
-script: example3_act_case_check.py
+script: example05_act_case_check.py
 
 description:
 this program loads the converted ruleset structure, and checks the

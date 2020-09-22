@@ -1,4 +1,4 @@
-script: example2_reduce_escs.py
+script: example04_reduce_escs.py
 
 description:
 this program loads the converted ruleset structure, and searches the '\\\\'
@@ -28,7 +28,7 @@ depending of context. Here, we just replaces the pattern in operator arguments,
 nowhere else.
 
 Use:
-you have to run this script with argument YAML structured file. The script
+you have to run this script with argument YAML structured files. The script
 will save a copy of the given input. The rules in example exists in file
 REQUEST-941-APPLICATION-ATTACK-XSS.conf. To see the differences, you have to
 write back the structure with crs_write.py.

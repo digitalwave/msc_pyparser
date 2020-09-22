@@ -1,155 +1,180 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    BACKSLASH
-
 Grammar
 
 Rule 0     S' -> modsec_config
 Rule 1     modsec_config -> comment_line
-Rule 2     modsec_config -> secrule_line
-Rule 3     modsec_config -> seccompsignature_line
-Rule 4     modsec_config -> secaction_line
-Rule 5     modsec_config -> modsec_config secaction_line
-Rule 6     modsec_config -> secmarker_line
-Rule 7     modsec_config -> modsec_config secmarker_line
-Rule 8     modsec_config -> modsec_config seccompsignature_line
-Rule 9     modsec_config -> modsec_config comment_line
+Rule 2     modsec_config -> modsec_config comment_line
+Rule 3     modsec_config -> include_line
+Rule 4     modsec_config -> modsec_config include_line
+Rule 5     modsec_config -> directive_line
+Rule 6     modsec_config -> modsec_config directive_line
+Rule 7     modsec_config -> secaction_line
+Rule 8     modsec_config -> modsec_config secaction_line
+Rule 9     modsec_config -> secrule_line
 Rule 10    modsec_config -> modsec_config secrule_line
-Rule 11    comment_line -> COMMENT
-Rule 12    seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED
-Rule 13    secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED
-Rule 14    tok_confdir_secaction -> CONFDIR_SECACTION
-Rule 15    secmarker_line -> secmarker_line_quoted
-Rule 16    secmarker_line -> secmarker_line_noquoted
-Rule 17    secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED
-Rule 18    secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG
-Rule 19    secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
-Rule 20    secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED
-Rule 21    secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED
-Rule 22    secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote
-Rule 23    tok_confdir_secrule -> CONFDIR_SECRULE
-Rule 24    secvariable_expr_list -> secvariable_expr
-Rule 25    secvariable_expr_list -> secvariable_expr_list PIPE secvariable_expr
-Rule 26    secvariable_expr_list -> secvariable_expr_list COMMA secvariable_expr
-Rule 27    secvariable_expr -> tok_secrule_variable
-Rule 28    secvariable_expr -> tok_secrule_variable_prefix
-Rule 29    secvariable_expr -> tok_secrule_variable_with_arg
-Rule 30    secvariable_expr -> tok_secrule_variable_prefix_with_arg
-Rule 31    tok_secrule_variable -> SECRULE_VARIABLE
-Rule 32    tok_secrule_variable_prefix -> secvariable_prefix tok_secrule_variable
-Rule 33    tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon secvariable_arg
-Rule 34    tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg
-Rule 35    tok_secrule_variable_colon -> COLON
-Rule 36    secvariable_prefix -> AND
-Rule 37    secvariable_prefix -> EXCLAMMARK
-Rule 38    secvariable_prefix -> EXCLAMMARK AND
-Rule 39    secvariable_arg -> tok_secrule_variable_arg
-Rule 40    secvariable_arg -> tok_secrule_variable_arg_quotes
-Rule 41    tok_secrule_variable_arg -> SECRULE_VARIABLE_ARG
-Rule 42    tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG QUOTES
-Rule 43    secoperator_expr -> tok_secoperator_group
-Rule 44    secoperator_expr -> tok_secoperator_group secoperator_arg_group
-Rule 45    secoperator_expr -> secoperator_arg_group
-Rule 46    tok_secoperator_group -> ATSIGN SECRULE_OPERATOR
-Rule 47    tok_secoperator_group -> EXCLAMMARK ATSIGN SECRULE_OPERATOR
-Rule 48    tok_secoperator_group -> EXCLAMMARK
-Rule 49    secoperator_arg_group -> SECRULE_OPERATOR_ARG
-Rule 50    secoperator_arg_group -> NUMBER
-Rule 51    secoperatorarg_noquote -> SECRULE_OPERATOR_ARG_NOQUOTE
-Rule 52    secaction_expr_list -> secaction_expr
-Rule 53    secaction_expr_list -> secaction_expr_list COMMA secaction_expr
-Rule 54    secaction_expr -> tok_secrule_action
-Rule 55    secaction_expr -> tok_secrule_action COLON secrule_action_argument
-Rule 56    secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
-Rule 57    secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-Rule 58    secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-Rule 59    tok_secrule_action -> SECRULE_ACTION
-Rule 60    secrule_action_argument -> SECRULE_ACTION_ARG
-Rule 61    secrule_action_argument -> NUMBER
-Rule 62    secrule_action_argument -> SECRULE_ACTION_TRANSFORMS
-Rule 63    secrule_action_argument -> SECRULE_ACTION_CTLACTION
-Rule 64    secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG
-Rule 65    secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG
-Rule 66    secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG
-Rule 67    secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG
-Rule 68    secrule_action_argument_singlequoted -> NUMBER
-Rule 69    tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG
-Rule 70    tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM
-Rule 71    tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM
+Rule 11    comment_line -> T_COMMENT
+Rule 12    include_line -> include_line_unquoted_argument
+Rule 13    include_line -> include_line_quoted_argument
+Rule 14    include_line_unquoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT
+Rule 15    include_line_quoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED
+Rule 16    directive_line -> tok_directive
+Rule 17    directive_line -> tok_directive tok_directive_argument_list
+Rule 18    directive_line -> tok_directive_apache_location
+Rule 19    tok_directive -> T_CONFIG_DIRECTIVE
+Rule 20    tok_directive_argument_list -> tok_directive_argument
+Rule 21    tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument
+Rule 22    tok_directive_argument -> tok_directive_argument_notquoted
+Rule 23    tok_directive_argument -> tok_directive_argument_quoted_double
+Rule 24    tok_directive_argument -> tok_directive_argument_quoted_single
+Rule 25    tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE
+Rule 26    tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE
+Rule 27    tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE
+Rule 28    tok_directive_apache_location -> T_APACHE_LOCATION_DIRECTIVE
+Rule 29    secaction_line -> tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK
+Rule 30    tok_confdir_secaction -> T_CONFIG_DIRECTIVE_SECACTION
+Rule 31    secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression secrule_actions
+Rule 32    secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression
+Rule 33    secrule_directive -> T_CONFIG_DIRECTIVE_SECRULE
+Rule 34    secrule_argument_list -> secrule_variable_list
+Rule 35    secrule_variable_list -> secrule_variable
+Rule 36    secrule_variable_list -> secrule_variable_exclusion
+Rule 37    secrule_variable_list -> secrule_variable_counter
+Rule 38    secrule_variable_list -> secrule_variable_with_part
+Rule 39    secrule_variable_list -> secrule_variable_exclusion_with_part
+Rule 40    secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable
+Rule 41    secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_counter
+Rule 42    secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_with_part
+Rule 43    secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion
+Rule 44    secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion_with_part
+Rule 45    secrule_variable -> T_SECRULE_VARIABLE
+Rule 46    secrule_variable_exclusion -> T_EXCLUSION_MARK T_SECRULE_VARIABLE
+Rule 47    secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+Rule 48    secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+Rule 49    secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
+Rule 50    secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+Rule 51    secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+Rule 52    secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
+Rule 53    secrule_variable_counter -> secrule_variable_counter_only
+Rule 54    secrule_variable_counter -> secrule_variable_counter_with_var
+Rule 55    secrule_variable_counter_only -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE
+Rule 56    secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+Rule 57    secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+Rule 58    secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
+Rule 59    secrule_variable_separator -> T_SECRULE_VARIABLE_SEPARATOR
+Rule 60    secrule_operator_expression -> secrule_operator_expression_quoted
+Rule 61    secrule_operator_expression -> secrule_operator_or_argument
+Rule 62    secrule_operator_expression -> secrule_operator_and_argument
+Rule 63    secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK
+Rule 64    secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK
+Rule 65    secrule_operator_or_argument -> secrule_operator_only
+Rule 66    secrule_operator_or_argument -> secrule_operator_argument_only
+Rule 67    secrule_operator_only -> T_SECRULE_OPERATOR
+Rule 68    secrule_operator_only -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK
+Rule 69    secrule_operator_argument_only -> T_SECRULE_OPERATOR_ARGUMENT
+Rule 70    secrule_operator_and_argument -> T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT
+Rule 71    secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT
+Rule 72    secrule_actions -> T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK
+Rule 73    secrule_actions_list -> secaction_expr
+Rule 74    secrule_actions_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr
+Rule 75    secaction_expr_list -> secaction_expr
+Rule 76    secaction_expr_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr
+Rule 77    secaction_expr -> secaction_single
+Rule 78    secaction_expr -> secaction_with_argument
+Rule 79    secaction_expr -> secaction_with_quoted_argument
+Rule 80    secaction_expr -> secaction_with_argument_with_value
+Rule 81    secaction_expr -> secaction_with_argument_with_value_and_param
+Rule 82    secaction_expr -> secaction_with_argument_with_value_and_param_paramarg
+Rule 83    secaction_single -> T_SECRULE_ACTION
+Rule 84    secaction_with_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT
+Rule 85    secaction_with_quoted_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE
+Rule 86    secaction_with_argument_with_value -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE
+Rule 87    secaction_with_argument_with_value_and_param -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER
+Rule 88    secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
 
 Terminals, with rules where they appear
 
-AND                  : 36 38
-ATSIGN               : 46 47
-BACKSLASH            : 
-COLON                : 35 55 56 57 58
-COMMA                : 26 53
-COMMENT              : 11
-CONFDIR_SECACTION    : 14
-CONFDIR_SECCOMPSIGNATURE : 12
-CONFDIR_SECMARKER    : 17 18
-CONFDIR_SECRULE      : 23
-EQUALMARK            : 57 58
-EXCLAMMARK           : 37 38 47 48 67
-NUMBER               : 50 61 68
-PIPE                 : 25
-QUOTED               : 12 12 13 13 17 17 19 19 19 19 20 20 21 21
-QUOTES               : 42 42 56 56
-SECCOMPSIGNARG       : 12
-SECMARKERARG         : 17 18
-SECRULE_ACTION       : 59
-SECRULE_ACTION_ARG   : 60 66 67
-SECRULE_ACTION_CTLACTION : 63
-SECRULE_ACTION_CTLACTIONARG : 69
-SECRULE_ACTION_CTLACTIONARGPARAM : 71
-SECRULE_ACTION_INITCOLACTIONARG : 65
-SECRULE_ACTION_INITCOLACTIONARGPARAM : 70
-SECRULE_ACTION_SKIPAFTERACTIONARG : 64
-SECRULE_ACTION_TRANSFORMS : 62
-SECRULE_OPERATOR     : 46 47
-SECRULE_OPERATOR_ARG : 49
-SECRULE_OPERATOR_ARG_NOQUOTE : 51
-SECRULE_VARIABLE     : 31
-SECRULE_VARIABLE_ARG : 41 42
-SEMICOLON            : 58
+T_APACHE_LOCATION_DIRECTIVE : 28
+T_COMMENT            : 11
+T_CONFIG_DIRECTIVE   : 19
+T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE : 25
+T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE : 26
+T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE : 27
+T_CONFIG_DIRECTIVE_SECACTION : 30
+T_CONFIG_DIRECTIVE_SECRULE : 33
+T_EXCLUSION_MARK     : 46 50 51 52
+T_INCLUDE_DIRECTIVE  : 14 15
+T_INCLUDE_DIRECTIVE_ARGUMENT : 14
+T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED : 15
+T_SECRULE_ACTION     : 83 84 85 86 87 88
+T_SECRULE_ACTION_ARGUMENT : 84 85 86 87 88
+T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE : 85 85
+T_SECRULE_ACTION_ARGUMENT_VALUE : 86 87 88
+T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER : 87 88
+T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT : 88
+T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON : 88
+T_SECRULE_ACTION_COLON : 84 85 86 87 88
+T_SECRULE_ACTION_EQUALMARK : 86 87 88
+T_SECRULE_ACTION_QUOTE_MARK : 29 29 72 72
+T_SECRULE_ACTION_SEMICOLON : 87 88
+T_SECRULE_ACTION_SEPARATOR : 74 76
+T_SECRULE_OPERATOR   : 67 70
+T_SECRULE_OPERATOR_ARGUMENT : 69 70 71
+T_SECRULE_OPERATOR_QUOTE_MARK : 63 63 64 64
+T_SECRULE_OPERATOR_WITH_EXCLAMMARK : 68 71
+T_SECRULE_VARIABLE   : 45 46 47 48 49 50 51 52 55 56 57 58
+T_SECRULE_VARIABLE_COUNTER : 55 56 57 58
+T_SECRULE_VARIABLE_PART : 47 50 56
+T_SECRULE_VARIABLE_PART_QUOTED : 48 51 57
+T_SECRULE_VARIABLE_PART_QUOTED_REGEX : 49 52 58
+T_SECRULE_VARIABLE_SEPARATOR : 59
 error                : 
 
 Nonterminals, with rules where they appear
 
-comment_line         : 1 9
-modsec_config        : 5 7 8 9 10 0
-secaction_expr       : 52 53
-secaction_expr_list  : 13 19 21 53
-secaction_line       : 4 5
-seccompsignature_line : 3 8
-secmarker_line       : 6 7
-secmarker_line_noquoted : 16
-secmarker_line_quoted : 15
-secoperator_arg_group : 44 45
-secoperator_expr     : 19 20
-secoperatorarg_noquote : 21 22
-secrule_action_argument : 55 57 58
-secrule_action_argument_singlequoted : 56
-secrule_line         : 2 10
-secvariable_arg      : 33 34
-secvariable_expr     : 24 25 26
-secvariable_expr_list : 19 20 21 22 25 26
-secvariable_prefix   : 32 34
-tok_confdir_secaction : 13
-tok_confdir_secrule  : 19 20 21 22
-tok_secoperator_group : 43 44
-tok_secrule_action   : 54 55 56 57 58
-tok_secrule_action_ctlactionarg : 57 58
-tok_secrule_action_ctlactionargparam : 58
-tok_secrule_variable : 27 32 33 34
-tok_secrule_variable_arg : 39
-tok_secrule_variable_arg_quotes : 40
-tok_secrule_variable_colon : 33 34
-tok_secrule_variable_prefix : 28
-tok_secrule_variable_prefix_with_arg : 30
-tok_secrule_variable_with_arg : 29
+comment_line         : 1 2
+directive_line       : 5 6
+include_line         : 3 4
+include_line_quoted_argument : 13
+include_line_unquoted_argument : 12
+modsec_config        : 2 4 6 8 10 0
+secaction_expr       : 73 74 75 76
+secaction_expr_list  : 29 74 76
+secaction_line       : 7 8
+secaction_single     : 77
+secaction_with_argument : 78
+secaction_with_argument_with_value : 80
+secaction_with_argument_with_value_and_param : 81
+secaction_with_argument_with_value_and_param_paramarg : 82
+secaction_with_quoted_argument : 79
+secrule_actions      : 31
+secrule_actions_list : 72
+secrule_argument_list : 31 32
+secrule_directive    : 31 32
+secrule_line         : 9 10
+secrule_operator_and_argument : 62 64
+secrule_operator_argument_only : 66
+secrule_operator_expression : 31 32
+secrule_operator_expression_quoted : 60
+secrule_operator_only : 65
+secrule_operator_or_argument : 61 63
+secrule_variable     : 35 40
+secrule_variable_counter : 37 41
+secrule_variable_counter_only : 53
+secrule_variable_counter_with_var : 54
+secrule_variable_exclusion : 36 43
+secrule_variable_exclusion_with_part : 39 44
+secrule_variable_list : 34 40 41 42 43 44
+secrule_variable_separator : 40 41 42 43 44
+secrule_variable_with_part : 38 42
+tok_confdir_secaction : 29
+tok_directive        : 16 17
+tok_directive_apache_location : 18
+tok_directive_argument : 20 21
+tok_directive_argument_list : 17 21
+tok_directive_argument_notquoted : 22
+tok_directive_argument_quoted_double : 23
+tok_directive_argument_quoted_single : 24
 
 Parsing method: LALR
 
@@ -157,1219 +182,1583 @@ state 0
 
     (0) S' -> . modsec_config
     (1) modsec_config -> . comment_line
-    (2) modsec_config -> . secrule_line
-    (3) modsec_config -> . seccompsignature_line
-    (4) modsec_config -> . secaction_line
-    (5) modsec_config -> . modsec_config secaction_line
-    (6) modsec_config -> . secmarker_line
-    (7) modsec_config -> . modsec_config secmarker_line
-    (8) modsec_config -> . modsec_config seccompsignature_line
-    (9) modsec_config -> . modsec_config comment_line
+    (2) modsec_config -> . modsec_config comment_line
+    (3) modsec_config -> . include_line
+    (4) modsec_config -> . modsec_config include_line
+    (5) modsec_config -> . directive_line
+    (6) modsec_config -> . modsec_config directive_line
+    (7) modsec_config -> . secaction_line
+    (8) modsec_config -> . modsec_config secaction_line
+    (9) modsec_config -> . secrule_line
     (10) modsec_config -> . modsec_config secrule_line
-    (11) comment_line -> . COMMENT
-    (19) secrule_line -> . tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
-    (20) secrule_line -> . tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED
-    (21) secrule_line -> . tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED
-    (22) secrule_line -> . tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote
-    (12) seccompsignature_line -> . CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED
-    (13) secaction_line -> . tok_confdir_secaction QUOTED secaction_expr_list QUOTED
-    (15) secmarker_line -> . secmarker_line_quoted
-    (16) secmarker_line -> . secmarker_line_noquoted
-    (23) tok_confdir_secrule -> . CONFDIR_SECRULE
-    (14) tok_confdir_secaction -> . CONFDIR_SECACTION
-    (17) secmarker_line_quoted -> . CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED
-    (18) secmarker_line_noquoted -> . CONFDIR_SECMARKER SECMARKERARG
+    (11) comment_line -> . T_COMMENT
+    (12) include_line -> . include_line_unquoted_argument
+    (13) include_line -> . include_line_quoted_argument
+    (16) directive_line -> . tok_directive
+    (17) directive_line -> . tok_directive tok_directive_argument_list
+    (18) directive_line -> . tok_directive_apache_location
+    (29) secaction_line -> . tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK
+    (31) secrule_line -> . secrule_directive secrule_argument_list secrule_operator_expression secrule_actions
+    (32) secrule_line -> . secrule_directive secrule_argument_list secrule_operator_expression
+    (14) include_line_unquoted_argument -> . T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT
+    (15) include_line_quoted_argument -> . T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED
+    (19) tok_directive -> . T_CONFIG_DIRECTIVE
+    (28) tok_directive_apache_location -> . T_APACHE_LOCATION_DIRECTIVE
+    (30) tok_confdir_secaction -> . T_CONFIG_DIRECTIVE_SECACTION
+    (33) secrule_directive -> . T_CONFIG_DIRECTIVE_SECRULE
 
-    COMMENT         shift and go to state 7
-    CONFDIR_SECCOMPSIGNATURE shift and go to state 9
-    CONFDIR_SECRULE shift and go to state 13
-    CONFDIR_SECACTION shift and go to state 14
-    CONFDIR_SECMARKER shift and go to state 15
+    T_COMMENT       shift and go to state 7
+    T_INCLUDE_DIRECTIVE shift and go to state 14
+    T_CONFIG_DIRECTIVE shift and go to state 15
+    T_APACHE_LOCATION_DIRECTIVE shift and go to state 16
+    T_CONFIG_DIRECTIVE_SECACTION shift and go to state 17
+    T_CONFIG_DIRECTIVE_SECRULE shift and go to state 18
 
     modsec_config                  shift and go to state 1
     comment_line                   shift and go to state 2
-    secrule_line                   shift and go to state 3
-    seccompsignature_line          shift and go to state 4
+    include_line                   shift and go to state 3
+    directive_line                 shift and go to state 4
     secaction_line                 shift and go to state 5
-    secmarker_line                 shift and go to state 6
-    tok_confdir_secrule            shift and go to state 8
-    tok_confdir_secaction          shift and go to state 10
-    secmarker_line_quoted          shift and go to state 11
-    secmarker_line_noquoted        shift and go to state 12
+    secrule_line                   shift and go to state 6
+    include_line_unquoted_argument shift and go to state 8
+    include_line_quoted_argument   shift and go to state 9
+    tok_directive                  shift and go to state 10
+    tok_directive_apache_location  shift and go to state 11
+    tok_confdir_secaction          shift and go to state 12
+    secrule_directive              shift and go to state 13
 
 state 1
 
     (0) S' -> modsec_config .
-    (5) modsec_config -> modsec_config . secaction_line
-    (7) modsec_config -> modsec_config . secmarker_line
-    (8) modsec_config -> modsec_config . seccompsignature_line
-    (9) modsec_config -> modsec_config . comment_line
+    (2) modsec_config -> modsec_config . comment_line
+    (4) modsec_config -> modsec_config . include_line
+    (6) modsec_config -> modsec_config . directive_line
+    (8) modsec_config -> modsec_config . secaction_line
     (10) modsec_config -> modsec_config . secrule_line
-    (13) secaction_line -> . tok_confdir_secaction QUOTED secaction_expr_list QUOTED
-    (15) secmarker_line -> . secmarker_line_quoted
-    (16) secmarker_line -> . secmarker_line_noquoted
-    (12) seccompsignature_line -> . CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED
-    (11) comment_line -> . COMMENT
-    (19) secrule_line -> . tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
-    (20) secrule_line -> . tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED
-    (21) secrule_line -> . tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED
-    (22) secrule_line -> . tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote
-    (14) tok_confdir_secaction -> . CONFDIR_SECACTION
-    (17) secmarker_line_quoted -> . CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED
-    (18) secmarker_line_noquoted -> . CONFDIR_SECMARKER SECMARKERARG
-    (23) tok_confdir_secrule -> . CONFDIR_SECRULE
+    (11) comment_line -> . T_COMMENT
+    (12) include_line -> . include_line_unquoted_argument
+    (13) include_line -> . include_line_quoted_argument
+    (16) directive_line -> . tok_directive
+    (17) directive_line -> . tok_directive tok_directive_argument_list
+    (18) directive_line -> . tok_directive_apache_location
+    (29) secaction_line -> . tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK
+    (31) secrule_line -> . secrule_directive secrule_argument_list secrule_operator_expression secrule_actions
+    (32) secrule_line -> . secrule_directive secrule_argument_list secrule_operator_expression
+    (14) include_line_unquoted_argument -> . T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT
+    (15) include_line_quoted_argument -> . T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED
+    (19) tok_directive -> . T_CONFIG_DIRECTIVE
+    (28) tok_directive_apache_location -> . T_APACHE_LOCATION_DIRECTIVE
+    (30) tok_confdir_secaction -> . T_CONFIG_DIRECTIVE_SECACTION
+    (33) secrule_directive -> . T_CONFIG_DIRECTIVE_SECRULE
 
-    CONFDIR_SECCOMPSIGNATURE shift and go to state 9
-    COMMENT         shift and go to state 7
-    CONFDIR_SECACTION shift and go to state 14
-    CONFDIR_SECMARKER shift and go to state 15
-    CONFDIR_SECRULE shift and go to state 13
+    T_COMMENT       shift and go to state 7
+    T_INCLUDE_DIRECTIVE shift and go to state 14
+    T_CONFIG_DIRECTIVE shift and go to state 15
+    T_APACHE_LOCATION_DIRECTIVE shift and go to state 16
+    T_CONFIG_DIRECTIVE_SECACTION shift and go to state 17
+    T_CONFIG_DIRECTIVE_SECRULE shift and go to state 18
 
-    secaction_line                 shift and go to state 16
-    secmarker_line                 shift and go to state 17
-    seccompsignature_line          shift and go to state 18
     comment_line                   shift and go to state 19
-    secrule_line                   shift and go to state 20
-    tok_confdir_secaction          shift and go to state 10
-    secmarker_line_quoted          shift and go to state 11
-    secmarker_line_noquoted        shift and go to state 12
-    tok_confdir_secrule            shift and go to state 8
+    include_line                   shift and go to state 20
+    directive_line                 shift and go to state 21
+    secaction_line                 shift and go to state 22
+    secrule_line                   shift and go to state 23
+    include_line_unquoted_argument shift and go to state 8
+    include_line_quoted_argument   shift and go to state 9
+    tok_directive                  shift and go to state 10
+    tok_directive_apache_location  shift and go to state 11
+    tok_confdir_secaction          shift and go to state 12
+    secrule_directive              shift and go to state 13
 
 state 2
 
     (1) modsec_config -> comment_line .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 1 (modsec_config -> comment_line .)
-    COMMENT         reduce using rule 1 (modsec_config -> comment_line .)
-    CONFDIR_SECACTION reduce using rule 1 (modsec_config -> comment_line .)
-    CONFDIR_SECMARKER reduce using rule 1 (modsec_config -> comment_line .)
-    CONFDIR_SECRULE reduce using rule 1 (modsec_config -> comment_line .)
+    T_COMMENT       reduce using rule 1 (modsec_config -> comment_line .)
+    T_INCLUDE_DIRECTIVE reduce using rule 1 (modsec_config -> comment_line .)
+    T_CONFIG_DIRECTIVE reduce using rule 1 (modsec_config -> comment_line .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 1 (modsec_config -> comment_line .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 1 (modsec_config -> comment_line .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 1 (modsec_config -> comment_line .)
     $end            reduce using rule 1 (modsec_config -> comment_line .)
 
 
 state 3
 
-    (2) modsec_config -> secrule_line .
+    (3) modsec_config -> include_line .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 2 (modsec_config -> secrule_line .)
-    COMMENT         reduce using rule 2 (modsec_config -> secrule_line .)
-    CONFDIR_SECACTION reduce using rule 2 (modsec_config -> secrule_line .)
-    CONFDIR_SECMARKER reduce using rule 2 (modsec_config -> secrule_line .)
-    CONFDIR_SECRULE reduce using rule 2 (modsec_config -> secrule_line .)
-    $end            reduce using rule 2 (modsec_config -> secrule_line .)
+    T_COMMENT       reduce using rule 3 (modsec_config -> include_line .)
+    T_INCLUDE_DIRECTIVE reduce using rule 3 (modsec_config -> include_line .)
+    T_CONFIG_DIRECTIVE reduce using rule 3 (modsec_config -> include_line .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 3 (modsec_config -> include_line .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 3 (modsec_config -> include_line .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 3 (modsec_config -> include_line .)
+    $end            reduce using rule 3 (modsec_config -> include_line .)
 
 
 state 4
 
-    (3) modsec_config -> seccompsignature_line .
+    (5) modsec_config -> directive_line .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 3 (modsec_config -> seccompsignature_line .)
-    COMMENT         reduce using rule 3 (modsec_config -> seccompsignature_line .)
-    CONFDIR_SECACTION reduce using rule 3 (modsec_config -> seccompsignature_line .)
-    CONFDIR_SECMARKER reduce using rule 3 (modsec_config -> seccompsignature_line .)
-    CONFDIR_SECRULE reduce using rule 3 (modsec_config -> seccompsignature_line .)
-    $end            reduce using rule 3 (modsec_config -> seccompsignature_line .)
+    T_COMMENT       reduce using rule 5 (modsec_config -> directive_line .)
+    T_INCLUDE_DIRECTIVE reduce using rule 5 (modsec_config -> directive_line .)
+    T_CONFIG_DIRECTIVE reduce using rule 5 (modsec_config -> directive_line .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 5 (modsec_config -> directive_line .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 5 (modsec_config -> directive_line .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 5 (modsec_config -> directive_line .)
+    $end            reduce using rule 5 (modsec_config -> directive_line .)
 
 
 state 5
 
-    (4) modsec_config -> secaction_line .
+    (7) modsec_config -> secaction_line .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 4 (modsec_config -> secaction_line .)
-    COMMENT         reduce using rule 4 (modsec_config -> secaction_line .)
-    CONFDIR_SECACTION reduce using rule 4 (modsec_config -> secaction_line .)
-    CONFDIR_SECMARKER reduce using rule 4 (modsec_config -> secaction_line .)
-    CONFDIR_SECRULE reduce using rule 4 (modsec_config -> secaction_line .)
-    $end            reduce using rule 4 (modsec_config -> secaction_line .)
+    T_COMMENT       reduce using rule 7 (modsec_config -> secaction_line .)
+    T_INCLUDE_DIRECTIVE reduce using rule 7 (modsec_config -> secaction_line .)
+    T_CONFIG_DIRECTIVE reduce using rule 7 (modsec_config -> secaction_line .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 7 (modsec_config -> secaction_line .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 7 (modsec_config -> secaction_line .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 7 (modsec_config -> secaction_line .)
+    $end            reduce using rule 7 (modsec_config -> secaction_line .)
 
 
 state 6
 
-    (6) modsec_config -> secmarker_line .
+    (9) modsec_config -> secrule_line .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 6 (modsec_config -> secmarker_line .)
-    COMMENT         reduce using rule 6 (modsec_config -> secmarker_line .)
-    CONFDIR_SECACTION reduce using rule 6 (modsec_config -> secmarker_line .)
-    CONFDIR_SECMARKER reduce using rule 6 (modsec_config -> secmarker_line .)
-    CONFDIR_SECRULE reduce using rule 6 (modsec_config -> secmarker_line .)
-    $end            reduce using rule 6 (modsec_config -> secmarker_line .)
+    T_COMMENT       reduce using rule 9 (modsec_config -> secrule_line .)
+    T_INCLUDE_DIRECTIVE reduce using rule 9 (modsec_config -> secrule_line .)
+    T_CONFIG_DIRECTIVE reduce using rule 9 (modsec_config -> secrule_line .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 9 (modsec_config -> secrule_line .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 9 (modsec_config -> secrule_line .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 9 (modsec_config -> secrule_line .)
+    $end            reduce using rule 9 (modsec_config -> secrule_line .)
 
 
 state 7
 
-    (11) comment_line -> COMMENT .
+    (11) comment_line -> T_COMMENT .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 11 (comment_line -> COMMENT .)
-    COMMENT         reduce using rule 11 (comment_line -> COMMENT .)
-    CONFDIR_SECACTION reduce using rule 11 (comment_line -> COMMENT .)
-    CONFDIR_SECMARKER reduce using rule 11 (comment_line -> COMMENT .)
-    CONFDIR_SECRULE reduce using rule 11 (comment_line -> COMMENT .)
-    $end            reduce using rule 11 (comment_line -> COMMENT .)
+    T_COMMENT       reduce using rule 11 (comment_line -> T_COMMENT .)
+    T_INCLUDE_DIRECTIVE reduce using rule 11 (comment_line -> T_COMMENT .)
+    T_CONFIG_DIRECTIVE reduce using rule 11 (comment_line -> T_COMMENT .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 11 (comment_line -> T_COMMENT .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 11 (comment_line -> T_COMMENT .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 11 (comment_line -> T_COMMENT .)
+    $end            reduce using rule 11 (comment_line -> T_COMMENT .)
 
 
 state 8
 
-    (19) secrule_line -> tok_confdir_secrule . secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
-    (20) secrule_line -> tok_confdir_secrule . secvariable_expr_list QUOTED secoperator_expr QUOTED
-    (21) secrule_line -> tok_confdir_secrule . secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED
-    (22) secrule_line -> tok_confdir_secrule . secvariable_expr_list secoperatorarg_noquote
-    (24) secvariable_expr_list -> . secvariable_expr
-    (25) secvariable_expr_list -> . secvariable_expr_list PIPE secvariable_expr
-    (26) secvariable_expr_list -> . secvariable_expr_list COMMA secvariable_expr
-    (27) secvariable_expr -> . tok_secrule_variable
-    (28) secvariable_expr -> . tok_secrule_variable_prefix
-    (29) secvariable_expr -> . tok_secrule_variable_with_arg
-    (30) secvariable_expr -> . tok_secrule_variable_prefix_with_arg
-    (31) tok_secrule_variable -> . SECRULE_VARIABLE
-    (32) tok_secrule_variable_prefix -> . secvariable_prefix tok_secrule_variable
-    (33) tok_secrule_variable_with_arg -> . tok_secrule_variable tok_secrule_variable_colon secvariable_arg
-    (34) tok_secrule_variable_prefix_with_arg -> . secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg
-    (36) secvariable_prefix -> . AND
-    (37) secvariable_prefix -> . EXCLAMMARK
-    (38) secvariable_prefix -> . EXCLAMMARK AND
+    (12) include_line -> include_line_unquoted_argument .
 
-    SECRULE_VARIABLE shift and go to state 27
-    AND             shift and go to state 29
-    EXCLAMMARK      shift and go to state 30
+    T_COMMENT       reduce using rule 12 (include_line -> include_line_unquoted_argument .)
+    T_INCLUDE_DIRECTIVE reduce using rule 12 (include_line -> include_line_unquoted_argument .)
+    T_CONFIG_DIRECTIVE reduce using rule 12 (include_line -> include_line_unquoted_argument .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 12 (include_line -> include_line_unquoted_argument .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 12 (include_line -> include_line_unquoted_argument .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 12 (include_line -> include_line_unquoted_argument .)
+    $end            reduce using rule 12 (include_line -> include_line_unquoted_argument .)
 
-    secvariable_expr_list          shift and go to state 21
-    secvariable_expr               shift and go to state 22
-    tok_secrule_variable           shift and go to state 23
-    tok_secrule_variable_prefix    shift and go to state 24
-    tok_secrule_variable_with_arg  shift and go to state 25
-    tok_secrule_variable_prefix_with_arg shift and go to state 26
-    secvariable_prefix             shift and go to state 28
 
 state 9
 
-    (12) seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE . QUOTED SECCOMPSIGNARG QUOTED
+    (13) include_line -> include_line_quoted_argument .
 
-    QUOTED          shift and go to state 31
+    T_COMMENT       reduce using rule 13 (include_line -> include_line_quoted_argument .)
+    T_INCLUDE_DIRECTIVE reduce using rule 13 (include_line -> include_line_quoted_argument .)
+    T_CONFIG_DIRECTIVE reduce using rule 13 (include_line -> include_line_quoted_argument .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 13 (include_line -> include_line_quoted_argument .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 13 (include_line -> include_line_quoted_argument .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 13 (include_line -> include_line_quoted_argument .)
+    $end            reduce using rule 13 (include_line -> include_line_quoted_argument .)
 
 
 state 10
 
-    (13) secaction_line -> tok_confdir_secaction . QUOTED secaction_expr_list QUOTED
+    (16) directive_line -> tok_directive .
+    (17) directive_line -> tok_directive . tok_directive_argument_list
+    (20) tok_directive_argument_list -> . tok_directive_argument
+    (21) tok_directive_argument_list -> . tok_directive_argument_list tok_directive_argument
+    (22) tok_directive_argument -> . tok_directive_argument_notquoted
+    (23) tok_directive_argument -> . tok_directive_argument_quoted_double
+    (24) tok_directive_argument -> . tok_directive_argument_quoted_single
+    (25) tok_directive_argument_notquoted -> . T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE
+    (26) tok_directive_argument_quoted_double -> . T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE
+    (27) tok_directive_argument_quoted_single -> . T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE
 
-    QUOTED          shift and go to state 32
+    T_COMMENT       reduce using rule 16 (directive_line -> tok_directive .)
+    T_INCLUDE_DIRECTIVE reduce using rule 16 (directive_line -> tok_directive .)
+    T_CONFIG_DIRECTIVE reduce using rule 16 (directive_line -> tok_directive .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 16 (directive_line -> tok_directive .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 16 (directive_line -> tok_directive .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 16 (directive_line -> tok_directive .)
+    $end            reduce using rule 16 (directive_line -> tok_directive .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE shift and go to state 29
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE shift and go to state 30
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE shift and go to state 31
 
+    tok_directive_argument_list    shift and go to state 24
+    tok_directive_argument         shift and go to state 25
+    tok_directive_argument_notquoted shift and go to state 26
+    tok_directive_argument_quoted_double shift and go to state 27
+    tok_directive_argument_quoted_single shift and go to state 28
 
 state 11
 
-    (15) secmarker_line -> secmarker_line_quoted .
+    (18) directive_line -> tok_directive_apache_location .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
-    COMMENT         reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
-    CONFDIR_SECACTION reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
-    CONFDIR_SECMARKER reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
-    CONFDIR_SECRULE reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
-    $end            reduce using rule 15 (secmarker_line -> secmarker_line_quoted .)
+    T_COMMENT       reduce using rule 18 (directive_line -> tok_directive_apache_location .)
+    T_INCLUDE_DIRECTIVE reduce using rule 18 (directive_line -> tok_directive_apache_location .)
+    T_CONFIG_DIRECTIVE reduce using rule 18 (directive_line -> tok_directive_apache_location .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 18 (directive_line -> tok_directive_apache_location .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 18 (directive_line -> tok_directive_apache_location .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 18 (directive_line -> tok_directive_apache_location .)
+    $end            reduce using rule 18 (directive_line -> tok_directive_apache_location .)
 
 
 state 12
 
-    (16) secmarker_line -> secmarker_line_noquoted .
+    (29) secaction_line -> tok_confdir_secaction . T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
-    COMMENT         reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
-    CONFDIR_SECACTION reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
-    CONFDIR_SECMARKER reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
-    CONFDIR_SECRULE reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
-    $end            reduce using rule 16 (secmarker_line -> secmarker_line_noquoted .)
+    T_SECRULE_ACTION_QUOTE_MARK shift and go to state 32
 
 
 state 13
 
-    (23) tok_confdir_secrule -> CONFDIR_SECRULE .
+    (31) secrule_line -> secrule_directive . secrule_argument_list secrule_operator_expression secrule_actions
+    (32) secrule_line -> secrule_directive . secrule_argument_list secrule_operator_expression
+    (34) secrule_argument_list -> . secrule_variable_list
+    (35) secrule_variable_list -> . secrule_variable
+    (36) secrule_variable_list -> . secrule_variable_exclusion
+    (37) secrule_variable_list -> . secrule_variable_counter
+    (38) secrule_variable_list -> . secrule_variable_with_part
+    (39) secrule_variable_list -> . secrule_variable_exclusion_with_part
+    (40) secrule_variable_list -> . secrule_variable_list secrule_variable_separator secrule_variable
+    (41) secrule_variable_list -> . secrule_variable_list secrule_variable_separator secrule_variable_counter
+    (42) secrule_variable_list -> . secrule_variable_list secrule_variable_separator secrule_variable_with_part
+    (43) secrule_variable_list -> . secrule_variable_list secrule_variable_separator secrule_variable_exclusion
+    (44) secrule_variable_list -> . secrule_variable_list secrule_variable_separator secrule_variable_exclusion_with_part
+    (45) secrule_variable -> . T_SECRULE_VARIABLE
+    (46) secrule_variable_exclusion -> . T_EXCLUSION_MARK T_SECRULE_VARIABLE
+    (53) secrule_variable_counter -> . secrule_variable_counter_only
+    (54) secrule_variable_counter -> . secrule_variable_counter_with_var
+    (47) secrule_variable_with_part -> . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+    (48) secrule_variable_with_part -> . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+    (49) secrule_variable_with_part -> . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
+    (50) secrule_variable_exclusion_with_part -> . T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+    (51) secrule_variable_exclusion_with_part -> . T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+    (52) secrule_variable_exclusion_with_part -> . T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
+    (55) secrule_variable_counter_only -> . T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE
+    (56) secrule_variable_counter_with_var -> . T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+    (57) secrule_variable_counter_with_var -> . T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+    (58) secrule_variable_counter_with_var -> . T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
 
-    SECRULE_VARIABLE reduce using rule 23 (tok_confdir_secrule -> CONFDIR_SECRULE .)
-    AND             reduce using rule 23 (tok_confdir_secrule -> CONFDIR_SECRULE .)
-    EXCLAMMARK      reduce using rule 23 (tok_confdir_secrule -> CONFDIR_SECRULE .)
+    T_SECRULE_VARIABLE shift and go to state 40
+    T_EXCLUSION_MARK shift and go to state 41
+    T_SECRULE_VARIABLE_COUNTER shift and go to state 44
 
+    secrule_argument_list          shift and go to state 33
+    secrule_variable_list          shift and go to state 34
+    secrule_variable               shift and go to state 35
+    secrule_variable_exclusion     shift and go to state 36
+    secrule_variable_counter       shift and go to state 37
+    secrule_variable_with_part     shift and go to state 38
+    secrule_variable_exclusion_with_part shift and go to state 39
+    secrule_variable_counter_only  shift and go to state 42
+    secrule_variable_counter_with_var shift and go to state 43
 
 state 14
 
-    (14) tok_confdir_secaction -> CONFDIR_SECACTION .
+    (14) include_line_unquoted_argument -> T_INCLUDE_DIRECTIVE . T_INCLUDE_DIRECTIVE_ARGUMENT
+    (15) include_line_quoted_argument -> T_INCLUDE_DIRECTIVE . T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED
 
-    QUOTED          reduce using rule 14 (tok_confdir_secaction -> CONFDIR_SECACTION .)
+    T_INCLUDE_DIRECTIVE_ARGUMENT shift and go to state 45
+    T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED shift and go to state 46
 
 
 state 15
 
-    (17) secmarker_line_quoted -> CONFDIR_SECMARKER . QUOTED SECMARKERARG QUOTED
-    (18) secmarker_line_noquoted -> CONFDIR_SECMARKER . SECMARKERARG
+    (19) tok_directive -> T_CONFIG_DIRECTIVE .
 
-    QUOTED          shift and go to state 33
-    SECMARKERARG    shift and go to state 34
+    T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE reduce using rule 19 (tok_directive -> T_CONFIG_DIRECTIVE .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE reduce using rule 19 (tok_directive -> T_CONFIG_DIRECTIVE .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE reduce using rule 19 (tok_directive -> T_CONFIG_DIRECTIVE .)
+    T_COMMENT       reduce using rule 19 (tok_directive -> T_CONFIG_DIRECTIVE .)
+    T_INCLUDE_DIRECTIVE reduce using rule 19 (tok_directive -> T_CONFIG_DIRECTIVE .)
+    T_CONFIG_DIRECTIVE reduce using rule 19 (tok_directive -> T_CONFIG_DIRECTIVE .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 19 (tok_directive -> T_CONFIG_DIRECTIVE .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 19 (tok_directive -> T_CONFIG_DIRECTIVE .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 19 (tok_directive -> T_CONFIG_DIRECTIVE .)
+    $end            reduce using rule 19 (tok_directive -> T_CONFIG_DIRECTIVE .)
 
 
 state 16
 
-    (5) modsec_config -> modsec_config secaction_line .
+    (28) tok_directive_apache_location -> T_APACHE_LOCATION_DIRECTIVE .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
-    COMMENT         reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
-    CONFDIR_SECACTION reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
-    CONFDIR_SECMARKER reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
-    CONFDIR_SECRULE reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
-    $end            reduce using rule 5 (modsec_config -> modsec_config secaction_line .)
+    T_COMMENT       reduce using rule 28 (tok_directive_apache_location -> T_APACHE_LOCATION_DIRECTIVE .)
+    T_INCLUDE_DIRECTIVE reduce using rule 28 (tok_directive_apache_location -> T_APACHE_LOCATION_DIRECTIVE .)
+    T_CONFIG_DIRECTIVE reduce using rule 28 (tok_directive_apache_location -> T_APACHE_LOCATION_DIRECTIVE .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 28 (tok_directive_apache_location -> T_APACHE_LOCATION_DIRECTIVE .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 28 (tok_directive_apache_location -> T_APACHE_LOCATION_DIRECTIVE .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 28 (tok_directive_apache_location -> T_APACHE_LOCATION_DIRECTIVE .)
+    $end            reduce using rule 28 (tok_directive_apache_location -> T_APACHE_LOCATION_DIRECTIVE .)
 
 
 state 17
 
-    (7) modsec_config -> modsec_config secmarker_line .
+    (30) tok_confdir_secaction -> T_CONFIG_DIRECTIVE_SECACTION .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
-    COMMENT         reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
-    CONFDIR_SECACTION reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
-    CONFDIR_SECMARKER reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
-    CONFDIR_SECRULE reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
-    $end            reduce using rule 7 (modsec_config -> modsec_config secmarker_line .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 30 (tok_confdir_secaction -> T_CONFIG_DIRECTIVE_SECACTION .)
 
 
 state 18
 
-    (8) modsec_config -> modsec_config seccompsignature_line .
+    (33) secrule_directive -> T_CONFIG_DIRECTIVE_SECRULE .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
-    COMMENT         reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
-    CONFDIR_SECACTION reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
-    CONFDIR_SECMARKER reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
-    CONFDIR_SECRULE reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
-    $end            reduce using rule 8 (modsec_config -> modsec_config seccompsignature_line .)
+    T_SECRULE_VARIABLE reduce using rule 33 (secrule_directive -> T_CONFIG_DIRECTIVE_SECRULE .)
+    T_EXCLUSION_MARK reduce using rule 33 (secrule_directive -> T_CONFIG_DIRECTIVE_SECRULE .)
+    T_SECRULE_VARIABLE_COUNTER reduce using rule 33 (secrule_directive -> T_CONFIG_DIRECTIVE_SECRULE .)
 
 
 state 19
 
-    (9) modsec_config -> modsec_config comment_line .
+    (2) modsec_config -> modsec_config comment_line .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 9 (modsec_config -> modsec_config comment_line .)
-    COMMENT         reduce using rule 9 (modsec_config -> modsec_config comment_line .)
-    CONFDIR_SECACTION reduce using rule 9 (modsec_config -> modsec_config comment_line .)
-    CONFDIR_SECMARKER reduce using rule 9 (modsec_config -> modsec_config comment_line .)
-    CONFDIR_SECRULE reduce using rule 9 (modsec_config -> modsec_config comment_line .)
-    $end            reduce using rule 9 (modsec_config -> modsec_config comment_line .)
+    T_COMMENT       reduce using rule 2 (modsec_config -> modsec_config comment_line .)
+    T_INCLUDE_DIRECTIVE reduce using rule 2 (modsec_config -> modsec_config comment_line .)
+    T_CONFIG_DIRECTIVE reduce using rule 2 (modsec_config -> modsec_config comment_line .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 2 (modsec_config -> modsec_config comment_line .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 2 (modsec_config -> modsec_config comment_line .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 2 (modsec_config -> modsec_config comment_line .)
+    $end            reduce using rule 2 (modsec_config -> modsec_config comment_line .)
 
 
 state 20
 
-    (10) modsec_config -> modsec_config secrule_line .
+    (4) modsec_config -> modsec_config include_line .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
-    COMMENT         reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
-    CONFDIR_SECACTION reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
-    CONFDIR_SECMARKER reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
-    CONFDIR_SECRULE reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
-    $end            reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    T_COMMENT       reduce using rule 4 (modsec_config -> modsec_config include_line .)
+    T_INCLUDE_DIRECTIVE reduce using rule 4 (modsec_config -> modsec_config include_line .)
+    T_CONFIG_DIRECTIVE reduce using rule 4 (modsec_config -> modsec_config include_line .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 4 (modsec_config -> modsec_config include_line .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 4 (modsec_config -> modsec_config include_line .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 4 (modsec_config -> modsec_config include_line .)
+    $end            reduce using rule 4 (modsec_config -> modsec_config include_line .)
 
 
 state 21
 
-    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list . QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
-    (20) secrule_line -> tok_confdir_secrule secvariable_expr_list . QUOTED secoperator_expr QUOTED
-    (21) secrule_line -> tok_confdir_secrule secvariable_expr_list . secoperatorarg_noquote QUOTED secaction_expr_list QUOTED
-    (22) secrule_line -> tok_confdir_secrule secvariable_expr_list . secoperatorarg_noquote
-    (25) secvariable_expr_list -> secvariable_expr_list . PIPE secvariable_expr
-    (26) secvariable_expr_list -> secvariable_expr_list . COMMA secvariable_expr
-    (51) secoperatorarg_noquote -> . SECRULE_OPERATOR_ARG_NOQUOTE
+    (6) modsec_config -> modsec_config directive_line .
 
-    QUOTED          shift and go to state 35
-    PIPE            shift and go to state 37
-    COMMA           shift and go to state 38
-    SECRULE_OPERATOR_ARG_NOQUOTE shift and go to state 39
+    T_COMMENT       reduce using rule 6 (modsec_config -> modsec_config directive_line .)
+    T_INCLUDE_DIRECTIVE reduce using rule 6 (modsec_config -> modsec_config directive_line .)
+    T_CONFIG_DIRECTIVE reduce using rule 6 (modsec_config -> modsec_config directive_line .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 6 (modsec_config -> modsec_config directive_line .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 6 (modsec_config -> modsec_config directive_line .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 6 (modsec_config -> modsec_config directive_line .)
+    $end            reduce using rule 6 (modsec_config -> modsec_config directive_line .)
 
-    secoperatorarg_noquote         shift and go to state 36
 
 state 22
 
-    (24) secvariable_expr_list -> secvariable_expr .
+    (8) modsec_config -> modsec_config secaction_line .
 
-    QUOTED          reduce using rule 24 (secvariable_expr_list -> secvariable_expr .)
-    PIPE            reduce using rule 24 (secvariable_expr_list -> secvariable_expr .)
-    COMMA           reduce using rule 24 (secvariable_expr_list -> secvariable_expr .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 24 (secvariable_expr_list -> secvariable_expr .)
+    T_COMMENT       reduce using rule 8 (modsec_config -> modsec_config secaction_line .)
+    T_INCLUDE_DIRECTIVE reduce using rule 8 (modsec_config -> modsec_config secaction_line .)
+    T_CONFIG_DIRECTIVE reduce using rule 8 (modsec_config -> modsec_config secaction_line .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 8 (modsec_config -> modsec_config secaction_line .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 8 (modsec_config -> modsec_config secaction_line .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 8 (modsec_config -> modsec_config secaction_line .)
+    $end            reduce using rule 8 (modsec_config -> modsec_config secaction_line .)
 
 
 state 23
 
-    (27) secvariable_expr -> tok_secrule_variable .
-    (33) tok_secrule_variable_with_arg -> tok_secrule_variable . tok_secrule_variable_colon secvariable_arg
-    (35) tok_secrule_variable_colon -> . COLON
+    (10) modsec_config -> modsec_config secrule_line .
 
-    QUOTED          reduce using rule 27 (secvariable_expr -> tok_secrule_variable .)
-    PIPE            reduce using rule 27 (secvariable_expr -> tok_secrule_variable .)
-    COMMA           reduce using rule 27 (secvariable_expr -> tok_secrule_variable .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 27 (secvariable_expr -> tok_secrule_variable .)
-    COLON           shift and go to state 41
+    T_COMMENT       reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    T_INCLUDE_DIRECTIVE reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    T_CONFIG_DIRECTIVE reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
+    $end            reduce using rule 10 (modsec_config -> modsec_config secrule_line .)
 
-    tok_secrule_variable_colon     shift and go to state 40
 
 state 24
 
-    (28) secvariable_expr -> tok_secrule_variable_prefix .
+    (17) directive_line -> tok_directive tok_directive_argument_list .
+    (21) tok_directive_argument_list -> tok_directive_argument_list . tok_directive_argument
+    (22) tok_directive_argument -> . tok_directive_argument_notquoted
+    (23) tok_directive_argument -> . tok_directive_argument_quoted_double
+    (24) tok_directive_argument -> . tok_directive_argument_quoted_single
+    (25) tok_directive_argument_notquoted -> . T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE
+    (26) tok_directive_argument_quoted_double -> . T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE
+    (27) tok_directive_argument_quoted_single -> . T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE
 
-    QUOTED          reduce using rule 28 (secvariable_expr -> tok_secrule_variable_prefix .)
-    PIPE            reduce using rule 28 (secvariable_expr -> tok_secrule_variable_prefix .)
-    COMMA           reduce using rule 28 (secvariable_expr -> tok_secrule_variable_prefix .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 28 (secvariable_expr -> tok_secrule_variable_prefix .)
+    T_COMMENT       reduce using rule 17 (directive_line -> tok_directive tok_directive_argument_list .)
+    T_INCLUDE_DIRECTIVE reduce using rule 17 (directive_line -> tok_directive tok_directive_argument_list .)
+    T_CONFIG_DIRECTIVE reduce using rule 17 (directive_line -> tok_directive tok_directive_argument_list .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 17 (directive_line -> tok_directive tok_directive_argument_list .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 17 (directive_line -> tok_directive tok_directive_argument_list .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 17 (directive_line -> tok_directive tok_directive_argument_list .)
+    $end            reduce using rule 17 (directive_line -> tok_directive tok_directive_argument_list .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE shift and go to state 29
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE shift and go to state 30
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE shift and go to state 31
 
+    tok_directive_argument         shift and go to state 47
+    tok_directive_argument_notquoted shift and go to state 26
+    tok_directive_argument_quoted_double shift and go to state 27
+    tok_directive_argument_quoted_single shift and go to state 28
 
 state 25
 
-    (29) secvariable_expr -> tok_secrule_variable_with_arg .
+    (20) tok_directive_argument_list -> tok_directive_argument .
 
-    QUOTED          reduce using rule 29 (secvariable_expr -> tok_secrule_variable_with_arg .)
-    PIPE            reduce using rule 29 (secvariable_expr -> tok_secrule_variable_with_arg .)
-    COMMA           reduce using rule 29 (secvariable_expr -> tok_secrule_variable_with_arg .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 29 (secvariable_expr -> tok_secrule_variable_with_arg .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE reduce using rule 20 (tok_directive_argument_list -> tok_directive_argument .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE reduce using rule 20 (tok_directive_argument_list -> tok_directive_argument .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE reduce using rule 20 (tok_directive_argument_list -> tok_directive_argument .)
+    T_COMMENT       reduce using rule 20 (tok_directive_argument_list -> tok_directive_argument .)
+    T_INCLUDE_DIRECTIVE reduce using rule 20 (tok_directive_argument_list -> tok_directive_argument .)
+    T_CONFIG_DIRECTIVE reduce using rule 20 (tok_directive_argument_list -> tok_directive_argument .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 20 (tok_directive_argument_list -> tok_directive_argument .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 20 (tok_directive_argument_list -> tok_directive_argument .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 20 (tok_directive_argument_list -> tok_directive_argument .)
+    $end            reduce using rule 20 (tok_directive_argument_list -> tok_directive_argument .)
 
 
 state 26
 
-    (30) secvariable_expr -> tok_secrule_variable_prefix_with_arg .
+    (22) tok_directive_argument -> tok_directive_argument_notquoted .
 
-    QUOTED          reduce using rule 30 (secvariable_expr -> tok_secrule_variable_prefix_with_arg .)
-    PIPE            reduce using rule 30 (secvariable_expr -> tok_secrule_variable_prefix_with_arg .)
-    COMMA           reduce using rule 30 (secvariable_expr -> tok_secrule_variable_prefix_with_arg .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 30 (secvariable_expr -> tok_secrule_variable_prefix_with_arg .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE reduce using rule 22 (tok_directive_argument -> tok_directive_argument_notquoted .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE reduce using rule 22 (tok_directive_argument -> tok_directive_argument_notquoted .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE reduce using rule 22 (tok_directive_argument -> tok_directive_argument_notquoted .)
+    T_COMMENT       reduce using rule 22 (tok_directive_argument -> tok_directive_argument_notquoted .)
+    T_INCLUDE_DIRECTIVE reduce using rule 22 (tok_directive_argument -> tok_directive_argument_notquoted .)
+    T_CONFIG_DIRECTIVE reduce using rule 22 (tok_directive_argument -> tok_directive_argument_notquoted .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 22 (tok_directive_argument -> tok_directive_argument_notquoted .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 22 (tok_directive_argument -> tok_directive_argument_notquoted .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 22 (tok_directive_argument -> tok_directive_argument_notquoted .)
+    $end            reduce using rule 22 (tok_directive_argument -> tok_directive_argument_notquoted .)
 
 
 state 27
 
-    (31) tok_secrule_variable -> SECRULE_VARIABLE .
+    (23) tok_directive_argument -> tok_directive_argument_quoted_double .
 
-    COLON           reduce using rule 31 (tok_secrule_variable -> SECRULE_VARIABLE .)
-    QUOTED          reduce using rule 31 (tok_secrule_variable -> SECRULE_VARIABLE .)
-    PIPE            reduce using rule 31 (tok_secrule_variable -> SECRULE_VARIABLE .)
-    COMMA           reduce using rule 31 (tok_secrule_variable -> SECRULE_VARIABLE .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 31 (tok_secrule_variable -> SECRULE_VARIABLE .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE reduce using rule 23 (tok_directive_argument -> tok_directive_argument_quoted_double .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE reduce using rule 23 (tok_directive_argument -> tok_directive_argument_quoted_double .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE reduce using rule 23 (tok_directive_argument -> tok_directive_argument_quoted_double .)
+    T_COMMENT       reduce using rule 23 (tok_directive_argument -> tok_directive_argument_quoted_double .)
+    T_INCLUDE_DIRECTIVE reduce using rule 23 (tok_directive_argument -> tok_directive_argument_quoted_double .)
+    T_CONFIG_DIRECTIVE reduce using rule 23 (tok_directive_argument -> tok_directive_argument_quoted_double .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 23 (tok_directive_argument -> tok_directive_argument_quoted_double .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 23 (tok_directive_argument -> tok_directive_argument_quoted_double .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 23 (tok_directive_argument -> tok_directive_argument_quoted_double .)
+    $end            reduce using rule 23 (tok_directive_argument -> tok_directive_argument_quoted_double .)
 
 
 state 28
 
-    (32) tok_secrule_variable_prefix -> secvariable_prefix . tok_secrule_variable
-    (34) tok_secrule_variable_prefix_with_arg -> secvariable_prefix . tok_secrule_variable tok_secrule_variable_colon secvariable_arg
-    (31) tok_secrule_variable -> . SECRULE_VARIABLE
+    (24) tok_directive_argument -> tok_directive_argument_quoted_single .
 
-    SECRULE_VARIABLE shift and go to state 27
+    T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE reduce using rule 24 (tok_directive_argument -> tok_directive_argument_quoted_single .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE reduce using rule 24 (tok_directive_argument -> tok_directive_argument_quoted_single .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE reduce using rule 24 (tok_directive_argument -> tok_directive_argument_quoted_single .)
+    T_COMMENT       reduce using rule 24 (tok_directive_argument -> tok_directive_argument_quoted_single .)
+    T_INCLUDE_DIRECTIVE reduce using rule 24 (tok_directive_argument -> tok_directive_argument_quoted_single .)
+    T_CONFIG_DIRECTIVE reduce using rule 24 (tok_directive_argument -> tok_directive_argument_quoted_single .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 24 (tok_directive_argument -> tok_directive_argument_quoted_single .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 24 (tok_directive_argument -> tok_directive_argument_quoted_single .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 24 (tok_directive_argument -> tok_directive_argument_quoted_single .)
+    $end            reduce using rule 24 (tok_directive_argument -> tok_directive_argument_quoted_single .)
 
-    tok_secrule_variable           shift and go to state 42
 
 state 29
 
-    (36) secvariable_prefix -> AND .
+    (25) tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE .
 
-    SECRULE_VARIABLE reduce using rule 36 (secvariable_prefix -> AND .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE reduce using rule 25 (tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE reduce using rule 25 (tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE reduce using rule 25 (tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE .)
+    T_COMMENT       reduce using rule 25 (tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE .)
+    T_INCLUDE_DIRECTIVE reduce using rule 25 (tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE .)
+    T_CONFIG_DIRECTIVE reduce using rule 25 (tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 25 (tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 25 (tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 25 (tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE .)
+    $end            reduce using rule 25 (tok_directive_argument_notquoted -> T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE .)
 
 
 state 30
 
-    (37) secvariable_prefix -> EXCLAMMARK .
-    (38) secvariable_prefix -> EXCLAMMARK . AND
+    (26) tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE .
 
-    SECRULE_VARIABLE reduce using rule 37 (secvariable_prefix -> EXCLAMMARK .)
-    AND             shift and go to state 43
+    T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE reduce using rule 26 (tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE reduce using rule 26 (tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE reduce using rule 26 (tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE .)
+    T_COMMENT       reduce using rule 26 (tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE .)
+    T_INCLUDE_DIRECTIVE reduce using rule 26 (tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE .)
+    T_CONFIG_DIRECTIVE reduce using rule 26 (tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 26 (tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 26 (tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 26 (tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE .)
+    $end            reduce using rule 26 (tok_directive_argument_quoted_double -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE .)
 
 
 state 31
 
-    (12) seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED . SECCOMPSIGNARG QUOTED
+    (27) tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE .
 
-    SECCOMPSIGNARG  shift and go to state 44
+    T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE reduce using rule 27 (tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE reduce using rule 27 (tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE reduce using rule 27 (tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE .)
+    T_COMMENT       reduce using rule 27 (tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE .)
+    T_INCLUDE_DIRECTIVE reduce using rule 27 (tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE .)
+    T_CONFIG_DIRECTIVE reduce using rule 27 (tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 27 (tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 27 (tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 27 (tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE .)
+    $end            reduce using rule 27 (tok_directive_argument_quoted_single -> T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE .)
 
 
 state 32
 
-    (13) secaction_line -> tok_confdir_secaction QUOTED . secaction_expr_list QUOTED
-    (52) secaction_expr_list -> . secaction_expr
-    (53) secaction_expr_list -> . secaction_expr_list COMMA secaction_expr
-    (54) secaction_expr -> . tok_secrule_action
-    (55) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
-    (56) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
-    (57) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-    (58) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-    (59) tok_secrule_action -> . SECRULE_ACTION
+    (29) secaction_line -> tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK . secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK
+    (75) secaction_expr_list -> . secaction_expr
+    (76) secaction_expr_list -> . secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr
+    (77) secaction_expr -> . secaction_single
+    (78) secaction_expr -> . secaction_with_argument
+    (79) secaction_expr -> . secaction_with_quoted_argument
+    (80) secaction_expr -> . secaction_with_argument_with_value
+    (81) secaction_expr -> . secaction_with_argument_with_value_and_param
+    (82) secaction_expr -> . secaction_with_argument_with_value_and_param_paramarg
+    (83) secaction_single -> . T_SECRULE_ACTION
+    (84) secaction_with_argument -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT
+    (85) secaction_with_quoted_argument -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE
+    (86) secaction_with_argument_with_value -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE
+    (87) secaction_with_argument_with_value_and_param -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER
+    (88) secaction_with_argument_with_value_and_param_paramarg -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
 
-    SECRULE_ACTION  shift and go to state 48
+    T_SECRULE_ACTION shift and go to state 56
 
-    secaction_expr_list            shift and go to state 45
-    secaction_expr                 shift and go to state 46
-    tok_secrule_action             shift and go to state 47
+    secaction_expr_list            shift and go to state 48
+    secaction_expr                 shift and go to state 49
+    secaction_single               shift and go to state 50
+    secaction_with_argument        shift and go to state 51
+    secaction_with_quoted_argument shift and go to state 52
+    secaction_with_argument_with_value shift and go to state 53
+    secaction_with_argument_with_value_and_param shift and go to state 54
+    secaction_with_argument_with_value_and_param_paramarg shift and go to state 55
 
 state 33
 
-    (17) secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED . SECMARKERARG QUOTED
+    (31) secrule_line -> secrule_directive secrule_argument_list . secrule_operator_expression secrule_actions
+    (32) secrule_line -> secrule_directive secrule_argument_list . secrule_operator_expression
+    (60) secrule_operator_expression -> . secrule_operator_expression_quoted
+    (61) secrule_operator_expression -> . secrule_operator_or_argument
+    (62) secrule_operator_expression -> . secrule_operator_and_argument
+    (63) secrule_operator_expression_quoted -> . T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK
+    (64) secrule_operator_expression_quoted -> . T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK
+    (65) secrule_operator_or_argument -> . secrule_operator_only
+    (66) secrule_operator_or_argument -> . secrule_operator_argument_only
+    (70) secrule_operator_and_argument -> . T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT
+    (71) secrule_operator_and_argument -> . T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT
+    (67) secrule_operator_only -> . T_SECRULE_OPERATOR
+    (68) secrule_operator_only -> . T_SECRULE_OPERATOR_WITH_EXCLAMMARK
+    (69) secrule_operator_argument_only -> . T_SECRULE_OPERATOR_ARGUMENT
 
-    SECMARKERARG    shift and go to state 49
+    T_SECRULE_OPERATOR_QUOTE_MARK shift and go to state 61
+    T_SECRULE_OPERATOR shift and go to state 64
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK shift and go to state 66
+    T_SECRULE_OPERATOR_ARGUMENT shift and go to state 65
 
+    secrule_operator_expression    shift and go to state 57
+    secrule_operator_expression_quoted shift and go to state 58
+    secrule_operator_or_argument   shift and go to state 59
+    secrule_operator_and_argument  shift and go to state 60
+    secrule_operator_only          shift and go to state 62
+    secrule_operator_argument_only shift and go to state 63
 
 state 34
 
-    (18) secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .
+    (34) secrule_argument_list -> secrule_variable_list .
+    (40) secrule_variable_list -> secrule_variable_list . secrule_variable_separator secrule_variable
+    (41) secrule_variable_list -> secrule_variable_list . secrule_variable_separator secrule_variable_counter
+    (42) secrule_variable_list -> secrule_variable_list . secrule_variable_separator secrule_variable_with_part
+    (43) secrule_variable_list -> secrule_variable_list . secrule_variable_separator secrule_variable_exclusion
+    (44) secrule_variable_list -> secrule_variable_list . secrule_variable_separator secrule_variable_exclusion_with_part
+    (59) secrule_variable_separator -> . T_SECRULE_VARIABLE_SEPARATOR
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
-    COMMENT         reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
-    CONFDIR_SECACTION reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
-    CONFDIR_SECMARKER reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
-    CONFDIR_SECRULE reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
-    $end            reduce using rule 18 (secmarker_line_noquoted -> CONFDIR_SECMARKER SECMARKERARG .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 34 (secrule_argument_list -> secrule_variable_list .)
+    T_SECRULE_OPERATOR reduce using rule 34 (secrule_argument_list -> secrule_variable_list .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 34 (secrule_argument_list -> secrule_variable_list .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 34 (secrule_argument_list -> secrule_variable_list .)
+    T_SECRULE_VARIABLE_SEPARATOR shift and go to state 68
 
+    secrule_variable_separator     shift and go to state 67
 
 state 35
 
-    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED . secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
-    (20) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED . secoperator_expr QUOTED
-    (43) secoperator_expr -> . tok_secoperator_group
-    (44) secoperator_expr -> . tok_secoperator_group secoperator_arg_group
-    (45) secoperator_expr -> . secoperator_arg_group
-    (46) tok_secoperator_group -> . ATSIGN SECRULE_OPERATOR
-    (47) tok_secoperator_group -> . EXCLAMMARK ATSIGN SECRULE_OPERATOR
-    (48) tok_secoperator_group -> . EXCLAMMARK
-    (49) secoperator_arg_group -> . SECRULE_OPERATOR_ARG
-    (50) secoperator_arg_group -> . NUMBER
+    (35) secrule_variable_list -> secrule_variable .
 
-    ATSIGN          shift and go to state 53
-    EXCLAMMARK      shift and go to state 54
-    SECRULE_OPERATOR_ARG shift and go to state 55
-    NUMBER          shift and go to state 56
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 35 (secrule_variable_list -> secrule_variable .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 35 (secrule_variable_list -> secrule_variable .)
+    T_SECRULE_OPERATOR reduce using rule 35 (secrule_variable_list -> secrule_variable .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 35 (secrule_variable_list -> secrule_variable .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 35 (secrule_variable_list -> secrule_variable .)
 
-    secoperator_expr               shift and go to state 50
-    tok_secoperator_group          shift and go to state 51
-    secoperator_arg_group          shift and go to state 52
 
 state 36
 
-    (21) secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote . QUOTED secaction_expr_list QUOTED
-    (22) secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote .
+    (36) secrule_variable_list -> secrule_variable_exclusion .
 
-    QUOTED          shift and go to state 57
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 22 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote .)
-    COMMENT         reduce using rule 22 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote .)
-    CONFDIR_SECACTION reduce using rule 22 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote .)
-    CONFDIR_SECMARKER reduce using rule 22 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote .)
-    CONFDIR_SECRULE reduce using rule 22 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote .)
-    $end            reduce using rule 22 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 36 (secrule_variable_list -> secrule_variable_exclusion .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 36 (secrule_variable_list -> secrule_variable_exclusion .)
+    T_SECRULE_OPERATOR reduce using rule 36 (secrule_variable_list -> secrule_variable_exclusion .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 36 (secrule_variable_list -> secrule_variable_exclusion .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 36 (secrule_variable_list -> secrule_variable_exclusion .)
 
 
 state 37
 
-    (25) secvariable_expr_list -> secvariable_expr_list PIPE . secvariable_expr
-    (27) secvariable_expr -> . tok_secrule_variable
-    (28) secvariable_expr -> . tok_secrule_variable_prefix
-    (29) secvariable_expr -> . tok_secrule_variable_with_arg
-    (30) secvariable_expr -> . tok_secrule_variable_prefix_with_arg
-    (31) tok_secrule_variable -> . SECRULE_VARIABLE
-    (32) tok_secrule_variable_prefix -> . secvariable_prefix tok_secrule_variable
-    (33) tok_secrule_variable_with_arg -> . tok_secrule_variable tok_secrule_variable_colon secvariable_arg
-    (34) tok_secrule_variable_prefix_with_arg -> . secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg
-    (36) secvariable_prefix -> . AND
-    (37) secvariable_prefix -> . EXCLAMMARK
-    (38) secvariable_prefix -> . EXCLAMMARK AND
+    (37) secrule_variable_list -> secrule_variable_counter .
 
-    SECRULE_VARIABLE shift and go to state 27
-    AND             shift and go to state 29
-    EXCLAMMARK      shift and go to state 30
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 37 (secrule_variable_list -> secrule_variable_counter .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 37 (secrule_variable_list -> secrule_variable_counter .)
+    T_SECRULE_OPERATOR reduce using rule 37 (secrule_variable_list -> secrule_variable_counter .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 37 (secrule_variable_list -> secrule_variable_counter .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 37 (secrule_variable_list -> secrule_variable_counter .)
 
-    secvariable_expr               shift and go to state 58
-    tok_secrule_variable           shift and go to state 23
-    tok_secrule_variable_prefix    shift and go to state 24
-    tok_secrule_variable_with_arg  shift and go to state 25
-    tok_secrule_variable_prefix_with_arg shift and go to state 26
-    secvariable_prefix             shift and go to state 28
 
 state 38
 
-    (26) secvariable_expr_list -> secvariable_expr_list COMMA . secvariable_expr
-    (27) secvariable_expr -> . tok_secrule_variable
-    (28) secvariable_expr -> . tok_secrule_variable_prefix
-    (29) secvariable_expr -> . tok_secrule_variable_with_arg
-    (30) secvariable_expr -> . tok_secrule_variable_prefix_with_arg
-    (31) tok_secrule_variable -> . SECRULE_VARIABLE
-    (32) tok_secrule_variable_prefix -> . secvariable_prefix tok_secrule_variable
-    (33) tok_secrule_variable_with_arg -> . tok_secrule_variable tok_secrule_variable_colon secvariable_arg
-    (34) tok_secrule_variable_prefix_with_arg -> . secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg
-    (36) secvariable_prefix -> . AND
-    (37) secvariable_prefix -> . EXCLAMMARK
-    (38) secvariable_prefix -> . EXCLAMMARK AND
+    (38) secrule_variable_list -> secrule_variable_with_part .
 
-    SECRULE_VARIABLE shift and go to state 27
-    AND             shift and go to state 29
-    EXCLAMMARK      shift and go to state 30
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 38 (secrule_variable_list -> secrule_variable_with_part .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 38 (secrule_variable_list -> secrule_variable_with_part .)
+    T_SECRULE_OPERATOR reduce using rule 38 (secrule_variable_list -> secrule_variable_with_part .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 38 (secrule_variable_list -> secrule_variable_with_part .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 38 (secrule_variable_list -> secrule_variable_with_part .)
 
-    secvariable_expr               shift and go to state 59
-    tok_secrule_variable           shift and go to state 23
-    tok_secrule_variable_prefix    shift and go to state 24
-    tok_secrule_variable_with_arg  shift and go to state 25
-    tok_secrule_variable_prefix_with_arg shift and go to state 26
-    secvariable_prefix             shift and go to state 28
 
 state 39
 
-    (51) secoperatorarg_noquote -> SECRULE_OPERATOR_ARG_NOQUOTE .
+    (39) secrule_variable_list -> secrule_variable_exclusion_with_part .
 
-    QUOTED          reduce using rule 51 (secoperatorarg_noquote -> SECRULE_OPERATOR_ARG_NOQUOTE .)
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 51 (secoperatorarg_noquote -> SECRULE_OPERATOR_ARG_NOQUOTE .)
-    COMMENT         reduce using rule 51 (secoperatorarg_noquote -> SECRULE_OPERATOR_ARG_NOQUOTE .)
-    CONFDIR_SECACTION reduce using rule 51 (secoperatorarg_noquote -> SECRULE_OPERATOR_ARG_NOQUOTE .)
-    CONFDIR_SECMARKER reduce using rule 51 (secoperatorarg_noquote -> SECRULE_OPERATOR_ARG_NOQUOTE .)
-    CONFDIR_SECRULE reduce using rule 51 (secoperatorarg_noquote -> SECRULE_OPERATOR_ARG_NOQUOTE .)
-    $end            reduce using rule 51 (secoperatorarg_noquote -> SECRULE_OPERATOR_ARG_NOQUOTE .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 39 (secrule_variable_list -> secrule_variable_exclusion_with_part .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 39 (secrule_variable_list -> secrule_variable_exclusion_with_part .)
+    T_SECRULE_OPERATOR reduce using rule 39 (secrule_variable_list -> secrule_variable_exclusion_with_part .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 39 (secrule_variable_list -> secrule_variable_exclusion_with_part .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 39 (secrule_variable_list -> secrule_variable_exclusion_with_part .)
 
 
 state 40
 
-    (33) tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon . secvariable_arg
-    (39) secvariable_arg -> . tok_secrule_variable_arg
-    (40) secvariable_arg -> . tok_secrule_variable_arg_quotes
-    (41) tok_secrule_variable_arg -> . SECRULE_VARIABLE_ARG
-    (42) tok_secrule_variable_arg_quotes -> . QUOTES SECRULE_VARIABLE_ARG QUOTES
+    (45) secrule_variable -> T_SECRULE_VARIABLE .
+    (47) secrule_variable_with_part -> T_SECRULE_VARIABLE . T_SECRULE_VARIABLE_PART
+    (48) secrule_variable_with_part -> T_SECRULE_VARIABLE . T_SECRULE_VARIABLE_PART_QUOTED
+    (49) secrule_variable_with_part -> T_SECRULE_VARIABLE . T_SECRULE_VARIABLE_PART_QUOTED_REGEX
 
-    SECRULE_VARIABLE_ARG shift and go to state 63
-    QUOTES          shift and go to state 64
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 45 (secrule_variable -> T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 45 (secrule_variable -> T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR reduce using rule 45 (secrule_variable -> T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 45 (secrule_variable -> T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 45 (secrule_variable -> T_SECRULE_VARIABLE .)
+    T_SECRULE_VARIABLE_PART shift and go to state 69
+    T_SECRULE_VARIABLE_PART_QUOTED shift and go to state 70
+    T_SECRULE_VARIABLE_PART_QUOTED_REGEX shift and go to state 71
 
-    secvariable_arg                shift and go to state 60
-    tok_secrule_variable_arg       shift and go to state 61
-    tok_secrule_variable_arg_quotes shift and go to state 62
 
 state 41
 
-    (35) tok_secrule_variable_colon -> COLON .
+    (46) secrule_variable_exclusion -> T_EXCLUSION_MARK . T_SECRULE_VARIABLE
+    (50) secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+    (51) secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+    (52) secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
 
-    SECRULE_VARIABLE_ARG reduce using rule 35 (tok_secrule_variable_colon -> COLON .)
-    QUOTES          reduce using rule 35 (tok_secrule_variable_colon -> COLON .)
+    T_SECRULE_VARIABLE shift and go to state 72
 
 
 state 42
 
-    (32) tok_secrule_variable_prefix -> secvariable_prefix tok_secrule_variable .
-    (34) tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable . tok_secrule_variable_colon secvariable_arg
-    (35) tok_secrule_variable_colon -> . COLON
+    (53) secrule_variable_counter -> secrule_variable_counter_only .
 
-    QUOTED          reduce using rule 32 (tok_secrule_variable_prefix -> secvariable_prefix tok_secrule_variable .)
-    PIPE            reduce using rule 32 (tok_secrule_variable_prefix -> secvariable_prefix tok_secrule_variable .)
-    COMMA           reduce using rule 32 (tok_secrule_variable_prefix -> secvariable_prefix tok_secrule_variable .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 32 (tok_secrule_variable_prefix -> secvariable_prefix tok_secrule_variable .)
-    COLON           shift and go to state 41
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 53 (secrule_variable_counter -> secrule_variable_counter_only .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 53 (secrule_variable_counter -> secrule_variable_counter_only .)
+    T_SECRULE_OPERATOR reduce using rule 53 (secrule_variable_counter -> secrule_variable_counter_only .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 53 (secrule_variable_counter -> secrule_variable_counter_only .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 53 (secrule_variable_counter -> secrule_variable_counter_only .)
 
-    tok_secrule_variable_colon     shift and go to state 65
 
 state 43
 
-    (38) secvariable_prefix -> EXCLAMMARK AND .
+    (54) secrule_variable_counter -> secrule_variable_counter_with_var .
 
-    SECRULE_VARIABLE reduce using rule 38 (secvariable_prefix -> EXCLAMMARK AND .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 54 (secrule_variable_counter -> secrule_variable_counter_with_var .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 54 (secrule_variable_counter -> secrule_variable_counter_with_var .)
+    T_SECRULE_OPERATOR reduce using rule 54 (secrule_variable_counter -> secrule_variable_counter_with_var .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 54 (secrule_variable_counter -> secrule_variable_counter_with_var .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 54 (secrule_variable_counter -> secrule_variable_counter_with_var .)
 
 
 state 44
 
-    (12) seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG . QUOTED
+    (55) secrule_variable_counter_only -> T_SECRULE_VARIABLE_COUNTER . T_SECRULE_VARIABLE
+    (56) secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+    (57) secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+    (58) secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
 
-    QUOTED          shift and go to state 66
+    T_SECRULE_VARIABLE shift and go to state 73
 
 
 state 45
 
-    (13) secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list . QUOTED
-    (53) secaction_expr_list -> secaction_expr_list . COMMA secaction_expr
+    (14) include_line_unquoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT .
 
-    QUOTED          shift and go to state 67
-    COMMA           shift and go to state 68
+    T_COMMENT       reduce using rule 14 (include_line_unquoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT .)
+    T_INCLUDE_DIRECTIVE reduce using rule 14 (include_line_unquoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT .)
+    T_CONFIG_DIRECTIVE reduce using rule 14 (include_line_unquoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 14 (include_line_unquoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 14 (include_line_unquoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 14 (include_line_unquoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT .)
+    $end            reduce using rule 14 (include_line_unquoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT .)
 
 
 state 46
 
-    (52) secaction_expr_list -> secaction_expr .
+    (15) include_line_quoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED .
 
-    QUOTED          reduce using rule 52 (secaction_expr_list -> secaction_expr .)
-    COMMA           reduce using rule 52 (secaction_expr_list -> secaction_expr .)
+    T_COMMENT       reduce using rule 15 (include_line_quoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED .)
+    T_INCLUDE_DIRECTIVE reduce using rule 15 (include_line_quoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED .)
+    T_CONFIG_DIRECTIVE reduce using rule 15 (include_line_quoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 15 (include_line_quoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 15 (include_line_quoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 15 (include_line_quoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED .)
+    $end            reduce using rule 15 (include_line_quoted_argument -> T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED .)
 
 
 state 47
 
-    (54) secaction_expr -> tok_secrule_action .
-    (55) secaction_expr -> tok_secrule_action . COLON secrule_action_argument
-    (56) secaction_expr -> tok_secrule_action . COLON QUOTES secrule_action_argument_singlequoted QUOTES
-    (57) secaction_expr -> tok_secrule_action . COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-    (58) secaction_expr -> tok_secrule_action . COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (21) tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument .
 
-    QUOTED          reduce using rule 54 (secaction_expr -> tok_secrule_action .)
-    COMMA           reduce using rule 54 (secaction_expr -> tok_secrule_action .)
-    COLON           shift and go to state 69
+    T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE reduce using rule 21 (tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE reduce using rule 21 (tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument .)
+    T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE reduce using rule 21 (tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument .)
+    T_COMMENT       reduce using rule 21 (tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument .)
+    T_INCLUDE_DIRECTIVE reduce using rule 21 (tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument .)
+    T_CONFIG_DIRECTIVE reduce using rule 21 (tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 21 (tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 21 (tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 21 (tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument .)
+    $end            reduce using rule 21 (tok_directive_argument_list -> tok_directive_argument_list tok_directive_argument .)
 
 
 state 48
 
-    (59) tok_secrule_action -> SECRULE_ACTION .
+    (29) secaction_line -> tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list . T_SECRULE_ACTION_QUOTE_MARK
+    (76) secaction_expr_list -> secaction_expr_list . T_SECRULE_ACTION_SEPARATOR secaction_expr
 
-    COLON           reduce using rule 59 (tok_secrule_action -> SECRULE_ACTION .)
-    QUOTED          reduce using rule 59 (tok_secrule_action -> SECRULE_ACTION .)
-    COMMA           reduce using rule 59 (tok_secrule_action -> SECRULE_ACTION .)
+    T_SECRULE_ACTION_QUOTE_MARK shift and go to state 74
+    T_SECRULE_ACTION_SEPARATOR shift and go to state 75
 
 
 state 49
 
-    (17) secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG . QUOTED
+    (75) secaction_expr_list -> secaction_expr .
 
-    QUOTED          shift and go to state 70
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 75 (secaction_expr_list -> secaction_expr .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 75 (secaction_expr_list -> secaction_expr .)
 
 
 state 50
 
-    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr . QUOTED QUOTED secaction_expr_list QUOTED
-    (20) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr . QUOTED
+    (77) secaction_expr -> secaction_single .
 
-    QUOTED          shift and go to state 71
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 77 (secaction_expr -> secaction_single .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 77 (secaction_expr -> secaction_single .)
 
 
 state 51
 
-    (43) secoperator_expr -> tok_secoperator_group .
-    (44) secoperator_expr -> tok_secoperator_group . secoperator_arg_group
-    (49) secoperator_arg_group -> . SECRULE_OPERATOR_ARG
-    (50) secoperator_arg_group -> . NUMBER
+    (78) secaction_expr -> secaction_with_argument .
 
-    QUOTED          reduce using rule 43 (secoperator_expr -> tok_secoperator_group .)
-    SECRULE_OPERATOR_ARG shift and go to state 55
-    NUMBER          shift and go to state 56
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 78 (secaction_expr -> secaction_with_argument .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 78 (secaction_expr -> secaction_with_argument .)
 
-    secoperator_arg_group          shift and go to state 72
 
 state 52
 
-    (45) secoperator_expr -> secoperator_arg_group .
+    (79) secaction_expr -> secaction_with_quoted_argument .
 
-    QUOTED          reduce using rule 45 (secoperator_expr -> secoperator_arg_group .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 79 (secaction_expr -> secaction_with_quoted_argument .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 79 (secaction_expr -> secaction_with_quoted_argument .)
 
 
 state 53
 
-    (46) tok_secoperator_group -> ATSIGN . SECRULE_OPERATOR
+    (80) secaction_expr -> secaction_with_argument_with_value .
 
-    SECRULE_OPERATOR shift and go to state 73
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 80 (secaction_expr -> secaction_with_argument_with_value .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 80 (secaction_expr -> secaction_with_argument_with_value .)
 
 
 state 54
 
-    (47) tok_secoperator_group -> EXCLAMMARK . ATSIGN SECRULE_OPERATOR
-    (48) tok_secoperator_group -> EXCLAMMARK .
+    (81) secaction_expr -> secaction_with_argument_with_value_and_param .
 
-    ATSIGN          shift and go to state 74
-    SECRULE_OPERATOR_ARG reduce using rule 48 (tok_secoperator_group -> EXCLAMMARK .)
-    NUMBER          reduce using rule 48 (tok_secoperator_group -> EXCLAMMARK .)
-    QUOTED          reduce using rule 48 (tok_secoperator_group -> EXCLAMMARK .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 81 (secaction_expr -> secaction_with_argument_with_value_and_param .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 81 (secaction_expr -> secaction_with_argument_with_value_and_param .)
 
 
 state 55
 
-    (49) secoperator_arg_group -> SECRULE_OPERATOR_ARG .
+    (82) secaction_expr -> secaction_with_argument_with_value_and_param_paramarg .
 
-    QUOTED          reduce using rule 49 (secoperator_arg_group -> SECRULE_OPERATOR_ARG .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 82 (secaction_expr -> secaction_with_argument_with_value_and_param_paramarg .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 82 (secaction_expr -> secaction_with_argument_with_value_and_param_paramarg .)
 
 
 state 56
 
-    (50) secoperator_arg_group -> NUMBER .
+    (83) secaction_single -> T_SECRULE_ACTION .
+    (84) secaction_with_argument -> T_SECRULE_ACTION . T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT
+    (85) secaction_with_quoted_argument -> T_SECRULE_ACTION . T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE
+    (86) secaction_with_argument_with_value -> T_SECRULE_ACTION . T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE
+    (87) secaction_with_argument_with_value_and_param -> T_SECRULE_ACTION . T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER
+    (88) secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION . T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
 
-    QUOTED          reduce using rule 50 (secoperator_arg_group -> NUMBER .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 83 (secaction_single -> T_SECRULE_ACTION .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 83 (secaction_single -> T_SECRULE_ACTION .)
+    T_SECRULE_ACTION_COLON shift and go to state 76
 
 
 state 57
 
-    (21) secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED . secaction_expr_list QUOTED
-    (52) secaction_expr_list -> . secaction_expr
-    (53) secaction_expr_list -> . secaction_expr_list COMMA secaction_expr
-    (54) secaction_expr -> . tok_secrule_action
-    (55) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
-    (56) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
-    (57) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-    (58) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-    (59) tok_secrule_action -> . SECRULE_ACTION
+    (31) secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression . secrule_actions
+    (32) secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression .
+    (72) secrule_actions -> . T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK
 
-    SECRULE_ACTION  shift and go to state 48
+    T_COMMENT       reduce using rule 32 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression .)
+    T_INCLUDE_DIRECTIVE reduce using rule 32 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression .)
+    T_CONFIG_DIRECTIVE reduce using rule 32 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 32 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 32 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 32 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression .)
+    $end            reduce using rule 32 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression .)
+    T_SECRULE_ACTION_QUOTE_MARK shift and go to state 78
 
-    secaction_expr_list            shift and go to state 75
-    secaction_expr                 shift and go to state 46
-    tok_secrule_action             shift and go to state 47
+    secrule_actions                shift and go to state 77
 
 state 58
 
-    (25) secvariable_expr_list -> secvariable_expr_list PIPE secvariable_expr .
+    (60) secrule_operator_expression -> secrule_operator_expression_quoted .
 
-    QUOTED          reduce using rule 25 (secvariable_expr_list -> secvariable_expr_list PIPE secvariable_expr .)
-    PIPE            reduce using rule 25 (secvariable_expr_list -> secvariable_expr_list PIPE secvariable_expr .)
-    COMMA           reduce using rule 25 (secvariable_expr_list -> secvariable_expr_list PIPE secvariable_expr .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 25 (secvariable_expr_list -> secvariable_expr_list PIPE secvariable_expr .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 60 (secrule_operator_expression -> secrule_operator_expression_quoted .)
+    T_COMMENT       reduce using rule 60 (secrule_operator_expression -> secrule_operator_expression_quoted .)
+    T_INCLUDE_DIRECTIVE reduce using rule 60 (secrule_operator_expression -> secrule_operator_expression_quoted .)
+    T_CONFIG_DIRECTIVE reduce using rule 60 (secrule_operator_expression -> secrule_operator_expression_quoted .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 60 (secrule_operator_expression -> secrule_operator_expression_quoted .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 60 (secrule_operator_expression -> secrule_operator_expression_quoted .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 60 (secrule_operator_expression -> secrule_operator_expression_quoted .)
+    $end            reduce using rule 60 (secrule_operator_expression -> secrule_operator_expression_quoted .)
 
 
 state 59
 
-    (26) secvariable_expr_list -> secvariable_expr_list COMMA secvariable_expr .
+    (61) secrule_operator_expression -> secrule_operator_or_argument .
 
-    QUOTED          reduce using rule 26 (secvariable_expr_list -> secvariable_expr_list COMMA secvariable_expr .)
-    PIPE            reduce using rule 26 (secvariable_expr_list -> secvariable_expr_list COMMA secvariable_expr .)
-    COMMA           reduce using rule 26 (secvariable_expr_list -> secvariable_expr_list COMMA secvariable_expr .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 26 (secvariable_expr_list -> secvariable_expr_list COMMA secvariable_expr .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 61 (secrule_operator_expression -> secrule_operator_or_argument .)
+    T_COMMENT       reduce using rule 61 (secrule_operator_expression -> secrule_operator_or_argument .)
+    T_INCLUDE_DIRECTIVE reduce using rule 61 (secrule_operator_expression -> secrule_operator_or_argument .)
+    T_CONFIG_DIRECTIVE reduce using rule 61 (secrule_operator_expression -> secrule_operator_or_argument .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 61 (secrule_operator_expression -> secrule_operator_or_argument .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 61 (secrule_operator_expression -> secrule_operator_or_argument .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 61 (secrule_operator_expression -> secrule_operator_or_argument .)
+    $end            reduce using rule 61 (secrule_operator_expression -> secrule_operator_or_argument .)
 
 
 state 60
 
-    (33) tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon secvariable_arg .
+    (62) secrule_operator_expression -> secrule_operator_and_argument .
 
-    QUOTED          reduce using rule 33 (tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
-    PIPE            reduce using rule 33 (tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
-    COMMA           reduce using rule 33 (tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 33 (tok_secrule_variable_with_arg -> tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 62 (secrule_operator_expression -> secrule_operator_and_argument .)
+    T_COMMENT       reduce using rule 62 (secrule_operator_expression -> secrule_operator_and_argument .)
+    T_INCLUDE_DIRECTIVE reduce using rule 62 (secrule_operator_expression -> secrule_operator_and_argument .)
+    T_CONFIG_DIRECTIVE reduce using rule 62 (secrule_operator_expression -> secrule_operator_and_argument .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 62 (secrule_operator_expression -> secrule_operator_and_argument .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 62 (secrule_operator_expression -> secrule_operator_and_argument .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 62 (secrule_operator_expression -> secrule_operator_and_argument .)
+    $end            reduce using rule 62 (secrule_operator_expression -> secrule_operator_and_argument .)
 
 
 state 61
 
-    (39) secvariable_arg -> tok_secrule_variable_arg .
+    (63) secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK . secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK
+    (64) secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK . secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK
+    (65) secrule_operator_or_argument -> . secrule_operator_only
+    (66) secrule_operator_or_argument -> . secrule_operator_argument_only
+    (70) secrule_operator_and_argument -> . T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT
+    (71) secrule_operator_and_argument -> . T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT
+    (67) secrule_operator_only -> . T_SECRULE_OPERATOR
+    (68) secrule_operator_only -> . T_SECRULE_OPERATOR_WITH_EXCLAMMARK
+    (69) secrule_operator_argument_only -> . T_SECRULE_OPERATOR_ARGUMENT
 
-    QUOTED          reduce using rule 39 (secvariable_arg -> tok_secrule_variable_arg .)
-    PIPE            reduce using rule 39 (secvariable_arg -> tok_secrule_variable_arg .)
-    COMMA           reduce using rule 39 (secvariable_arg -> tok_secrule_variable_arg .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 39 (secvariable_arg -> tok_secrule_variable_arg .)
+    T_SECRULE_OPERATOR shift and go to state 64
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK shift and go to state 66
+    T_SECRULE_OPERATOR_ARGUMENT shift and go to state 65
 
+    secrule_operator_or_argument   shift and go to state 79
+    secrule_operator_and_argument  shift and go to state 80
+    secrule_operator_only          shift and go to state 62
+    secrule_operator_argument_only shift and go to state 63
 
 state 62
 
-    (40) secvariable_arg -> tok_secrule_variable_arg_quotes .
+    (65) secrule_operator_or_argument -> secrule_operator_only .
 
-    QUOTED          reduce using rule 40 (secvariable_arg -> tok_secrule_variable_arg_quotes .)
-    PIPE            reduce using rule 40 (secvariable_arg -> tok_secrule_variable_arg_quotes .)
-    COMMA           reduce using rule 40 (secvariable_arg -> tok_secrule_variable_arg_quotes .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 40 (secvariable_arg -> tok_secrule_variable_arg_quotes .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 65 (secrule_operator_or_argument -> secrule_operator_only .)
+    T_COMMENT       reduce using rule 65 (secrule_operator_or_argument -> secrule_operator_only .)
+    T_INCLUDE_DIRECTIVE reduce using rule 65 (secrule_operator_or_argument -> secrule_operator_only .)
+    T_CONFIG_DIRECTIVE reduce using rule 65 (secrule_operator_or_argument -> secrule_operator_only .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 65 (secrule_operator_or_argument -> secrule_operator_only .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 65 (secrule_operator_or_argument -> secrule_operator_only .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 65 (secrule_operator_or_argument -> secrule_operator_only .)
+    $end            reduce using rule 65 (secrule_operator_or_argument -> secrule_operator_only .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 65 (secrule_operator_or_argument -> secrule_operator_only .)
 
 
 state 63
 
-    (41) tok_secrule_variable_arg -> SECRULE_VARIABLE_ARG .
+    (66) secrule_operator_or_argument -> secrule_operator_argument_only .
 
-    QUOTED          reduce using rule 41 (tok_secrule_variable_arg -> SECRULE_VARIABLE_ARG .)
-    PIPE            reduce using rule 41 (tok_secrule_variable_arg -> SECRULE_VARIABLE_ARG .)
-    COMMA           reduce using rule 41 (tok_secrule_variable_arg -> SECRULE_VARIABLE_ARG .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 41 (tok_secrule_variable_arg -> SECRULE_VARIABLE_ARG .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 66 (secrule_operator_or_argument -> secrule_operator_argument_only .)
+    T_COMMENT       reduce using rule 66 (secrule_operator_or_argument -> secrule_operator_argument_only .)
+    T_INCLUDE_DIRECTIVE reduce using rule 66 (secrule_operator_or_argument -> secrule_operator_argument_only .)
+    T_CONFIG_DIRECTIVE reduce using rule 66 (secrule_operator_or_argument -> secrule_operator_argument_only .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 66 (secrule_operator_or_argument -> secrule_operator_argument_only .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 66 (secrule_operator_or_argument -> secrule_operator_argument_only .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 66 (secrule_operator_or_argument -> secrule_operator_argument_only .)
+    $end            reduce using rule 66 (secrule_operator_or_argument -> secrule_operator_argument_only .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 66 (secrule_operator_or_argument -> secrule_operator_argument_only .)
 
 
 state 64
 
-    (42) tok_secrule_variable_arg_quotes -> QUOTES . SECRULE_VARIABLE_ARG QUOTES
+    (70) secrule_operator_and_argument -> T_SECRULE_OPERATOR . T_SECRULE_OPERATOR_ARGUMENT
+    (67) secrule_operator_only -> T_SECRULE_OPERATOR .
 
-    SECRULE_VARIABLE_ARG shift and go to state 76
+    T_SECRULE_OPERATOR_ARGUMENT shift and go to state 81
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 67 (secrule_operator_only -> T_SECRULE_OPERATOR .)
+    T_COMMENT       reduce using rule 67 (secrule_operator_only -> T_SECRULE_OPERATOR .)
+    T_INCLUDE_DIRECTIVE reduce using rule 67 (secrule_operator_only -> T_SECRULE_OPERATOR .)
+    T_CONFIG_DIRECTIVE reduce using rule 67 (secrule_operator_only -> T_SECRULE_OPERATOR .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 67 (secrule_operator_only -> T_SECRULE_OPERATOR .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 67 (secrule_operator_only -> T_SECRULE_OPERATOR .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 67 (secrule_operator_only -> T_SECRULE_OPERATOR .)
+    $end            reduce using rule 67 (secrule_operator_only -> T_SECRULE_OPERATOR .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 67 (secrule_operator_only -> T_SECRULE_OPERATOR .)
 
 
 state 65
 
-    (34) tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon . secvariable_arg
-    (39) secvariable_arg -> . tok_secrule_variable_arg
-    (40) secvariable_arg -> . tok_secrule_variable_arg_quotes
-    (41) tok_secrule_variable_arg -> . SECRULE_VARIABLE_ARG
-    (42) tok_secrule_variable_arg_quotes -> . QUOTES SECRULE_VARIABLE_ARG QUOTES
+    (69) secrule_operator_argument_only -> T_SECRULE_OPERATOR_ARGUMENT .
 
-    SECRULE_VARIABLE_ARG shift and go to state 63
-    QUOTES          shift and go to state 64
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 69 (secrule_operator_argument_only -> T_SECRULE_OPERATOR_ARGUMENT .)
+    T_COMMENT       reduce using rule 69 (secrule_operator_argument_only -> T_SECRULE_OPERATOR_ARGUMENT .)
+    T_INCLUDE_DIRECTIVE reduce using rule 69 (secrule_operator_argument_only -> T_SECRULE_OPERATOR_ARGUMENT .)
+    T_CONFIG_DIRECTIVE reduce using rule 69 (secrule_operator_argument_only -> T_SECRULE_OPERATOR_ARGUMENT .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 69 (secrule_operator_argument_only -> T_SECRULE_OPERATOR_ARGUMENT .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 69 (secrule_operator_argument_only -> T_SECRULE_OPERATOR_ARGUMENT .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 69 (secrule_operator_argument_only -> T_SECRULE_OPERATOR_ARGUMENT .)
+    $end            reduce using rule 69 (secrule_operator_argument_only -> T_SECRULE_OPERATOR_ARGUMENT .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 69 (secrule_operator_argument_only -> T_SECRULE_OPERATOR_ARGUMENT .)
 
-    secvariable_arg                shift and go to state 77
-    tok_secrule_variable_arg       shift and go to state 61
-    tok_secrule_variable_arg_quotes shift and go to state 62
 
 state 66
 
-    (12) seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .
+    (71) secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK . T_SECRULE_OPERATOR_ARGUMENT
+    (68) secrule_operator_only -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
-    COMMENT         reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
-    CONFDIR_SECACTION reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
-    CONFDIR_SECMARKER reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
-    CONFDIR_SECRULE reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
-    $end            reduce using rule 12 (seccompsignature_line -> CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED .)
+    T_SECRULE_OPERATOR_ARGUMENT shift and go to state 82
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 68 (secrule_operator_only -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK .)
+    T_COMMENT       reduce using rule 68 (secrule_operator_only -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK .)
+    T_INCLUDE_DIRECTIVE reduce using rule 68 (secrule_operator_only -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK .)
+    T_CONFIG_DIRECTIVE reduce using rule 68 (secrule_operator_only -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 68 (secrule_operator_only -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 68 (secrule_operator_only -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 68 (secrule_operator_only -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK .)
+    $end            reduce using rule 68 (secrule_operator_only -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 68 (secrule_operator_only -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK .)
 
 
 state 67
 
-    (13) secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .
+    (40) secrule_variable_list -> secrule_variable_list secrule_variable_separator . secrule_variable
+    (41) secrule_variable_list -> secrule_variable_list secrule_variable_separator . secrule_variable_counter
+    (42) secrule_variable_list -> secrule_variable_list secrule_variable_separator . secrule_variable_with_part
+    (43) secrule_variable_list -> secrule_variable_list secrule_variable_separator . secrule_variable_exclusion
+    (44) secrule_variable_list -> secrule_variable_list secrule_variable_separator . secrule_variable_exclusion_with_part
+    (45) secrule_variable -> . T_SECRULE_VARIABLE
+    (53) secrule_variable_counter -> . secrule_variable_counter_only
+    (54) secrule_variable_counter -> . secrule_variable_counter_with_var
+    (47) secrule_variable_with_part -> . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+    (48) secrule_variable_with_part -> . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+    (49) secrule_variable_with_part -> . T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
+    (46) secrule_variable_exclusion -> . T_EXCLUSION_MARK T_SECRULE_VARIABLE
+    (50) secrule_variable_exclusion_with_part -> . T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+    (51) secrule_variable_exclusion_with_part -> . T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+    (52) secrule_variable_exclusion_with_part -> . T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
+    (55) secrule_variable_counter_only -> . T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE
+    (56) secrule_variable_counter_with_var -> . T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+    (57) secrule_variable_counter_with_var -> . T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+    (58) secrule_variable_counter_with_var -> . T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
-    COMMENT         reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
-    CONFDIR_SECACTION reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
-    CONFDIR_SECMARKER reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
-    CONFDIR_SECRULE reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
-    $end            reduce using rule 13 (secaction_line -> tok_confdir_secaction QUOTED secaction_expr_list QUOTED .)
+    T_SECRULE_VARIABLE shift and go to state 40
+    T_EXCLUSION_MARK shift and go to state 41
+    T_SECRULE_VARIABLE_COUNTER shift and go to state 44
 
+    secrule_variable               shift and go to state 83
+    secrule_variable_counter       shift and go to state 84
+    secrule_variable_with_part     shift and go to state 85
+    secrule_variable_exclusion     shift and go to state 86
+    secrule_variable_exclusion_with_part shift and go to state 87
+    secrule_variable_counter_only  shift and go to state 42
+    secrule_variable_counter_with_var shift and go to state 43
 
 state 68
 
-    (53) secaction_expr_list -> secaction_expr_list COMMA . secaction_expr
-    (54) secaction_expr -> . tok_secrule_action
-    (55) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
-    (56) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
-    (57) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-    (58) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-    (59) tok_secrule_action -> . SECRULE_ACTION
+    (59) secrule_variable_separator -> T_SECRULE_VARIABLE_SEPARATOR .
 
-    SECRULE_ACTION  shift and go to state 48
+    T_SECRULE_VARIABLE reduce using rule 59 (secrule_variable_separator -> T_SECRULE_VARIABLE_SEPARATOR .)
+    T_EXCLUSION_MARK reduce using rule 59 (secrule_variable_separator -> T_SECRULE_VARIABLE_SEPARATOR .)
+    T_SECRULE_VARIABLE_COUNTER reduce using rule 59 (secrule_variable_separator -> T_SECRULE_VARIABLE_SEPARATOR .)
 
-    secaction_expr                 shift and go to state 78
-    tok_secrule_action             shift and go to state 47
 
 state 69
 
-    (55) secaction_expr -> tok_secrule_action COLON . secrule_action_argument
-    (56) secaction_expr -> tok_secrule_action COLON . QUOTES secrule_action_argument_singlequoted QUOTES
-    (57) secaction_expr -> tok_secrule_action COLON . secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-    (58) secaction_expr -> tok_secrule_action COLON . secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-    (60) secrule_action_argument -> . SECRULE_ACTION_ARG
-    (61) secrule_action_argument -> . NUMBER
-    (62) secrule_action_argument -> . SECRULE_ACTION_TRANSFORMS
-    (63) secrule_action_argument -> . SECRULE_ACTION_CTLACTION
-    (64) secrule_action_argument -> . SECRULE_ACTION_SKIPAFTERACTIONARG
-    (65) secrule_action_argument -> . SECRULE_ACTION_INITCOLACTIONARG
+    (47) secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .
 
-    QUOTES          shift and go to state 80
-    SECRULE_ACTION_ARG shift and go to state 81
-    NUMBER          shift and go to state 82
-    SECRULE_ACTION_TRANSFORMS shift and go to state 83
-    SECRULE_ACTION_CTLACTION shift and go to state 84
-    SECRULE_ACTION_SKIPAFTERACTIONARG shift and go to state 85
-    SECRULE_ACTION_INITCOLACTIONARG shift and go to state 86
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 47 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 47 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR reduce using rule 47 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 47 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 47 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
 
-    secrule_action_argument        shift and go to state 79
 
 state 70
 
-    (17) secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .
+    (48) secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
-    COMMENT         reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
-    CONFDIR_SECACTION reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
-    CONFDIR_SECMARKER reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
-    CONFDIR_SECRULE reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
-    $end            reduce using rule 17 (secmarker_line_quoted -> CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 48 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 48 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR reduce using rule 48 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 48 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 48 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
 
 
 state 71
 
-    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED . QUOTED secaction_expr_list QUOTED
-    (20) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .
+    (49) secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .
 
-    QUOTED          shift and go to state 87
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
-    COMMENT         reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
-    CONFDIR_SECACTION reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
-    CONFDIR_SECMARKER reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
-    CONFDIR_SECRULE reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
-    $end            reduce using rule 20 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 49 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 49 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR reduce using rule 49 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 49 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 49 (secrule_variable_with_part -> T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
 
 
 state 72
 
-    (44) secoperator_expr -> tok_secoperator_group secoperator_arg_group .
+    (46) secrule_variable_exclusion -> T_EXCLUSION_MARK T_SECRULE_VARIABLE .
+    (50) secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE . T_SECRULE_VARIABLE_PART
+    (51) secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE . T_SECRULE_VARIABLE_PART_QUOTED
+    (52) secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE . T_SECRULE_VARIABLE_PART_QUOTED_REGEX
 
-    QUOTED          reduce using rule 44 (secoperator_expr -> tok_secoperator_group secoperator_arg_group .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 46 (secrule_variable_exclusion -> T_EXCLUSION_MARK T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 46 (secrule_variable_exclusion -> T_EXCLUSION_MARK T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR reduce using rule 46 (secrule_variable_exclusion -> T_EXCLUSION_MARK T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 46 (secrule_variable_exclusion -> T_EXCLUSION_MARK T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 46 (secrule_variable_exclusion -> T_EXCLUSION_MARK T_SECRULE_VARIABLE .)
+    T_SECRULE_VARIABLE_PART shift and go to state 88
+    T_SECRULE_VARIABLE_PART_QUOTED shift and go to state 89
+    T_SECRULE_VARIABLE_PART_QUOTED_REGEX shift and go to state 90
 
 
 state 73
 
-    (46) tok_secoperator_group -> ATSIGN SECRULE_OPERATOR .
+    (55) secrule_variable_counter_only -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE .
+    (56) secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE . T_SECRULE_VARIABLE_PART
+    (57) secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE . T_SECRULE_VARIABLE_PART_QUOTED
+    (58) secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE . T_SECRULE_VARIABLE_PART_QUOTED_REGEX
 
-    SECRULE_OPERATOR_ARG reduce using rule 46 (tok_secoperator_group -> ATSIGN SECRULE_OPERATOR .)
-    NUMBER          reduce using rule 46 (tok_secoperator_group -> ATSIGN SECRULE_OPERATOR .)
-    QUOTED          reduce using rule 46 (tok_secoperator_group -> ATSIGN SECRULE_OPERATOR .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 55 (secrule_variable_counter_only -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 55 (secrule_variable_counter_only -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR reduce using rule 55 (secrule_variable_counter_only -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 55 (secrule_variable_counter_only -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 55 (secrule_variable_counter_only -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE .)
+    T_SECRULE_VARIABLE_PART shift and go to state 91
+    T_SECRULE_VARIABLE_PART_QUOTED shift and go to state 92
+    T_SECRULE_VARIABLE_PART_QUOTED_REGEX shift and go to state 93
 
 
 state 74
 
-    (47) tok_secoperator_group -> EXCLAMMARK ATSIGN . SECRULE_OPERATOR
+    (29) secaction_line -> tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK .
 
-    SECRULE_OPERATOR shift and go to state 88
+    T_COMMENT       reduce using rule 29 (secaction_line -> tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK .)
+    T_INCLUDE_DIRECTIVE reduce using rule 29 (secaction_line -> tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE reduce using rule 29 (secaction_line -> tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 29 (secaction_line -> tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 29 (secaction_line -> tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 29 (secaction_line -> tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK .)
+    $end            reduce using rule 29 (secaction_line -> tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK .)
 
 
 state 75
 
-    (21) secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list . QUOTED
-    (53) secaction_expr_list -> secaction_expr_list . COMMA secaction_expr
+    (76) secaction_expr_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR . secaction_expr
+    (77) secaction_expr -> . secaction_single
+    (78) secaction_expr -> . secaction_with_argument
+    (79) secaction_expr -> . secaction_with_quoted_argument
+    (80) secaction_expr -> . secaction_with_argument_with_value
+    (81) secaction_expr -> . secaction_with_argument_with_value_and_param
+    (82) secaction_expr -> . secaction_with_argument_with_value_and_param_paramarg
+    (83) secaction_single -> . T_SECRULE_ACTION
+    (84) secaction_with_argument -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT
+    (85) secaction_with_quoted_argument -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE
+    (86) secaction_with_argument_with_value -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE
+    (87) secaction_with_argument_with_value_and_param -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER
+    (88) secaction_with_argument_with_value_and_param_paramarg -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
 
-    QUOTED          shift and go to state 89
-    COMMA           shift and go to state 68
+    T_SECRULE_ACTION shift and go to state 56
 
+    secaction_expr                 shift and go to state 94
+    secaction_single               shift and go to state 50
+    secaction_with_argument        shift and go to state 51
+    secaction_with_quoted_argument shift and go to state 52
+    secaction_with_argument_with_value shift and go to state 53
+    secaction_with_argument_with_value_and_param shift and go to state 54
+    secaction_with_argument_with_value_and_param_paramarg shift and go to state 55
 
 state 76
 
-    (42) tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG . QUOTES
+    (84) secaction_with_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON . T_SECRULE_ACTION_ARGUMENT
+    (85) secaction_with_quoted_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON . T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE
+    (86) secaction_with_argument_with_value -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON . T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE
+    (87) secaction_with_argument_with_value_and_param -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON . T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER
+    (88) secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON . T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
 
-    QUOTES          shift and go to state 90
+    T_SECRULE_ACTION_ARGUMENT shift and go to state 95
+    T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE shift and go to state 96
 
 
 state 77
 
-    (34) tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg .
+    (31) secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression secrule_actions .
 
-    QUOTED          reduce using rule 34 (tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
-    PIPE            reduce using rule 34 (tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
-    COMMA           reduce using rule 34 (tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 34 (tok_secrule_variable_prefix_with_arg -> secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg .)
+    T_COMMENT       reduce using rule 31 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression secrule_actions .)
+    T_INCLUDE_DIRECTIVE reduce using rule 31 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression secrule_actions .)
+    T_CONFIG_DIRECTIVE reduce using rule 31 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression secrule_actions .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 31 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression secrule_actions .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 31 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression secrule_actions .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 31 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression secrule_actions .)
+    $end            reduce using rule 31 (secrule_line -> secrule_directive secrule_argument_list secrule_operator_expression secrule_actions .)
 
 
 state 78
 
-    (53) secaction_expr_list -> secaction_expr_list COMMA secaction_expr .
+    (72) secrule_actions -> T_SECRULE_ACTION_QUOTE_MARK . secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK
+    (73) secrule_actions_list -> . secaction_expr
+    (74) secrule_actions_list -> . secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr
+    (77) secaction_expr -> . secaction_single
+    (78) secaction_expr -> . secaction_with_argument
+    (79) secaction_expr -> . secaction_with_quoted_argument
+    (80) secaction_expr -> . secaction_with_argument_with_value
+    (81) secaction_expr -> . secaction_with_argument_with_value_and_param
+    (82) secaction_expr -> . secaction_with_argument_with_value_and_param_paramarg
+    (75) secaction_expr_list -> . secaction_expr
+    (76) secaction_expr_list -> . secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr
+    (83) secaction_single -> . T_SECRULE_ACTION
+    (84) secaction_with_argument -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT
+    (85) secaction_with_quoted_argument -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE
+    (86) secaction_with_argument_with_value -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE
+    (87) secaction_with_argument_with_value_and_param -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER
+    (88) secaction_with_argument_with_value_and_param_paramarg -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
 
-    QUOTED          reduce using rule 53 (secaction_expr_list -> secaction_expr_list COMMA secaction_expr .)
-    COMMA           reduce using rule 53 (secaction_expr_list -> secaction_expr_list COMMA secaction_expr .)
+    T_SECRULE_ACTION shift and go to state 56
 
+    secrule_actions_list           shift and go to state 97
+    secaction_expr                 shift and go to state 98
+    secaction_expr_list            shift and go to state 99
+    secaction_single               shift and go to state 50
+    secaction_with_argument        shift and go to state 51
+    secaction_with_quoted_argument shift and go to state 52
+    secaction_with_argument_with_value shift and go to state 53
+    secaction_with_argument_with_value_and_param shift and go to state 54
+    secaction_with_argument_with_value_and_param_paramarg shift and go to state 55
 
 state 79
 
-    (55) secaction_expr -> tok_secrule_action COLON secrule_action_argument .
-    (57) secaction_expr -> tok_secrule_action COLON secrule_action_argument . EQUALMARK tok_secrule_action_ctlactionarg
-    (58) secaction_expr -> tok_secrule_action COLON secrule_action_argument . EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
+    (63) secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument . T_SECRULE_OPERATOR_QUOTE_MARK
 
-    QUOTED          reduce using rule 55 (secaction_expr -> tok_secrule_action COLON secrule_action_argument .)
-    COMMA           reduce using rule 55 (secaction_expr -> tok_secrule_action COLON secrule_action_argument .)
-    EQUALMARK       shift and go to state 91
+    T_SECRULE_OPERATOR_QUOTE_MARK shift and go to state 100
 
 
 state 80
 
-    (56) secaction_expr -> tok_secrule_action COLON QUOTES . secrule_action_argument_singlequoted QUOTES
-    (66) secrule_action_argument_singlequoted -> . SECRULE_ACTION_ARG
-    (67) secrule_action_argument_singlequoted -> . EXCLAMMARK SECRULE_ACTION_ARG
-    (68) secrule_action_argument_singlequoted -> . NUMBER
+    (64) secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument . T_SECRULE_OPERATOR_QUOTE_MARK
 
-    SECRULE_ACTION_ARG shift and go to state 93
-    EXCLAMMARK      shift and go to state 94
-    NUMBER          shift and go to state 95
+    T_SECRULE_OPERATOR_QUOTE_MARK shift and go to state 101
 
-    secrule_action_argument_singlequoted shift and go to state 92
 
 state 81
 
-    (60) secrule_action_argument -> SECRULE_ACTION_ARG .
+    (70) secrule_operator_and_argument -> T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT .
 
-    EQUALMARK       reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_ARG .)
-    QUOTED          reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_ARG .)
-    COMMA           reduce using rule 60 (secrule_action_argument -> SECRULE_ACTION_ARG .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 70 (secrule_operator_and_argument -> T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT .)
+    T_COMMENT       reduce using rule 70 (secrule_operator_and_argument -> T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT .)
+    T_INCLUDE_DIRECTIVE reduce using rule 70 (secrule_operator_and_argument -> T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT .)
+    T_CONFIG_DIRECTIVE reduce using rule 70 (secrule_operator_and_argument -> T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 70 (secrule_operator_and_argument -> T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 70 (secrule_operator_and_argument -> T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 70 (secrule_operator_and_argument -> T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT .)
+    $end            reduce using rule 70 (secrule_operator_and_argument -> T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 70 (secrule_operator_and_argument -> T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT .)
 
 
 state 82
 
-    (61) secrule_action_argument -> NUMBER .
+    (71) secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT .
 
-    EQUALMARK       reduce using rule 61 (secrule_action_argument -> NUMBER .)
-    QUOTED          reduce using rule 61 (secrule_action_argument -> NUMBER .)
-    COMMA           reduce using rule 61 (secrule_action_argument -> NUMBER .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 71 (secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT .)
+    T_COMMENT       reduce using rule 71 (secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT .)
+    T_INCLUDE_DIRECTIVE reduce using rule 71 (secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT .)
+    T_CONFIG_DIRECTIVE reduce using rule 71 (secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 71 (secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 71 (secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 71 (secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT .)
+    $end            reduce using rule 71 (secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 71 (secrule_operator_and_argument -> T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT .)
 
 
 state 83
 
-    (62) secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .
+    (40) secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable .
 
-    EQUALMARK       reduce using rule 62 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
-    QUOTED          reduce using rule 62 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
-    COMMA           reduce using rule 62 (secrule_action_argument -> SECRULE_ACTION_TRANSFORMS .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 40 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 40 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable .)
+    T_SECRULE_OPERATOR reduce using rule 40 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 40 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 40 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable .)
 
 
 state 84
 
-    (63) secrule_action_argument -> SECRULE_ACTION_CTLACTION .
+    (41) secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_counter .
 
-    EQUALMARK       reduce using rule 63 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
-    QUOTED          reduce using rule 63 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
-    COMMA           reduce using rule 63 (secrule_action_argument -> SECRULE_ACTION_CTLACTION .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 41 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_counter .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 41 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_counter .)
+    T_SECRULE_OPERATOR reduce using rule 41 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_counter .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 41 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_counter .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 41 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_counter .)
 
 
 state 85
 
-    (64) secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .
+    (42) secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_with_part .
 
-    EQUALMARK       reduce using rule 64 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
-    QUOTED          reduce using rule 64 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
-    COMMA           reduce using rule 64 (secrule_action_argument -> SECRULE_ACTION_SKIPAFTERACTIONARG .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 42 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_with_part .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 42 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_with_part .)
+    T_SECRULE_OPERATOR reduce using rule 42 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_with_part .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 42 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_with_part .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 42 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_with_part .)
 
 
 state 86
 
-    (65) secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .
+    (43) secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion .
 
-    EQUALMARK       reduce using rule 65 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
-    QUOTED          reduce using rule 65 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
-    COMMA           reduce using rule 65 (secrule_action_argument -> SECRULE_ACTION_INITCOLACTIONARG .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 43 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 43 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion .)
+    T_SECRULE_OPERATOR reduce using rule 43 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 43 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 43 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion .)
 
 
 state 87
 
-    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED . secaction_expr_list QUOTED
-    (52) secaction_expr_list -> . secaction_expr
-    (53) secaction_expr_list -> . secaction_expr_list COMMA secaction_expr
-    (54) secaction_expr -> . tok_secrule_action
-    (55) secaction_expr -> . tok_secrule_action COLON secrule_action_argument
-    (56) secaction_expr -> . tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
-    (57) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-    (58) secaction_expr -> . tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-    (59) tok_secrule_action -> . SECRULE_ACTION
+    (44) secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion_with_part .
 
-    SECRULE_ACTION  shift and go to state 48
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 44 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion_with_part .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 44 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion_with_part .)
+    T_SECRULE_OPERATOR reduce using rule 44 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion_with_part .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 44 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion_with_part .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 44 (secrule_variable_list -> secrule_variable_list secrule_variable_separator secrule_variable_exclusion_with_part .)
 
-    secaction_expr_list            shift and go to state 96
-    secaction_expr                 shift and go to state 46
-    tok_secrule_action             shift and go to state 47
 
 state 88
 
-    (47) tok_secoperator_group -> EXCLAMMARK ATSIGN SECRULE_OPERATOR .
+    (50) secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .
 
-    SECRULE_OPERATOR_ARG reduce using rule 47 (tok_secoperator_group -> EXCLAMMARK ATSIGN SECRULE_OPERATOR .)
-    NUMBER          reduce using rule 47 (tok_secoperator_group -> EXCLAMMARK ATSIGN SECRULE_OPERATOR .)
-    QUOTED          reduce using rule 47 (tok_secoperator_group -> EXCLAMMARK ATSIGN SECRULE_OPERATOR .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 50 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 50 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR reduce using rule 50 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 50 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 50 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
 
 
 state 89
 
-    (21) secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED .
+    (51) secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 21 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED .)
-    COMMENT         reduce using rule 21 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED .)
-    CONFDIR_SECACTION reduce using rule 21 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED .)
-    CONFDIR_SECMARKER reduce using rule 21 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED .)
-    CONFDIR_SECRULE reduce using rule 21 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED .)
-    $end            reduce using rule 21 (secrule_line -> tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 51 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 51 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR reduce using rule 51 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 51 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 51 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
 
 
 state 90
 
-    (42) tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG QUOTES .
+    (52) secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .
 
-    QUOTED          reduce using rule 42 (tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG QUOTES .)
-    PIPE            reduce using rule 42 (tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG QUOTES .)
-    COMMA           reduce using rule 42 (tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG QUOTES .)
-    SECRULE_OPERATOR_ARG_NOQUOTE reduce using rule 42 (tok_secrule_variable_arg_quotes -> QUOTES SECRULE_VARIABLE_ARG QUOTES .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 52 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 52 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR reduce using rule 52 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 52 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 52 (secrule_variable_exclusion_with_part -> T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
 
 
 state 91
 
-    (57) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK . tok_secrule_action_ctlactionarg
-    (58) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK . tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam
-    (69) tok_secrule_action_ctlactionarg -> . SECRULE_ACTION_CTLACTIONARG
-    (70) tok_secrule_action_ctlactionarg -> . SECRULE_ACTION_INITCOLACTIONARGPARAM
+    (56) secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .
 
-    SECRULE_ACTION_CTLACTIONARG shift and go to state 98
-    SECRULE_ACTION_INITCOLACTIONARGPARAM shift and go to state 99
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 56 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 56 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR reduce using rule 56 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 56 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 56 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART .)
 
-    tok_secrule_action_ctlactionarg shift and go to state 97
 
 state 92
 
-    (56) secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted . QUOTES
+    (57) secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .
 
-    QUOTES          shift and go to state 100
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 57 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 57 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR reduce using rule 57 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 57 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 57 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED .)
 
 
 state 93
 
-    (66) secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG .
+    (58) secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .
 
-    QUOTES          reduce using rule 66 (secrule_action_argument_singlequoted -> SECRULE_ACTION_ARG .)
+    T_SECRULE_VARIABLE_SEPARATOR reduce using rule 58 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR_QUOTE_MARK reduce using rule 58 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR reduce using rule 58 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR_WITH_EXCLAMMARK reduce using rule 58 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
+    T_SECRULE_OPERATOR_ARGUMENT reduce using rule 58 (secrule_variable_counter_with_var -> T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX .)
 
 
 state 94
 
-    (67) secrule_action_argument_singlequoted -> EXCLAMMARK . SECRULE_ACTION_ARG
+    (76) secaction_expr_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr .
 
-    SECRULE_ACTION_ARG shift and go to state 101
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 76 (secaction_expr_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 76 (secaction_expr_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr .)
 
 
 state 95
 
-    (68) secrule_action_argument_singlequoted -> NUMBER .
+    (84) secaction_with_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT .
+    (86) secaction_with_argument_with_value -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT . T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE
+    (87) secaction_with_argument_with_value_and_param -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT . T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER
+    (88) secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT . T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
 
-    QUOTES          reduce using rule 68 (secrule_action_argument_singlequoted -> NUMBER .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 84 (secaction_with_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 84 (secaction_with_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT .)
+    T_SECRULE_ACTION_EQUALMARK shift and go to state 102
 
 
 state 96
 
-    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list . QUOTED
-    (53) secaction_expr_list -> secaction_expr_list . COMMA secaction_expr
+    (85) secaction_with_quoted_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE . T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE
 
-    QUOTED          shift and go to state 102
-    COMMA           shift and go to state 68
+    T_SECRULE_ACTION_ARGUMENT shift and go to state 103
 
 
 state 97
 
-    (57) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .
-    (58) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg . SEMICOLON tok_secrule_action_ctlactionargparam
+    (72) secrule_actions -> T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list . T_SECRULE_ACTION_QUOTE_MARK
 
-    QUOTED          reduce using rule 57 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .)
-    COMMA           reduce using rule 57 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg .)
-    SEMICOLON       shift and go to state 103
+    T_SECRULE_ACTION_QUOTE_MARK shift and go to state 104
 
 
 state 98
 
-    (69) tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .
+    (73) secrule_actions_list -> secaction_expr .
+    (75) secaction_expr_list -> secaction_expr .
 
-    SEMICOLON       reduce using rule 69 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
-    QUOTED          reduce using rule 69 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
-    COMMA           reduce using rule 69 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_CTLACTIONARG .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 73 (secrule_actions_list -> secaction_expr .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 75 (secaction_expr_list -> secaction_expr .)
 
 
 state 99
 
-    (70) tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .
+    (74) secrule_actions_list -> secaction_expr_list . T_SECRULE_ACTION_SEPARATOR secaction_expr
+    (76) secaction_expr_list -> secaction_expr_list . T_SECRULE_ACTION_SEPARATOR secaction_expr
 
-    SEMICOLON       reduce using rule 70 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
-    QUOTED          reduce using rule 70 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
-    COMMA           reduce using rule 70 (tok_secrule_action_ctlactionarg -> SECRULE_ACTION_INITCOLACTIONARGPARAM .)
+    T_SECRULE_ACTION_SEPARATOR shift and go to state 105
 
 
 state 100
 
-    (56) secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .
+    (63) secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK .
 
-    QUOTED          reduce using rule 56 (secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .)
-    COMMA           reduce using rule 56 (secaction_expr -> tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 63 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_COMMENT       reduce using rule 63 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_INCLUDE_DIRECTIVE reduce using rule 63 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE reduce using rule 63 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 63 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 63 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 63 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    $end            reduce using rule 63 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
 
 
 state 101
 
-    (67) secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG .
+    (64) secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK .
 
-    QUOTES          reduce using rule 67 (secrule_action_argument_singlequoted -> EXCLAMMARK SECRULE_ACTION_ARG .)
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 64 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_COMMENT       reduce using rule 64 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_INCLUDE_DIRECTIVE reduce using rule 64 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE reduce using rule 64 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 64 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 64 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 64 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
+    $end            reduce using rule 64 (secrule_operator_expression_quoted -> T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK .)
 
 
 state 102
 
-    (19) secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .
+    (86) secaction_with_argument_with_value -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK . T_SECRULE_ACTION_ARGUMENT_VALUE
+    (87) secaction_with_argument_with_value_and_param -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK . T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER
+    (88) secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK . T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
 
-    CONFDIR_SECCOMPSIGNATURE reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
-    COMMENT         reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
-    CONFDIR_SECACTION reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
-    CONFDIR_SECMARKER reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
-    CONFDIR_SECRULE reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
-    $end            reduce using rule 19 (secrule_line -> tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED .)
+    T_SECRULE_ACTION_ARGUMENT_VALUE shift and go to state 106
 
 
 state 103
 
-    (58) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON . tok_secrule_action_ctlactionargparam
-    (71) tok_secrule_action_ctlactionargparam -> . SECRULE_ACTION_CTLACTIONARGPARAM
+    (85) secaction_with_quoted_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT . T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE
 
-    SECRULE_ACTION_CTLACTIONARGPARAM shift and go to state 105
+    T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE shift and go to state 107
 
-    tok_secrule_action_ctlactionargparam shift and go to state 104
 
 state 104
 
-    (58) secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .
+    (72) secrule_actions -> T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK .
 
-    QUOTED          reduce using rule 58 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .)
-    COMMA           reduce using rule 58 (secaction_expr -> tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam .)
+    T_COMMENT       reduce using rule 72 (secrule_actions -> T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK .)
+    T_INCLUDE_DIRECTIVE reduce using rule 72 (secrule_actions -> T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE reduce using rule 72 (secrule_actions -> T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK .)
+    T_APACHE_LOCATION_DIRECTIVE reduce using rule 72 (secrule_actions -> T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE_SECACTION reduce using rule 72 (secrule_actions -> T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK .)
+    T_CONFIG_DIRECTIVE_SECRULE reduce using rule 72 (secrule_actions -> T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK .)
+    $end            reduce using rule 72 (secrule_actions -> T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK .)
 
 
 state 105
 
-    (71) tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .
+    (74) secrule_actions_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR . secaction_expr
+    (76) secaction_expr_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR . secaction_expr
+    (77) secaction_expr -> . secaction_single
+    (78) secaction_expr -> . secaction_with_argument
+    (79) secaction_expr -> . secaction_with_quoted_argument
+    (80) secaction_expr -> . secaction_with_argument_with_value
+    (81) secaction_expr -> . secaction_with_argument_with_value_and_param
+    (82) secaction_expr -> . secaction_with_argument_with_value_and_param_paramarg
+    (83) secaction_single -> . T_SECRULE_ACTION
+    (84) secaction_with_argument -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT
+    (85) secaction_with_quoted_argument -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE
+    (86) secaction_with_argument_with_value -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE
+    (87) secaction_with_argument_with_value_and_param -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER
+    (88) secaction_with_argument_with_value_and_param_paramarg -> . T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
 
-    QUOTED          reduce using rule 71 (tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .)
-    COMMA           reduce using rule 71 (tok_secrule_action_ctlactionargparam -> SECRULE_ACTION_CTLACTIONARGPARAM .)
+    T_SECRULE_ACTION shift and go to state 56
+
+    secaction_expr                 shift and go to state 108
+    secaction_single               shift and go to state 50
+    secaction_with_argument        shift and go to state 51
+    secaction_with_quoted_argument shift and go to state 52
+    secaction_with_argument_with_value shift and go to state 53
+    secaction_with_argument_with_value_and_param shift and go to state 54
+    secaction_with_argument_with_value_and_param_paramarg shift and go to state 55
+
+state 106
+
+    (86) secaction_with_argument_with_value -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE .
+    (87) secaction_with_argument_with_value_and_param -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE . T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER
+    (88) secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE . T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
+
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 86 (secaction_with_argument_with_value -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 86 (secaction_with_argument_with_value -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE .)
+    T_SECRULE_ACTION_SEMICOLON shift and go to state 109
+
+
+state 107
+
+    (85) secaction_with_quoted_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE .
+
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 85 (secaction_with_quoted_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 85 (secaction_with_quoted_argument -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE .)
+
+
+state 108
+
+    (74) secrule_actions_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr .
+    (76) secaction_expr_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr .
+
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 74 (secrule_actions_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 76 (secaction_expr_list -> secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr .)
+
+
+state 109
+
+    (87) secaction_with_argument_with_value_and_param -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON . T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER
+    (88) secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON . T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
+
+    T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER shift and go to state 110
+
+
+state 110
+
+    (87) secaction_with_argument_with_value_and_param -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER .
+    (88) secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER . T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
+
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 87 (secaction_with_argument_with_value_and_param -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 87 (secaction_with_argument_with_value_and_param -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER .)
+    T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON shift and go to state 111
+
+
+state 111
+
+    (88) secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON . T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT
+
+    T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT shift and go to state 112
+
+
+state 112
+
+    (88) secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT .
+
+    T_SECRULE_ACTION_QUOTE_MARK reduce using rule 88 (secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT .)
+    T_SECRULE_ACTION_SEPARATOR reduce using rule 88 (secaction_with_argument_with_value_and_param_paramarg -> T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT .)
 

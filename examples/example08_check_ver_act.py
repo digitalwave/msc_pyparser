@@ -2,7 +2,6 @@
 
 import yaml
 import sys
-from msc_pyparser import MSCUtils as u
 import os
 
 class Check(object):
@@ -58,36 +57,17 @@ if __name__ == "__main__":
         print("Use: %s /path/to/exported/dir" % (sys.argv[0]))
         sys.exit(-1)
 
-    srcobj = sys.argv[1]
+    flist = sys.argv[1:]
+    if len(flist) == 0:
+        print("No such file or directory: %s" % (sys.argv[1:-1]))
+    else:
+        for fname in flist:
+            try:
+                with open(fname, 'r') as inputfile:
+                    data = inputfile.read()
+            except:
+                print("Can't open file: %s" % (fname))
+                sys.exit()
 
-    st = u.getpathtype(srcobj)
-    if st == u.UNKNOWN:
-        print("Unknown source path!")
-        sys.exit()
-
-    configs = []
-    if st == u.IS_DIR:
-        for f in os.listdir(srcobj):
-            fp = os.path.join(srcobj, f)
-            if os.path.isfile(fp) and os.path.basename(fp)[-5:] == ".yaml":
-            #if os.path.isfile(fp) and os.path.basename(fp)[-5:] == ".json":
-                configs.append(fp)
-    if st == u.IS_FILE:
-        configs.append(srcobj)
-
-    configs.sort()
-
-    for c in configs:
-        try:
-            with open(c) as file:
-                if yaml.__version__ >= "5.1":
-                    data = yaml.load(file, Loader=yaml.FullLoader)
-                else:
-                    data = yaml.load(file)
-                    # data = json.load(file)
-        except:
-            print("Exception catched - ", sys.exc_info())
-            sys.exit(-1)
-
-        c = Check(c.replace(".yaml", "").replace(srcobj, ""), data)
-        c.check_ver_act()
+            c = Check(fname, yaml.load(data, Loader = yaml.FullLoader))
+            c.check_ver_act()

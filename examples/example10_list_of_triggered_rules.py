@@ -37,7 +37,7 @@ class Check(object):
               setvar:'tx.anomaly_scoring_rules= '"
           ==%==
           look at the extra space at the end of setvar!
-        
+
         """
         self.lineno_shift += 2
         l = {'argument': '# Default ID list of anomaly scoring rules', 'lineno': self.curr_lineno + self.lineno_shift, 'quoted': 'no_quote', 'type': 'Comment'}

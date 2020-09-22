@@ -1,4 +1,4 @@
-script: example1_addtag.py
+script: example3_addtag.py
 
 description:
 this program loads the converted ruleset structure, and searches the rules
@@ -25,6 +25,6 @@ depending of context. Here, we searched only one action (tag) with only one
 value (OWASP_CRS), nothing more.
 
 Use:
-you have to run this script with argument YAML structured file. The script
+you have to run this script with argument YAML structured files. The script
 will save a copy of the given input. To see the differences, you have to
 write back the structure with crs_write.py.

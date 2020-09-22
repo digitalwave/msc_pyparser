@@ -1,5 +1,7 @@
-v0.4 - YYYY-MM-DD
+v1.0 - YYYY-MM-DD
 -----------------
+  * Entire code base has been rewritten
+    * see README.md for detailed changes
   * Added new example: example11_remove_auditlog.py
   * Documentation cleanup
 

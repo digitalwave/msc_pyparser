@@ -15,194 +15,357 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-
+import sys
 import ply.lex
 import ply.yacc
 import re
 import os
+import os.path
+import glob
 
-__version__ = "0.2"
+__version__ = "1.0"
 
 class MSCLexer(object):
     """Lexer class"""
 
-    t_secrulesecvar_ignore = ''
+    t_STCOMMENT_ignore = ''
+    t_STSECRULEVARIABLE_ignore = ''
     t_ANY_ignore = ' \t'
 
-
     tokens = [
-        'COMMENT',
 
-        'AND',
-        'PIPE',
-        'COLON',
-        'EXCLAMMARK',
-        'QUOTED',
-        'QUOTES',
-        'ATSIGN',
-        'BACKSLASH',
-        'NUMBER',
-        'COMMA',
-        'EQUALMARK',
-        'SEMICOLON',
+        'T_COMMENT',
 
-        'CONFDIR_SECCOMPSIGNATURE',
-        'CONFDIR_SECRULE',
-        'CONFDIR_SECACTION',
-        'CONFDIR_SECMARKER',
-        'SECRULE_VARIABLE',
-        'SECRULE_VARIABLE_ARG',
+        'T_EXCLUSION_MARK',
 
-        'SECCOMPSIGNARG',
+        'T_CONFIG_DIRECTIVE',
+        'T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE',
+        'T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE',
+        'T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE',
+        'T_CONFIG_DIRECTIVE_SECRULE',
+        'T_CONFIG_DIRECTIVE_SECACTION',
+        'T_INCLUDE_DIRECTIVE',
+        'T_INCLUDE_DIRECTIVE_ARGUMENT',
+        'T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED',
 
-        'SECRULE_OPERATOR',
-        'SECRULE_OPERATOR_ARG',
-        'SECRULE_OPERATOR_ARG_NOQUOTE',
+        'T_APACHE_LOCATION_DIRECTIVE',
 
-        'SECRULE_ACTION',
-        'SECRULE_ACTION_ARG',
-        'SECRULE_ACTION_TRANSFORMS',
-        'SECRULE_ACTION_CTLACTION',
-        'SECRULE_ACTION_CTLACTIONARG',
-        'SECRULE_ACTION_CTLACTIONARGPARAM',
-        'SECRULE_ACTION_SKIPAFTERACTIONARG',
-        'SECRULE_ACTION_INITCOLACTIONARG',
-        'SECRULE_ACTION_INITCOLACTIONARGPARAM',
+        'T_SECRULE_VARIABLE',
+        'T_SECRULE_VARIABLE_COUNTER',
+        'T_SECRULE_VARIABLE_SEPARATOR',
+        'T_SECRULE_VARIABLE_PART',
+        'T_SECRULE_VARIABLE_PART_QUOTED',
+        'T_SECRULE_VARIABLE_PART_QUOTED_REGEX',
 
-        'SECMARKERARG',
+        'T_SECRULE_OPERATOR',
+        'T_SECRULE_OPERATOR_WITH_EXCLAMMARK',
+        'T_SECRULE_OPERATOR_ARGUMENT',
+        'T_SECRULE_OPERATOR_QUOTE_MARK',
 
+        'T_SECRULE_ACTION_QUOTE_MARK',
+        'T_SECRULE_ACTION',
+        'T_SECRULE_ACTION_ARGUMENT',
+        'T_SECRULE_ACTION_ARGUMENT_VALUE',
+        'T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER',
+        'T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON',
+        'T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT',
+        'T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE',
+        'T_SECRULE_ACTION_SEPARATOR',
+        'T_SECRULE_ACTION_COLON',
+        'T_SECRULE_ACTION_EQUALMARK',
+        'T_SECRULE_ACTION_SEMICOLON',
     ]
 
     states = (
-        ('seccompsign',                   'exclusive'),
-        ('dirsecrule',                    'exclusive'),
-        ('secrulesecvar',                 'exclusive'),
-        ('secrulesecvararg',              'exclusive'),
-        ('secrulesecop',                  'exclusive'),
-        ('secrulesecoparg',               'exclusive'),
-        ('secruleaction',                 'exclusive'),
-        ('secruleactionarg',              'exclusive'),
-        ('secruleactionargqs',            'exclusive'),
-        ('secruleactiontrans',            'exclusive'),
-        ('secruleactionctl',              'exclusive'),
-        ('secruleactionctlargeq',         'exclusive'),
-        ('secruleactionctlarg',           'exclusive'),
-        ('secruleactionctlargparam',      'exclusive'),
-        ('secruleactionskipafter',        'exclusive'),
-        ('secruleactioninitcolarg',       'exclusive'),
-        ('secruleactioninitcolargparam',  'exclusive'),
 
-        ('secmarker',                     'exclusive'),
-
-        ('continue',                      'inclusive'),
-
+        ('STCOMMENT',                                       'exclusive'),
+        ('STINCLUDEDIRECTIVE',                              'exclusive'),
+        ('STINCLUDEDIRECTIVEQUOTED',                        'exclusive'),
+        ('STCONFIGDIRECTIVE',                               'exclusive'),
+        #('STCONFIGDIRECTIVEQUOTEDARGUMENT',                 'exclusive'),
+        ('STSECRULEVARIABLENEXT',                           'exclusive'),
+        ('STSECRULEVARIABLE',                               'exclusive'),
+        ('STSECRULEOPERATOR',                               'exclusive'),
+        ('STSECRULEQUOTEDOPERATOR',                         'exclusive'),
+        ('STSECRULEACTIONNEXT',                             'exclusive'),
+        ('STSECRULEACTION',                                 'exclusive'),
+        ('STSECRULEACTIONARGUMENT',                         'exclusive'),
+        ('STSECRULEACTIONARGUMENTQUOTES',                   'exclusive'),
+        ('STSECRULEACTIONARGUMENTVALUE',                    'exclusive'),
+        ('STSECRULEACTIONARGUMENTVALUEPARAMETER',           'exclusive'),
+        ('STSECRULEACTIONARGUMENTVALUEPARAMETERARGUMENT',   'exclusive'),
     )
 
     def __init__(self, debug = False, reflags = re.IGNORECASE | re.VERBOSE):
         self.lexer = ply.lex.lex(module=self, debug = debug, reflags = reflags)
 
-    def t_ANY_AND(self, t):
-        r'&'
-        return t
+        self.st_continue = 0
+        self.eolcount = 0
 
-    def t_dirsecrule_EXCLAMMARK(self, t):
-        r'!'
-        return t
+        self.default_config_simple_directives = [
+            "SecAction",
+            "SecDefaultAction",
+            "SecCollectionTimeout",
+            "SecComponentSignature",
+            "SecContentInjection",
+            "SecRequestBodyAccess",
+            "SecRequestBodyLimit",
+            "SecRequestBodyNoFilesLimit",
+            "SecRequestBodyLimitAction",
+            "SecPcreMatchLimit",
+            "SecPcreMatchLimitRecursion",
+            "SecResponseBodyAccess",
+            "SecResponseBodyMimeType",
+            "SecResponseBodyLimit",
+            "SecResponseBodyLimitAction",
+            "SecRule",
+            "SecRuleEngine",
+            "SecRuleRemoveById",
+            "SecRuleRemoveByMsg",
+            "SecRuleRemoveByTag",
+            "SecTmpDir",
+            "SecDataDir",
+            "SecDebugLog",
+            "SecDebugLogLevel",
+            "SecAuditEngine",
+            "SecAuditLogRelevantStatus",
+            "SecAuditLogParts",
+            "SecAuditLogType",
+            "SecAuditLogFormat",
+            "SecAuditLog",
+            "SecArgumentSeparator",
+            "SecCookieFormat",
+            "SecStatusEngine",
+            "SecMarker",
+            "SecUnicodeMapFile",
+            "SecStreamOutBodyInspection",
+            "SecRuleUpdateActionById",
+            "SecRuleUpdateTargetById",
+            "SecRuleUpdateTargetByMsg",
+            "SecRuleUpdateTargetByTag",
+        ]
 
-    def t_secrulesecvar_EXCLAMMARK(self, t):
-        r'!'
-        return t
+        self.default_secrule_variables = [
+            "ARGS",
+            "ARGS_COMBINED_SIZE",
+            "ARGS_GET",
+            "ARGS_GET_NAMES",
+            "ARGS_NAMES",
+            "ARGS_POST",
+            "ARGS_POST_NAMES",
+            "AUTH_TYPE",
+            "DURATION",
+            "ENV",
+            "FILES",
+            "FILES_COMBINED_SIZE",
+            "FILES_NAMES",
+            "FULL_REQUEST",
+            "FULL_REQUEST_LENGTH",
+            "FILES_SIZES",
+            "FILES_TMPNAMES",
+            "FILES_TMP_CONTENT",
+            "GEO",
+            "HIGHEST_SEVERITY",
+            "INBOUND_DATA_ERROR",
+            "MATCHED_VAR",
+            "MATCHED_VARS",
+            "MATCHED_VAR_NAME",
+            "MATCHED_VARS_NAMES",
+            "MODSEC_BUILD",
+            "MULTIPART_BOUNDARY_QUOTED",
+            "MULTIPART_CRLF_LF_LINES",
+            "MULTIPART_FILENAME",
+            "MULTIPART_NAME",
+            "MULTIPART_STRICT_ERROR",
+            "MULTIPART_UNMATCHED_BOUNDARY",
+            "MULTIPART_BOUNDARY_WHITESPACE",
+            "MULTIPART_DATA_BEFORE",
+            "MULTIPART_DATA_AFTER",
+            "MULTIPART_HEADER_FOLDING",
+            "MULTIPART_LF_LINE",
+            "MULTIPART_INVALID_QUOTING",
+            "MULTIPART_INVALID_HEADER_FOLDING",
+            "MULTIPART_INVALID_PART",
+            "MULTIPART_FILE_LIMIT_EXCEEDED",
+            "OUTBOUND_DATA_ERROR",
+            "PATH_INFO",
+            "PERF_ALL",
+            "PERF_COMBINED",
+            "PERF_GC",
+            "PERF_LOGGING",
+            "PERF_PHASE1",
+            "PERF_PHASE2",
+            "PERF_PHASE3",
+            "PERF_PHASE4",
+            "PERF_PHASE5",
+            "PERF_RULES",
+            "PERF_SREAD",
+            "PERF_SWRITE",
+            "QUERY_STRING",
+            "REMOTE_ADDR",
+            "REMOTE_HOST",
+            "REMOTE_PORT",
+            "REMOTE_USER",
+            "REQBODY_ERROR",
+            "REQBODY_ERROR_MSG",
+            "REQBODY_PROCESSOR",
+            "REQBODY_PROCESSOR_ERROR",
+            "REQUEST_BASENAME",
+            "REQUEST_BODY",
+            "REQUEST_BODY_LENGTH",
+            "REQUEST_COOKIES",
+            "REQUEST_COOKIES_NAMES",
+            "REQUEST_FILENAME",
+            "REQUEST_HEADERS",
+            "REQUEST_HEADERS_NAMES",
+            "REQUEST_LINE",
+            "REQUEST_METHOD",
+            "REQUEST_PROTOCOL",
+            "REQUEST_URI",
+            "REQUEST_URI_RAW",
+            "RESPONSE_BODY",
+            "RESPONSE_CONTENT_LENGTH",
+            "RESPONSE_CONTENT_TYPE",
+            "RESPONSE_HEADERS",
+            "RESPONSE_HEADERS_NAMES",
+            "RESPONSE_PROTOCOL",
+            "RESPONSE_STATUS",
+            "RULE",
+            "SCRIPT_BASENAME",
+            "SCRIPT_FILENAME",
+            "SCRIPT_GID",
+            "SCRIPT_GROUPNAME",
+            "SCRIPT_MODE",
+            "SCRIPT_UID",
+            "SCRIPT_USERNAME",
+            "SDBM_DELETE_ERROR",
+            "SERVER_ADDR",
+            "SERVER_NAME",
+            "SERVER_PORT",
+            "SESSION",
+            "SESSIONID",
+            "STATUS_LINE",
+            "STREAM_INPUT_BODY",
+            "STREAM_OUTPUT_BODY",
+            "TIME",
+            "TIME_DAY",
+            "TIME_EPOCH",
+            "TIME_HOUR",
+            "TIME_MIN",
+            "TIME_MON",
+            "TIME_SEC",
+            "TIME_WDAY",
+            "TIME_YEAR",
+            "TX",
+            "UNIQUE_ID",
+            "URLENCODED_ERROR",
+            "USERID",
+            "USERAGENT_IP",
+            "WEBAPPID",
+            "WEBSERVER_ERROR_LOG",
+            "XML"
+        ]
 
-    def t_secrulesecop_EXCLAMMARK(self, t):
-        r'!'
-        return t
+        self.default_secrule_storages = [
+            "GLOBAL",
+            "RESOURCE",
+            "IP",
+            "SESSION",
+            "USER"
+        ]
 
-    def t_COMMENT(self, t):
-        r'\#.*'
-        return t
+        self.default_secrule_operators = [
+            "beginsWith",
+            "contains",
+            "containsWord",
+            "detectSQLi",
+            "detectXSS",
+            "endsWith",
+            "fuzzyHash",
+            "eq",
+            "ge",
+            "geoLookup",
+            "gsbLookup",
+            "gt",
+            "inspectFile",
+            "ipMatch",
+            "ipMatchF",
+            "ipMatchFromFile",
+            "le",
+            "lt",
+            "noMatch",
+            "pm",
+            "pmf",
+            "pmFromFile",
+            "rbl",
+            "rsub",
+            "rx",
+            "streq",
+            "strmatch",
+            "unconditionalMatch",
+            "validateByteRange",
+            "validateDTD",
+            "validateHash",
+            "validateSchema",
+            "validateUrlEncoding",
+            "validateUtf8Encoding",
+            "verifyCC",
+            "verifyCPF",
+            "verifySSN",
+            "within"
+        ]
 
-    def t_secrulesecvar_secruleaction_secruleactionarg_secruleactiontrans_secruleactionctl_secruleactioninitcolarg_secruleactionskipafter_COLON(self, t):
-        r':'
-        if t.lexer.lexstate == 'secrulesecvar':
-            t.lexer.push_state('secrulesecvararg')
-        return t
+        self.default_secrule_actions = [
+            "accuracy",
+            "allow",
+            "append",
+            "auditlog",
+            "block",
+            "capture",
+            "chain",
+            "ctl",
+            "deny",
+            "deprecatevar",
+            "drop",
+            "exec",
+            "expirevar",
+            "id",
+            "initcol",
+            "log",
+            "logdata",
+            "maturity",
+            "msg",
+            "multiMatch",
+            "noauditlog",
+            "nolog",
+            "pass",
+            "pause",
+            "phase",
+            "prepend",
+            "proxy",
+            "redirect",
+            "rev",
+            "sanitiseArg",
+            "sanitiseMatched",
+            "sanitiseMatchedBytes",
+            "sanitiseRequestHeader",
+            "sanitiseResponseHeader",
+            "severity",
+            "setuid",
+            "setrsc",
+            "setsid",
+            "setenv",
+            "setvar",
+            "skip",
+            "skipAfter",
+            "status",
+            "t",
+            "tag",
+            "ver",
+            "xmlns"
+        ]
 
-    def t_dirsecrule_secrulesecvar_PIPE(self, t):
-        r'\|'
-        if t.lexer.lexstate == 'secrulesecvar':
-            t.lexer.pop_state()
-        return t
-
-    def t_secrulesecoparg_QUOTED(self, t):
-        r'"'
-        if t.lexer.lexstate == "secrulesecoparg":
-            t.lexer.push_state('secruleaction')
-        return t
-
-    def t_secrulesecvararg_SECRULE_VARIABLE_ARG(self, t):
-        r"([^\s|']+)|('(\.|[^'\\])*')"
-        t.lexer.pop_state()
-        return t
-
-    def t_ANY_QUOTED(self, t):
-        r'(?<!\\)"'
-        if t.lexer.lexstate == "secrulesecoparg":
-            t.lexer.push_state('secruleaction')
-        elif t.lexer.lexstate == "secrulesecop":
-            t.lexer.lexstate = "secrulesecoparg"
-        elif t.lexer.lexstate in ["dirsecrule", "secrulesecvar"]:
-            t.lexer.push_state('secrulesecop')
-        return t
-
-    def t_ANY_QUOTES(self, t):
-        r"(?<!\\)'"
-        if t.lexer.lexstate == "secruleactionargqs":
-            t.lexer.pop_state()
-            return t
-        if t.lexer.lexstate == "secruleactionarg":
-            t.lexer.push_state("secruleactionargqs")
-        return t
-
-    def t_ANY_ATSIGN(self, t):
-        r'@'
-        if t.lexer.lexstate == "secrulesecoparg":
-            t.lexer.pop_state()
-            t.lexer.push_state('secrulesecvar')
-        return t
-
-    def t_ANY_BACKSLASH(self, t):
-        r'\\([ \t]+|\n)'
-        if t.value[-1] == '\n':
-            t.lexer.lineno += 1
-            t.value = t.value[0]
-        else:
-            t.lexer.push_state('continue')
-
-    def t_dirsecrule_secrulesecvar_secruleaction_secruleactionarg_secruleactionctlargeq_secruleactionctlargparam_secruleactionctlarg_COMMA(self, t):
-        r','
-        if t.lexer.lexstate == 'secrulesecvar':
-            t.lexer.pop_state()
-        if t.lexer.lexstate == 'secruleactionarg':
-            t.lexer.pop_state()
-        elif t.lexer.lexstate == 'secruleactionctlargeq':
-            t.lexer.pop_state()
-            t.lexer.pop_state()
-        elif t.lexer.lexstate == 'secruleactionctlargparam':
-            t.lexer.pop_state()
-            t.lexer.pop_state()
-        elif t.lexer.lexstate == 'secruleactionctlarg':
-            t.lexer.pop_state()
-            t.lexer.pop_state()
-        return t
-
-    def t_ANY_newline(self, t):
-        r'\n'
-        t.lexer.lineno += 1
-        if t.lexer.lexstate == 'continue':
-            t.lexer.pop_state()
-        else:
-            t.lexer.lexstatestack = []
-            t.lexer.begin('INITIAL')
+# Generic error handling
 
     def t_ANY_error(self, t):
         act_pos = 0
@@ -219,132 +382,313 @@ class MSCLexer(object):
                     (li, t.lexer.lexpos, pos, aff_line, (pos * "~")))
         raise Exception(output)
 
-    def t_CONFDIR_SECCOMPSIGNATURE(self, t):
-        r'SecComponentSignature'
-        t.lexer.push_state('seccompsign')
-        return t
+# END Generic error handling
 
-    def t_seccompsign_SECCOMPSIGNARG(self, t):
-        r'[^"]{1,}'
-        t.lexer.pop_state()
-        return t
+# EOL, continue
 
-    def t_CONFDIR_SECRULE(self, t):
-        r'SecRule'
-        t.lexer.push_state('dirsecrule')
-        return t
+    # hack for 'unterminated' lines, eg:
+    # SecRule ... ... \
+    # <EMPTY>
+    def t_ANY_T_BACKSLASH_AND_NEWLINE(self, t):
+        r'\\[ \t]*(\r|\n)(\r|\n)'
+        self.st_continue = 0
+        t.lexer.begin('INITIAL')
+        t.lexer.lineno += 1
 
-    def t_CONFDIR_SECACTION(self, t):
-        r'SecAction'
-        t.lexer.push_state('secruleaction')
-        return t
+    def t_ANY_T_BACKSLASH(self, t):
+        r'\\[ \t]*(\r|\n)'
+        self.st_continue = 1
+        t.lexer.lineno += 1
 
-    def t_CONFDIR_SECMARKER(self, t):
-        r'SecMarker'
-        t.lexer.push_state('secmarker')
-        return t
-
-    def t_dirsecrule_SECRULE_VARIABLE(self, t):
-        r'(ARGS_COMBINED_SIZE|ARGS_GET_NAMES|ARGS_GET|ARGS_NAMES|ARGS_POST_NAMES|ARGS_POST|ARGS|AUTH_TYPE|DURATION|ENV|FILES_COMBINED_SIZE|FILES_NAMES|FULL_REQUEST|FULL_REQUEST_LENGTH|FILES_SIZES|FILES_TMPNAMES|FILES_TMP_CONTENT|FILES|GEO|HIGHEST_SEVERITY|INBOUND_DATA_ERROR|MATCHED_VAR_NAME|MATCHED_VARS_NAMES|MATCHED_VARS|MATCHED_VAR|MODSEC_BUILD|MULTIPART_CRLF_LF_LINES|MULTIPART_FILENAME|MULTIPART_NAME|MULTIPART_STRICT_ERROR|MULTIPART_UNMATCHED_BOUNDARY|OUTBOUND_DATA_ERROR|PATH_INFO|PERF_ALL|PERF_COMBINED|PERF_GC|PERF_LOGGING|PERF_PHASE1|PERF_PHASE2|PERF_PHASE3|PERF_PHASE4|PERF_PHASE5|PERF_RULES|PERF_SREAD|PERF_SWRITE|QUERY_STRING|REMOTE_ADDR|REMOTE_HOST|REMOTE_PORT|REMOTE_USER|REQBODY_ERROR_MSG|REQBODY_ERROR|REQBODY_PROCESSOR|REQUEST_BASENAME|REQUEST_BODY_LENGTH|REQUEST_BODY|REQUEST_COOKIES_NAMES|REQUEST_COOKIES|REQUEST_FILENAME|REQUEST_HEADERS_NAMES|REQUEST_HEADERS|REQUEST_LINE|REQUEST_METHOD|REQUEST_PROTOCOL|REQUEST_URI_RAW|REQUEST_URI|RESPONSE_BODY|RESPONSE_CONTENT_LENGTH|RESPONSE_CONTENT_TYPE|RESPONSE_HEADERS_NAMES|RESPONSE_HEADERS|RESPONSE_PROTOCOL|RESPONSE_STATUS|RULE|SCRIPT_BASENAME|SCRIPT_FILENAME|SCRIPT_GID|SCRIPT_GROUPNAME|SCRIPT_MODE|SCRIPT_UID|SCRIPT_USERNAME|SDBM_DELETE_ERROR|SERVER_ADDR|SERVER_NAME|SERVER_PORT|SESSIONID|SESSION|STATUS_LINE|STREAM_INPUT_BODY|STREAM_OUTPUT_BODY|TIME_DAY|TIME_EPOCH|TIME_HOUR|TIME_MIN|TIME_MON|TIME_SEC|TIME_WDAY|TIME_YEAR|TIME|TX|UNIQUE_ID|URLENCODED_ERROR|USERID|USERAGENT_IP|WEBAPPID|WEBSERVER_ERROR_LOG|XML|ENV|GLOBAL|IP|RESOURCE|SESSION|TX|USER)'
-        if t.value in ["ARGS_GET_NAMES", "ARGS_NAMES", "ARGS_POST_NAMES", "MULTIPART_FILENAME", "MULTIPART_NAME", "REQUEST_HEADERS_NAMES", "RESPONSE_HEADERS_NAMES", "ARGS_GET", "ARGS_POST", "ARGS", "FILES_SIZES", "FILES_NAMES", "FILES_TMP_CONTENT", "MATCHED_VARS_NAMES", "MATCHED_VARS", "FILES", "REQUEST_COOKIES_NAMES", "REQUEST_HEADERS", "RESPONSE_HEADERS", "GEO", "REQUEST_COOKIES", "RULE", "FILES_TMP_NAMES", "XML", "ENV", "GLOBAL", "IP", "RESOURCE", "SESSION", "TX", "USER"]:
-            t.lexer.push_state('secrulesecvar')
-        return t
-
-    def t_secrulesecvar_end(self, t):
-        r'[ \n\t\|]'
-        t.lexer.pop_state()
-
-    def t_secrulesecop_SECRULE_OPERATOR(self, t):
-        r'beginsWith|containsWord|contains|detectSQLi|detectXSS|endsWith|eq|fuzzyHash|geoLookup|ge|gsbLookup|gt|inspectFile|ipMatch|ipMatchF|ipMatchFromFile|le|lt|noMatch|pmFromFile|pmf|pm|rbl|rsub|rx|streq|strmatch|unconditionalMatch|validateByteRange|validateDTD|validateHash|validateSchema|validateUrlEncoding|validateUtf8Encoding|verifyCC|verifyCPF|verifySSN|within'
-        t.lexer.push_state('secrulesecoparg')
-        return t
-
-    def t_secrulesecop_secrulesecoparg_SECRULE_OPERATOR_ARG(self, t):
-        r'((?:[^"\\]|\\.)+)'
-        return t
-
-    def t_dirsecrule_SECRULE_OPERATOR_ARG_NOQUOTE(self, t):
-        r'[^ ]+'
-        t.lexer.push_state('secruleaction')
-        return t
-
-    def t_secruleaction_SECRULE_ACTION(self, t):
-        r'accuracy|allow|append|auditlog|block|capture|chain|ctl|deny|deprecatevar|drop|exec|expirevar|id|initcol|logdata|log|maturity|msg|multiMatch|noauditlog|nolog|pass|pause|phase|prepend|proxy|redirect|rev|sanitiseArg|sanitiseMatched|sanitiseMatchedBytes|sanitiseRequestHeader|sanitiseResponseHeader|setenv|setrsc|setsid|setuid|setvar|severity|skipAfter|skip|status|tag|t|ver|xmlns'
-        if t.value == 't':
-            t.lexer.push_state('secruleactiontrans')
-        elif t.value == 'ctl':
-            t.lexer.push_state('secruleactionctl')
-        elif t.value == 'skipAfter':
-            t.lexer.push_state('secruleactionskipafter')
-        elif t.value == 'initcol':
-            t.lexer.push_state('secruleactioninitcolarg')
+    def t_ANY_newline(self, t):
+        r'\n|\r\n'
+        if self.st_continue == 0:
+            t.lexer.begin('INITIAL')
         else:
-            t.lexer.push_state('secruleactionarg')
+            self.st_continue = 0
+        t.lexer.lineno += 1
+
+# END EOL, continue
+
+# Comment
+
+    def t_ANY_T_COMMENT(self, t):
+        r'\#([^\r\n]+|[\r\n])'
+        self.parse_comment(t)
+        if t.value[-1] == "\n":
+            t.value = t.value.rstrip("\n")
+            t.lexer.lineno += 1
         return t
 
-    def t_secruleactionargqs_SECRULE_ACTION_ARG(self, t):
-        r"((?:\\'|[^'])+)"
-        # didn't pop the stack, needs to handle at "'" - see above
+    def t_STCOMMENT_T_COMMENT(self, t):
+        r'.*[^\r\n]+'
+        self.parse_comment(t)
         return t
 
-    def t_secruleactionarg_SECRULE_ACTION_ARG(self, t):
-        r"((?:\\'|[^,\"])+)"
-        t.lexer.pop_state()
+# End Comment
+
+# Handle include directive
+
+    def t_INITIAL_T_INCLUDE_DIRECTIVE(self, t):
+        r'include'
+        t.lexer.begin('STINCLUDEDIRECTIVE')
         return t
 
-    def t_secruleactiontrans_SECRULE_ACTION_TRANSFORMS(self, t):
-        r'(base64DecodeExt|base64Decode|base64Encode|cmdLine|compressWhitespace|cssDecode|escapeSeqDecode|hexDecode|hexEncode|htmlEntityDecode|jsDecode|length|lowercase|md5|none|normalisePathWin|normalisePath|normalizePathWin|normalizePath|parityEven7bit|parityOdd7bit|parityZero7bit|removeCommentsChar|removeComments|removeNulls|removeWhitespace|replaceComments|replaceNulls|sha1|sqlHexDecode|trimLeft|trimRight|trim|uppercase|urlDecodeUni|urlDecode|urlEncode|utf8toUnicode)'
-        t.lexer.pop_state()
+    def t_STINCLUDEDIRECTIVE_T_INCLUDE_DIRECTIVE_ARGUMENT(self, t):
+        r'[0-9A-Za-z_\/\.\-\*\:]+'
+        #self.parse_seclang_config(t)
         return t
 
-    def t_secruleactionctl_SECRULE_ACTION_CTLACTION(self, t):
-        r'auditEngine|auditLogParts|debugLogLevel|forceRequestBodyVariable|hashEnforcement|hashEngine|requestBodyAccess|requestBodyLimit|requestBodyProcessor|responseBodyAccess|responseBodyLimit|ruleEngine|ruleRemoveById|ruleRemoveByMsg|ruleRemoveByTag|ruleRemoveTargetById|ruleRemoveTargetByMsg|ruleRemoveTargetByTag'
-        t.lexer.push_state('secruleactionctlargeq')
+    def t_STINCLUDEDIRECTIVE_T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED(self, t):
+        r'"[0-9A-Za-z_\/\.\-\*\:]+"'
+        #self.parse_seclang_config(t)
+        t.value = t.value.strip("\"")
         return t
 
-    def t_secruleactionctlarg_SECRULE_ACTION_CTLACTIONARG(self, t):
-        r'[^;,"]{1,}'
+# END Handle include directive
+
+# Simple configuration directives
+
+    def t_INITIAL_T_CONFIG_DIRECTIVE(self, t):
+        r'(\s*)Sec[a-zA-Z0-9]+'
+        #r'((\s*)Sec[a-zA-Z0-9]+)|\<(/|).*\>'
+        t.type = self.parse_config_directive(t)
         return t
 
-    def t_secruleactionctlargparam_SECRULE_ACTION_CTLACTIONARGPARAM(self, t):
-        r'[^,"]{1,}'
+    def t_STCONFIGDIRECTIVE_T_CONFIG_DIRECTIVE(self, t):
+        r'((?:\\\ |[^\ \t\n])+)'
+        t.type = self.parse_config_directive_argument(t)
         return t
 
-    def t_secruleactionctlarg_SEMICOLON(self, t):
+# END Simple configuration directives
+
+    def t_INITIAL_T_APACHE_LOCATION_DIRECTIVE(self, t):
+        r'<(/|)Location.*>'
+        return t
+
+# Apache Locaition directive
+
+# END Apache Locaition directive
+
+# Secrule VARIABLE
+
+    def t_STSECRULEVARIABLENEXT_STSECRULEVARIABLE_T_SECRULE_VARIABLE(self, t):
+        r'[A-Za-z0-9_-]+'
+        t.type = self.parse_config_secrule_variable(t)
+        return t
+
+    def t_STSECRULEVARIABLE_T_SECRULE_VARIABLE_SEPARATOR(self, t):
+        r'[,|]'
+        return t
+
+    def t_STSECRULEVARIABLENEXT_STSECRULEVARIABLE_T_SECRULE_VARIABLE_COUNTER(self, t):
+        r'&'
+        return t
+
+    def t_STSECRULEVARIABLENEXT_STSECRULEVARIABLE_T_EXCLUSION_MARK(self, t):
+        r'!'
+        return t
+
+    def t_STSECRULEVARIABLE_T_SECRULE_VARIABLE_PART_QUOTED_REGEX(self, t):
+        r":'/([^'\"\ \t\n])+/'"
+        t.value = t.value[1:]
+        return t
+
+    def t_STSECRULEVARIABLE_T_SECRULE_VARIABLE_PART_QUOTED(self, t):
+        r":'([^'\"\ \t\n])+'"
+        t.value = t.value[1:]
+        return t
+
+    def t_STSECRULEVARIABLE_T_SECRULE_VARIABLE_PART(self, t):
+        r':([^" \t,|\n])+'
+        t.value = t.value[1:]
+        return t
+
+    def t_STSECRULEVARIABLE_WHITESPACES(self, t):
+        r'[ \t\n]+'
+        t.lexer.begin('STSECRULEOPERATOR')
+
+# END Secrule VARIABLE
+
+# Secrule operator and operator argument
+
+    def t_STSECRULEOPERATOR_T_SECRULE_OPERATOR_QUOTE_MARK(self, t):
+        r'"'
+        t.lexer.begin('STSECRULEQUOTEDOPERATOR')
+        return t
+
+    def t_STSECRULEOPERATOR_STSECRULEQUOTEDOPERATOR_OP(self, t):
+        r'(!|)@[a-zA-Z0-9]+'
+        t.type = self.parse_config_secrule_operator(t)
+        return t
+
+    def t_STSECRULEOPERATOR_OPARG(self, t):
+        r'((?:[^ "\n\\]|\\.)+)'
+        t.type = self.parse_config_secrule_operator(t)
+        return t
+
+    def t_STSECRULEQUOTEDOPERATOR_OPARG(self, t):
+        r'((?:[^"\n\\]|\\.)+)'
+        t.type = self.parse_config_secrule_operator(t)
+        return t
+
+    def t_STSECRULEQUOTEDOPERATOR_T_SECRULE_OPERATOR_QUOTE_MARK(self, t):
+        r'"'
+        t.lexer.begin('STSECRULEACTIONNEXT')
+        return t
+
+# END Secrule operator and operator argument
+
+# Secrule actions and actions arguments
+
+    def t_STSECRULEACTIONNEXT_T_SECRULE_ACTION_QUOTE_MARK(self, t):
+        r'"'
+        t.lexer.begin('STSECRULEACTION')
+        return t
+
+    def t_STSECRULEACTION_T_SECRULE_ACTION(self, t):
+        r'((?:[^ ":,\n\\]|\\.)+)'
+        t.type = self.parse_config_secrule_action(t)
+        return t
+
+    def t_STSECRULEACTION_T_SECRULE_ACTION_COLON(self, t):
+        r':'
+        t.lexer.begin('STSECRULEACTIONARGUMENT')
+        return t
+
+    def t_STSECRULEACTIONARGUMENT_T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE(self, t):
+        r"'"
+        t.lexer.begin('STSECRULEACTIONARGUMENTQUOTES')
+        return t
+
+    def t_STSECRULEACTIONARGUMENTQUOTES_T_SECRULE_ACTION_ARGUMENT(self, t):
+        r'((?:[^\\\']|\\.)+)'
+        self.eolcount = len(t.value.split("\n"))-1
+        t.lexer.lineno += self.eolcount
+        return t
+
+    def t_STSECRULEACTIONARGUMENTQUOTES_T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE(self, t):
+        r"'"
+        t.lexer.begin('STSECRULEACTIONARGUMENT')
+        return t
+
+    def t_STSECRULEACTIONARGUMENT_T_SECRULE_ACTION_ARGUMENT(self, t):
+        r'((?:[^,\'"=\n\\]|\\.)+)'
+        return t
+
+    def t_STSECRULEACTIONARGUMENT_T_SECRULE_ACTION_EQUALMARK(self, t):
+        r'='
+        t.lexer.begin('STSECRULEACTIONARGUMENTVALUE')
+        return t
+
+    def t_STSECRULEACTIONARGUMENTVALUE_T_SECRULE_ACTION_ARGUMENT_VALUE(self, t):
+        r'((?:[^;,"]|\\.)+)'
+        return t
+
+    def t_STSECRULEACTIONARGUMENTVALUE_T_SECRULE_ACTION_SEMICOLON(self, t):
         r';'
-        t.lexer.pop_state()
-        t.lexer.push_state('secruleactionctlargparam')
+        t.lexer.begin('STSECRULEACTIONARGUMENTVALUEPARAMETER')
         return t
 
-    def t_secruleactionctlargeq_EQUALMARK(self, t):
-        r'='
-        t.lexer.pop_state()
-        t.lexer.push_state('secruleactionctlarg')
+    def t_STSECRULEACTIONARGUMENTVALUEPARAMETER_T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER(self, t): 
+        r'((?:[^:,"]|\\.)+)'
         return t
 
-    def t_secruleactionskipafter_SECRULE_ACTION_SKIPAFTERACTIONARG(self, t):
-        r'[^,"]{1,}'
-        t.lexer.pop_state()
+    def t_STSECRULEACTIONARGUMENTVALUEPARAMETER_T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON(self, t):
+        r':'
+        t.lexer.begin('STSECRULEACTIONARGUMENTVALUEPARAMETERARGUMENT')
         return t
 
-    def t_secruleactioninitcolarg_SECRULE_ACTION_INITCOLACTIONARG(self, t):
-        r'[^=]{1,}'
-        t.lexer.push_state('secruleactioninitcolargparam')
+    def t_STSECRULEACTIONARGUMENTVALUEPARAMETERARGUMENT_T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT(self, t):
+        r'((?:[^,"]|\\.)+)'
         return t
 
-    def t_secruleactioninitcolargparam_EQUALMARK(self, t):
-        r'='
+    def t_STSECRULEACTION_STSECRULEACTIONARGUMENT_STSECRULEACTIONARGUMENTVALUE_STSECRULEACTIONARGUMENTVALUEPARAMETER_STSECRULEACTIONARGUMENTVALUEPARAMETERARGUMENT_T_SECRULE_ACTION_SEPARATOR(self, t):
+        r','
+        t.lexer.begin('STSECRULEACTION')
         return t
 
-    def t_secruleactioninitcolargparam_SECRULE_ACTION_INITCOLACTIONARGPARAM(self, t):
-        r'[^,"]{1,}'
-        t.lexer.pop_state()
-        t.lexer.pop_state()
+    def t_STSECRULEACTION_STSECRULEACTIONARGUMENT_STSECRULEACTIONARGUMENTVALUE_STSECRULEACTIONARGUMENTVALUEPARAMETER_STSECRULEACTIONARGUMENTVALUEPARAMETERARGUMENT_T_SECRULE_ACTION_QUOTE_MARK(self, t):
+        r'"'
+        t.lexer.begin('INITIAL')
         return t
 
-    def t_secmarker_SECMARKERARG(self, t):
-        r'[^"\n]{1,}'
-        return t
+# END Secrule actions and actions arguments
+
+# Helper functions for scanner
+
+    def parse_comment(self, t):
+        tval = t.value.strip()
+        if tval[-1] == "\\":
+            self.st_continue = 1
+            t.lexer.begin('STCOMMENT')
+        else:
+            t.lexer.begin('INITIAL')
+
+    def parse_config_directive(self, t):
+        for d in self.default_config_simple_directives:
+            if d.lower() == t.value.lower():
+                if d.lower() == "secrule":
+                    t.lexer.begin('STSECRULEVARIABLENEXT')
+                    return 'T_CONFIG_DIRECTIVE_SECRULE'
+                if d.lower() == "secaction":
+                    t.lexer.begin('STSECRULEACTIONNEXT')
+                    return 'T_CONFIG_DIRECTIVE_SECACTION'
+                t.lexer.begin('STCONFIGDIRECTIVE')
+                return 'T_CONFIG_DIRECTIVE'
+        return None
+
+    def parse_config_directive_argument(self, t):
+        if t.value[0] == '"' and t.value[-1] == '"':
+            t.value = t.value.strip("\"")
+            return 'T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE'
+        if t.value[0] == '\'' and t.value[-1] == '\'':
+            t.value = t.value.strip("'")
+            return 'T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE'
+        return 'T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE'
+
+    def parse_config_secrule_variable(self, t):
+        for d in self.default_secrule_variables:
+            if d.lower() == t.value.lower():
+                t.lexer.begin('STSECRULEVARIABLE')
+                return 'T_SECRULE_VARIABLE'
+
+        for d in self.default_secrule_storages:
+            if d.lower() == t.value.lower():
+                t.lexer.begin('STSECRULEVARIABLE')
+                return 'T_SECRULE_VARIABLE'
+
+        return None
+
+    def parse_config_secrule_operator(self, t):
+        if t.value[0] == "!" and t.value[1] == '@':
+            operator = t.value[2:]
+        elif t.value[0] == '@':
+            operator = t.value[1:]
+        else:
+            operator = t.value
+
+        for d in self.default_secrule_operators:
+            if d.lower() == operator.lower():
+                if t.value[0] == "!":
+                    return 'T_SECRULE_OPERATOR_WITH_EXCLAMMARK'
+                else:
+                    return 'T_SECRULE_OPERATOR'
+
+        if t.lexer.lexstate == 'STSECRULEOPERATOR':
+            t.lexer.begin('STSECRULEACTIONNEXT')
+        return 'T_SECRULE_OPERATOR_ARGUMENT'
+
+    def parse_config_secrule_action(self, t):
+        for d in self.default_secrule_actions:
+            if d.lower() == t.value.lower():
+                return 'T_SECRULE_ACTION'
+        return None
+
+# END Helper functions for scanner
+# END Lexer class
+
+# Parser class
 
 class MSCParser(object):
     tokens = MSCLexer.tokens
@@ -360,14 +704,12 @@ class MSCParser(object):
 
         self.configlines = []
 
+# Parser helper functions
     def add_comment(self, p):
         self.configlines.insert(p.lineno(1), {'type': "Comment", 'argument': p[1], 'quoted': 'no_quote', 'lineno': p.lineno(1)})
 
-    def add_directive_quoted_argument(self, p):
-        self.configlines.insert(p.lineno(1), {'type': p[1], 'argument': p[3], 'quoted': 'quoted', 'lineno': p.lineno(1)})
-
-    def add_directive_noquoted_argument(self, p):
-        self.configlines.insert(p.lineno(1), {'type': p[1], 'argument': p[2], 'quoted': 'no_quote', 'lineno': p.lineno(1)})
+    def add_directive(self, p):
+        self.configlines.insert(p.lineno(1), {'type': p[1], 'arguments': [], 'lineno': p.lineno(1)})
 
     def secrule_init(self, p):
         # create a dictionary to hold the current SecRule
@@ -389,212 +731,280 @@ class MSCParser(object):
             'actions': []
         }
 
+    def append_action(self, act):
+        if self.secconfdir == "secrule":
+            self.secrule['actions'].append(act)
+            if act['act_name'] == "chain":
+                self.secrule['chained'] = True
+        if self.secconfdir == "secaction":
+            self.secaction['actions'].append(act)
+
+# END Parser helper functions
+
+# Grammar
+
     def p_config_line(self, p):
         """modsec_config : comment_line
-                        | secrule_line
-                        | seccompsignature_line
-                        | secaction_line
-                        | modsec_config secaction_line
-                        | secmarker_line
-                        | modsec_config secmarker_line
-                        | modsec_config seccompsignature_line
-                        | modsec_config comment_line
-                        | modsec_config secrule_line"""
+                         | modsec_config comment_line
+                         | include_line
+                         | modsec_config include_line
+                         | directive_line
+                         | modsec_config directive_line
+                         | secaction_line
+                         | modsec_config secaction_line
+                         | secrule_line
+                         | modsec_config secrule_line"""
+
     def p_comment_line(self, p):
-        """comment_line : COMMENT"""
+        """comment_line : T_COMMENT"""
         self.add_comment(p)
 
-    ### SecCompSignature ###
-    def p_seccompsignaure_line(self, p):
-        """seccompsignature_line : CONFDIR_SECCOMPSIGNATURE QUOTED SECCOMPSIGNARG QUOTED"""
-        self.add_directive_quoted_argument(p)
+    def p_include_line(self, p):
+        """include_line : include_line_unquoted_argument
+                        | include_line_quoted_argument"""
 
-    ### End SecCompSignature ###
+    def p_include_line_unquoted_argument(self, p):
+        """include_line_unquoted_argument : T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT"""
+        self.add_directive(p)
+        self.configlines[-1]['arguments'].append({'argument': p[2], 'quote_type': 'no_quote'})
 
-    ### SecAction ###
+    def p_include_line_quoted_argument(self, p):
+        """include_line_quoted_argument : T_INCLUDE_DIRECTIVE T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED"""
+        self.add_directive(p)
+        self.configlines[-1]['arguments'].append({'argument': p[2], 'quote_type': 'quoted'})
+
+    def p_directive_line(self, p):
+        """directive_line : tok_directive
+                          | tok_directive tok_directive_argument_list
+                          | tok_directive_apache_location"""
+        pass
+
+    def p_tok_directive(self, p):
+        """tok_directive : T_CONFIG_DIRECTIVE"""
+        self.add_directive(p)
+
+    def p_tok_directive_argument_list(self, p):
+        """tok_directive_argument_list : tok_directive_argument
+                                       | tok_directive_argument_list tok_directive_argument"""
+        pass
+
+    def p_tok_directive_argument(self, p):
+        """tok_directive_argument : tok_directive_argument_notquoted
+                                  | tok_directive_argument_quoted_double
+                                  | tok_directive_argument_quoted_single"""
+        pass
+
+    def p_tok_directive_argument_notquoted(self, p):
+        """tok_directive_argument_notquoted : T_CONFIG_DIRECTIVE_ARGUMENT_NOTQUOTE"""
+        self.configlines[-1]['arguments'].append({'argument': p[1], 'quote_type': 'no_quote'})
+
+    def p_tok_directive_argument_quoted_double(self, p):
+        """tok_directive_argument_quoted_double : T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_DOUBLE"""
+        self.configlines[-1]['arguments'].append({'argument': p[1], 'quote_type': 'quoted'})
+
+    def p_tok_directive_argument_quoted_single(self, p):
+        """tok_directive_argument_quoted_single : T_CONFIG_DIRECTIVE_ARGUMENT_QUOTE_SINGLE"""
+        self.configlines[-1]['arguments'].append({'argument': p[1], 'quote_type': 'quotes'})
+
+    def p_tok_directive_apache_location(self, p):
+        """tok_directive_apache_location : T_APACHE_LOCATION_DIRECTIVE"""
+        self.add_directive(p)
 
     def p_secaction_line(self, p):
-        """secaction_line : tok_confdir_secaction QUOTED secaction_expr_list QUOTED"""
+        """secaction_line : tok_confdir_secaction T_SECRULE_ACTION_QUOTE_MARK secaction_expr_list T_SECRULE_ACTION_QUOTE_MARK"""
         self.configlines.insert(self.secaction['lineno'], self.secaction)
+        self.secconfdir = ""
 
     def p_tok_confdir_secaction(self, p):
-        """tok_confdir_secaction : CONFDIR_SECACTION"""
+        """tok_confdir_secaction : T_CONFIG_DIRECTIVE_SECACTION"""
         self.secaction_init(p)
         self.secconfdir = "secaction"
 
-
-    ### END SecAction ###
-
-    ### SecMarker ###
-
-    def p_secmarker_line(self, p):
-        """secmarker_line  : secmarker_line_quoted
-                            | secmarker_line_noquoted"""
-        pass
-
-    def p_secmarker_line_quoted(self, p):
-        """secmarker_line_quoted  : CONFDIR_SECMARKER QUOTED SECMARKERARG QUOTED"""
-        self.add_directive_quoted_argument(p)
-
-    def p_secmarker_line_noquoted(self, p):
-        """secmarker_line_noquoted  : CONFDIR_SECMARKER SECMARKERARG"""
-        self.add_directive_noquoted_argument(p)
-
-    ### END SecMarker ###
-
-    ### SecRule ###
-
     def p_secrule_line(self, p):
-        """secrule_line  : tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED QUOTED secaction_expr_list QUOTED
-                        | tok_confdir_secrule secvariable_expr_list QUOTED secoperator_expr QUOTED
-                        | tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote QUOTED secaction_expr_list QUOTED
-                        | tok_confdir_secrule secvariable_expr_list secoperatorarg_noquote"""
+        """secrule_line : secrule_directive secrule_argument_list secrule_operator_expression secrule_actions
+                        | secrule_directive secrule_argument_list secrule_operator_expression"""
         self.configlines.insert(self.secrule['lineno'], self.secrule)
+        self.secconfdir = ""
 
-    def p_tok_confdir_secrule(self, p):
-        """tok_confdir_secrule : CONFDIR_SECRULE"""
+    def p_secrule_directive(self, p):
+        """secrule_directive : T_CONFIG_DIRECTIVE_SECRULE"""
         self.secrule_init(p)
         self.secconfdir = "secrule"
 
-    def p_secvariable_expr_list(self, p):
-        """secvariable_expr_list  : secvariable_expr
-                                | secvariable_expr_list PIPE secvariable_expr
-                                | secvariable_expr_list COMMA secvariable_expr"""
+    def p_secrule_argument_list(self, p):
+        """secrule_argument_list : secrule_variable_list"""
         pass
 
-    def p_secvariable_expr(self, p):
-        """secvariable_expr  : tok_secrule_variable
-                            | tok_secrule_variable_prefix
-                            | tok_secrule_variable_with_arg
-                            | tok_secrule_variable_prefix_with_arg"""
-        self.secrule['variables'].append(self.secrule_variable)
-        self.secrule_variable = ""
-
-    def p_tok_secrule_variable(self, p):
-        """tok_secrule_variable : SECRULE_VARIABLE"""
-        self.secrule_variable += p[1]
-
-    def p_tok_secrule_variable_prefix(self, p):
-        """tok_secrule_variable_prefix : secvariable_prefix tok_secrule_variable"""
+    def p_secrule_variable_list(self, p):
+        """secrule_variable_list : secrule_variable
+                                 | secrule_variable_exclusion
+                                 | secrule_variable_counter
+                                 | secrule_variable_with_part
+                                 | secrule_variable_exclusion_with_part
+                                 | secrule_variable_list secrule_variable_separator secrule_variable
+                                 | secrule_variable_list secrule_variable_separator secrule_variable_counter
+                                 | secrule_variable_list secrule_variable_separator secrule_variable_with_part
+                                 | secrule_variable_list secrule_variable_separator secrule_variable_exclusion
+                                 | secrule_variable_list secrule_variable_separator secrule_variable_exclusion_with_part"""
         pass
 
-    def p_tok_secrule_variable_with_arg(self, p):
-        """tok_secrule_variable_with_arg : tok_secrule_variable tok_secrule_variable_colon secvariable_arg"""
+    def p_secrule_variable(self, p):
+        """secrule_variable : T_SECRULE_VARIABLE"""
+        self.secrule['variables'].append({'variable': p[1], 'variable_part': "", 'quote_type': 'no_quote', 'negated': False, 'counter': False})
+
+    def p_secrule_variable_exclusion(self, p):
+        """secrule_variable_exclusion : T_EXCLUSION_MARK  T_SECRULE_VARIABLE"""
+        self.secrule['variables'].append({'variable': p[1], 'variable_part': "", 'quote_type': 'no_quote', 'negated': True, 'counter': False})
+
+    def p_secrule_variable_with_part(self, p):
+        """secrule_variable_with_part : T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+                                      | T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+                                      | T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX"""
+        var = p[2]
+        qtype = 'no_quote'
+        if var[0] == "'" and var[-1] == "'":
+            var = var.strip("'")
+            qtype = 'quotes'
+        self.secrule['variables'].append({'variable': p[1], 'variable_part': var, 'quote_type': qtype, 'negated': False, 'counter': False})
+
+    def p_secrule_variable_exclusion_with_part(self, p):
+        """secrule_variable_exclusion_with_part : T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+                                                | T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+                                                | T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX"""
+        var = p[3]
+        qtype = 'no_quote'
+        if var[0] == "'" and var[-1] == "'":
+            var = var.strip("'")
+            qtype = 'quotes'
+        self.secrule['variables'].append({'variable': p[2], 'variable_part': var, 'quote_type': qtype, 'negated': True, 'counter': False})
+
+    def p_secrule_variable_counter(self, p):
+        """secrule_variable_counter : secrule_variable_counter_only
+                                    | secrule_variable_counter_with_var"""
         pass
 
-    def p_tok_secrule_variable_prefix_with_arg(self, p):
-        """tok_secrule_variable_prefix_with_arg : secvariable_prefix tok_secrule_variable tok_secrule_variable_colon secvariable_arg"""
+    def p_secrule_variable_counter_only(self, p):
+        """secrule_variable_counter_only : T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE"""
+        self.secrule['variables'].append({'variable': p[2], 'variable_part': "", 'quote_type': "", 'negated': False, 'counter': True})
+
+    def p_secrule_variable_counter_with_var(self, p):
+        """secrule_variable_counter_with_var : T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
+                                             | T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
+                                             | T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX"""
+        var = p[3]
+        qtype = 'no_quote'
+        if var != None:
+            if var[0] == "'" and var[-1] == "'":
+                var = var.strip("'")
+                qtype = 'quotes'
+        else:
+            var = ""
+        self.secrule['variables'].append({'variable': p[2], 'variable_part': var, 'quote_type': qtype, 'negated': False, 'counter': True})
+
+    def p_secrule_variable_separator(self, p):
+        """secrule_variable_separator : T_SECRULE_VARIABLE_SEPARATOR"""
         pass
 
-    def p_tok_secrule_variable_colon(self, p):
-        """tok_secrule_variable_colon : COLON"""
-        self.secrule_variable += ":"
-
-    def p_secvariable_prefix(self, p):
-        """secvariable_prefix : AND
-                              | EXCLAMMARK
-                              | EXCLAMMARK AND"""
-        self.secrule_variable += p[1]
-
-    def p_secvariable_arg(self, p):
-        """secvariable_arg  : tok_secrule_variable_arg
-                            | tok_secrule_variable_arg_quotes"""
+    def p_secrule_operator_expression(self, p):
+        """secrule_operator_expression : secrule_operator_expression_quoted
+                                       | secrule_operator_or_argument
+                                       | secrule_operator_and_argument"""
         pass
 
-    def p_tok_secrule_variable_arg(self, p):
-        """tok_secrule_variable_arg : SECRULE_VARIABLE_ARG"""
-        self.secrule_variable += p[1]
-
-    def p_tok_secrule_variable_arg_quotes(self, p):
-        """tok_secrule_variable_arg_quotes : QUOTES SECRULE_VARIABLE_ARG QUOTES"""
-        self.secrule_variable += "'" + p[2] + "'"
-
-    def p_secoperator_expr(self, p):
-        """secoperator_expr  : tok_secoperator_group
-                             | tok_secoperator_group secoperator_arg_group
-                             | secoperator_arg_group"""
+    def p_secrule_operator_expression_quoted(self, p):
+        """secrule_operator_expression_quoted : T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_or_argument T_SECRULE_OPERATOR_QUOTE_MARK
+                                              | T_SECRULE_OPERATOR_QUOTE_MARK secrule_operator_and_argument T_SECRULE_OPERATOR_QUOTE_MARK"""
         pass
 
-    def p_tok_secoperator_group(self, p):
-        """tok_secoperator_group : ATSIGN SECRULE_OPERATOR
-                                | EXCLAMMARK ATSIGN SECRULE_OPERATOR
-                                | EXCLAMMARK"""
-        self.secrule['operator'] = "".join(p[1:])
-        self.secrule['oplineno'] = p.lineno(1)
+    def p_secrule_operator_or_argument(self, p):
+        """secrule_operator_or_argument : secrule_operator_only
+                                        | secrule_operator_argument_only"""
+        pass
 
-    def p_secoperator_arg_group(self, p):
-        """secoperator_arg_group : SECRULE_OPERATOR_ARG
-                                | NUMBER"""
+    def p_secrule_operator_only(self, p):
+        """secrule_operator_only : T_SECRULE_OPERATOR
+                                 | T_SECRULE_OPERATOR_WITH_EXCLAMMARK"""
+        if p[1][0] == "!":
+            self.secrule['operator_negated'] = True
+            self.secrule['operator'] = p[1][1:]
+            self.secrule['operator_argument'] = ""
+            self.secrule['oplineno'] = p.lineno(1)
+        else:
+            self.secrule['operator_negated'] = False
+            self.secrule['operator'] = p[1]
+            self.secrule['operator_argument'] = ""
+            self.secrule['oplineno'] = p.lineno(1)
+
+    def p_secrule_operator_argument_only(self, p):
+        """secrule_operator_argument_only : T_SECRULE_OPERATOR_ARGUMENT"""
+        self.secrule['operator_negated'] = False
+        self.secrule['operator'] = ""
         self.secrule['operator_argument'] = p[1]
         self.secrule['oplineno'] = p.lineno(1)
 
-    def p_secoperatorarg_noquote(self, p):
-        """secoperatorarg_noquote : SECRULE_OPERATOR_ARG_NOQUOTE"""
-        self.secrule['operator_argument'] = p[1]
-        self.secrule['oplineno'] = p.lineno(1)
+    def p_secrule_operator_and_argument(self, p):
+        """secrule_operator_and_argument : T_SECRULE_OPERATOR T_SECRULE_OPERATOR_ARGUMENT
+                                         | T_SECRULE_OPERATOR_WITH_EXCLAMMARK T_SECRULE_OPERATOR_ARGUMENT"""
+        if p[1][0] == "!":
+            self.secrule['operator_negated'] = True
+            self.secrule['operator'] = p[1][1:]
+            self.secrule['oplineno'] = p.lineno(1)
+        else:
+            self.secrule['operator_negated'] = False
+            self.secrule['operator'] = p[1]
+            self.secrule['oplineno'] = p.lineno(1)
+        self.secrule['operator_argument'] = p[2]
+
+    def p_secrule_actions(self, p):
+        """secrule_actions : T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK"""
+        pass
+
+    def p_secrule_actions_list(self, p):
+        """secrule_actions_list : secaction_expr
+                                | secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr"""
+        pass
 
     def p_secaction_expr_list(self, p):
         """secaction_expr_list  : secaction_expr
-                                | secaction_expr_list COMMA secaction_expr"""
+                                | secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr"""
         pass
 
     def p_secaction_expr(self, p):
-        """secaction_expr       : tok_secrule_action
-                                | tok_secrule_action COLON secrule_action_argument
-                                | tok_secrule_action COLON QUOTES secrule_action_argument_singlequoted QUOTES
-                                | tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg
-                                | tok_secrule_action COLON secrule_action_argument EQUALMARK tok_secrule_action_ctlactionarg SEMICOLON tok_secrule_action_ctlactionargparam"""
+        """secaction_expr : secaction_single
+                          | secaction_with_argument
+                          | secaction_with_quoted_argument
+                          | secaction_with_argument_with_value
+                          | secaction_with_argument_with_value_and_param
+                          | secaction_with_argument_with_value_and_param_paramarg"""
         pass
 
-    def p_tok_secrule_action(self, p):
-        """tok_secrule_action : SECRULE_ACTION"""
-        if self.secconfdir == "secrule":
-            self.secrule['actions'].append({'act_name': p[1], 'lineno': p.lineno(1), 'act_quote': 'no_quote'})
-            if p[1] == "chain":
-                self.secrule['chained'] = True
-        if self.secconfdir == "secaction":
-            self.secaction['actions'].append({'act_name': p[1], 'lineno': p.lineno(1), 'act_quote': 'no_quote'})
+    def p_secaction_single(self, p):
+        """secaction_single : T_SECRULE_ACTION"""
+        self.append_action({'act_name': p[1], 'lineno': p.lineno(1), 'act_quote': 'no_quote', 'act_arg': "", 'act_arg_val': "", 'act_arg_val_param': "", 'act_arg_val_param_val': ""})
 
-    def p_secrule_action_argument(self, p):
-        """secrule_action_argument : SECRULE_ACTION_ARG
-                                | NUMBER
-                                | SECRULE_ACTION_TRANSFORMS
-                                | SECRULE_ACTION_CTLACTION
-                                | SECRULE_ACTION_SKIPAFTERACTIONARG
-                                | SECRULE_ACTION_INITCOLACTIONARG"""
-        if self.secconfdir == "secrule":
-            self.secrule['actions'][-1]['act_arg'] = p[1]
-        if self.secconfdir == "secaction":
-            self.secaction['actions'][-1]['act_arg'] = p[1]
+    def p_secaction_with_argument(self, p):
+        """secaction_with_argument : T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT"""
+        self.append_action({'act_name': p[1], 'lineno': p.lineno(1), 'act_quote': 'no_quote', 'act_arg': p[3], 'act_arg_val': "", 'act_arg_val_param': "", 'act_arg_val_param_val': ""})
 
-    def p_secrule_action_argument_singlequoted(self, p):
-        """secrule_action_argument_singlequoted : SECRULE_ACTION_ARG
-                                                | EXCLAMMARK SECRULE_ACTION_ARG
-                                                | NUMBER"""
-        if self.secconfdir == "secrule":
-            self.secrule['actions'][-1]['act_arg'] = p[1]
-            self.secrule['actions'][-1]['act_quote'] = "quotes"
-        if self.secconfdir == "secaction":
-            self.secaction['actions'][-1]['act_arg'] = p[1]
-            self.secaction['actions'][-1]['act_quote'] = "quotes"
+    def p_secaction_with_quoted_argument(self, p):
+        """secaction_with_quoted_argument : T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_ARGUMENT_QUOTE_SINGLE"""
+        self.append_action({'act_name': p[1], 'lineno': p.lineno(1), 'act_quote': 'quotes', 'act_arg': p[4], 'act_arg_val': "", 'act_arg_val_param': "", 'act_arg_val_param_val': ""})
 
-    def p_tok_secrule_action_ctlactionarg(self, p):
-        """tok_secrule_action_ctlactionarg : SECRULE_ACTION_CTLACTIONARG
-                                        | SECRULE_ACTION_INITCOLACTIONARGPARAM"""
-        if self.secconfdir == "secrule":
-            self.secrule['actions'][-1]['act_ctl_arg'] = p[1]
-        if self.secconfdir == "secaction":
-            self.secaction['actions'][-1]['act_ctl_arg'] = p[1]
+    def p_secaction_with_argument_with_value(self, p):
+        """secaction_with_argument_with_value : T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE"""
+        self.append_action({'act_name': p[1], 'lineno': p.lineno(1), 'act_quote': 'no_quote', 'act_arg': p[3], 'act_arg_val': p[5], 'act_arg_val_param': "", 'act_arg_val_param_val': ""})
 
-    def p_tok_secrule_action_ctlactionargparam(self, p):
-        """tok_secrule_action_ctlactionargparam  : SECRULE_ACTION_CTLACTIONARGPARAM"""
-        if self.secconfdir == "secrule":
-            self.secrule['actions'][-1]['act_ctl_argparam'] = p[1]
-        if self.secconfdir == "secaction":
-            self.secaction['actions'][-1]['act_ctl_argparam'] = p[1]
+    def p_secaction_with_argument_with_value_and_param(self, p):
+        """secaction_with_argument_with_value_and_param : T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER"""
+        self.append_action({'act_name': p[1], 'lineno': p.lineno(1), 'act_quote': 'no_quote', 'act_arg': p[3], 'act_arg_val': p[5], 'act_arg_val_param': p[7], 'act_arg_val_param_val': ""})
 
-    ### END SecRule ###
+    def p_secaction_with_argument_with_value_and_param_paramarg(self, p):
+        """secaction_with_argument_with_value_and_param_paramarg : T_SECRULE_ACTION T_SECRULE_ACTION_COLON T_SECRULE_ACTION_ARGUMENT T_SECRULE_ACTION_EQUALMARK T_SECRULE_ACTION_ARGUMENT_VALUE T_SECRULE_ACTION_SEMICOLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_COLON T_SECRULE_ACTION_ARGUMENT_VALUE_PARAMETER_ARGUMENT"""
+        self.append_action({'act_name': p[1], 'lineno': p.lineno(1), 'act_quote': 'no_quote', 'act_arg': p[3], 'act_arg_val': p[5], 'act_arg_val_param': p[7], 'act_arg_val_param_val': p[9]})
 
+# END Grammar
+
+    # handling parser error
     def p_error(self, p):
         if p:
             act_pos = 0
@@ -608,35 +1018,42 @@ class MSCParser(object):
             aff_line = a_data[li]
             pos = p.lexer.lexpos - pos_data[li]
             output = ("Parser error: syntax error in line %d at pos %d, column %d\n%s\n%s^" % \
-                    (li, p.lexer.lexpos, pos, aff_line, (pos * "~")))
+                    (li+1, p.lexer.lexpos, pos, aff_line, (pos * "~")))
             raise Exception(output)
         else:
             secrule = {}
 
+# END Parser class
+
+
+
 class MSCWriter(object):
-    def __init__(self, data):
+    def __init__(self, data, indentstr = "    ", indentchained = True):
         self.lineno = 1
         self.output = []
         self.chainlevel = 0
         self.ident = ""
         self.sdata = data
+        self.quote_types = {
+            'no_quote': "",
+            'quotes': "'",
+            'quoted': '"'
+        }
+        self.indentstr = indentstr
+        self.indentchained = indentchained
 
     # builds an action
     def make_action_arg(self, a):
         ret = ""
-        if 'act_arg' not in a or a['act_arg'] is None:
+        if 'act_arg' not in a or a['act_arg'] == "":
             ret = "%s" % (a['act_name'])
         else:
-            if a['act_quote'] == "no_quote":
-                ret = "%s:%s" % (a['act_name'], str(a['act_arg']))
-            elif a['act_quote'] == "quotes":
-                ret = "%s:'%s'" % (a['act_name'], str(a['act_arg']))
-            elif a['act_quote'] == "quoted":
-                ret = "%s:\"%s\"" % (a['act_name'], str(a['act_arg']))
-            if 'act_ctl_arg' in a:
-                ret += ("=%s" % (a['act_ctl_arg']))
-            if 'act_ctl_argparam' in a:
-                ret += (";%s" % (a['act_ctl_argparam']))
+            ret = "%s:%s%s%s" % (a['act_name'], self.quote_types[a['act_quote']], str(a['act_arg']), self.quote_types[a['act_quote']])
+            pref = ["=", ";", ":"]
+            akeys = ['act_arg_val', 'act_arg_val_param', 'act_arg_val_param_val']
+            for ai in range(len(akeys)):
+                if a[akeys[ai]] != "":
+                    ret += "%s%s" % (pref[ai], a[akeys[ai]])
         return ret
 
     # iterates the actions list, call the make_action_arg if required
@@ -650,7 +1067,10 @@ class MSCWriter(object):
         a = r['actions'][0]
 
         if self.lineno < a['lineno']:
-            self.ident = (self.chainlevel+1)*"    "
+            if self.indentchained == True:
+                self.ident = (self.chainlevel+1)*self.indentstr
+            else:
+                self.ident = self.indentstr
             joiner = ",\\\n" + self.ident
             self.lineno = a['lineno']
             actpref = " \\\n" + self.ident + "\""
@@ -673,11 +1093,16 @@ class MSCWriter(object):
                     actionsarr.append(",".join(currline))
                     currline = []
                 if lasta is not None and lasta['lineno'] < a['lineno']:
-                    self.ident = (self.chainlevel+1)*"    "
+                    if self.indentchained == True:
+                        self.ident = (self.chainlevel+1)*self.indentstr
+                    else:
+                        self.ident = self.indentstr
                     joiner = ",\\\n" + self.ident
             currline.append(actstr)
             lasta = a.copy()
             self.lineno = a['lineno']
+            if a['act_arg'] != "":
+                self.lineno += len(a['act_arg'].split("\n"))-1
             ai += 1
         if len(currline) > 0:
             actionsarr.append(",".join(currline))
@@ -692,15 +1117,36 @@ class MSCWriter(object):
 
     # create a SecRule block, this calls the make_actions
     def make_secrule(self, r):
+
+        variables = []
+        for v in r['variables']:
+            _var = ""
+            if v['negated'] == True:
+                _var += "!" 
+            if v['counter'] == True:
+                _var += "&"
+            _var += v['variable']
+            if v['variable_part'] != "":
+                _var += ":"
+            _var += "%s%s%s" % (self.quote_types[v['quote_type']], v['variable_part'], self.quote_types[v['quote_type']]) if v['variable_part'] != "" else ""
+            variables.append(_var)
+
         opargs = []
+        negate = ""
+        if r['operator_negated'] == True:
+            negate = "!"
         for o in [r['operator'], r['operator_argument']]:
             if o != "":
                 opargs.append(o)
         oppref = " "
         if r['lineno'] < r['oplineno']:
-            oppref = " \\\n%s" % ((self.chainlevel+1)*"    ")
-        opgroups = "%s\"%s\"" % (oppref, " ".join(opargs))
-        secrule = ["%sSecRule %s%s" % ((self.chainlevel)*"    ", "|".join(r['variables']), opgroups)]
+            oppref = " \\\n%s" % ((self.chainlevel+1)*self.indentstr)
+        opgroups = "%s\"%s\"" % (oppref, negate + " ".join(opargs))
+
+        if self.indentchained == True:
+            secrule = ["%sSecRule %s%s" % ((self.chainlevel)*self.indentstr, "|".join(variables), opgroups)]
+        else:
+            secrule = ["SecRule %s%s" % ("|".join(variables), opgroups)]
         secrule.append(self.make_actions(r))
         self.output.append("".join(secrule))
 
@@ -715,21 +1161,21 @@ class MSCWriter(object):
             while self.lineno < i['lineno']:
                 self.output.append("")
                 self.lineno += 1
-            if i['type'] == "Comment":
+            if i['type'].lower() == "comment":
                 self.output.append("%s" % (i['argument']))
                 self.lineno = i['lineno']+1
-            elif i['type'] == "SecRule":
+            elif i['type'].lower() == "secrule":
                 self.make_secrule(i)
                 self.lineno += 1
-            elif i['type'] == "SecAction":
+            elif i['type'].lower() == "secaction":
                 self.make_secaction(i)
                 self.lineno += 1
-            elif i['type'] == "SecComponentSignature":
-                self.output.append("SecComponentSignature \"%s\"" % (i['argument']))
-                self.lineno = i['lineno']+1
-            elif i['type'] == "SecMarker":
-                self.output.append("SecMarker \"%s\"" % (i['argument']))
-                self.lineno = i['lineno']+1
+            else:
+                line = [i['type']]
+                for a in i['arguments']:
+                    line.append("%s%s%s" % (self.quote_types[a['quote_type']], a['argument'], self.quote_types[a['quote_type']]))
+                self.output.append(" ".join(line))
+                self.lineno += 1
 
 class MSCUtils(object):
 

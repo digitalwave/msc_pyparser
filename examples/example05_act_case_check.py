@@ -78,15 +78,21 @@ if __name__ == "__main__":
         print("Use: %s input_to_check" % (sys.argv[0]))
         sys.exit(-1)
 
-    fname = sys.argv[1]
-    try:
-        with open(fname, 'r') as inputfile:
-            data = inputfile.read()
-    except:
-        print("Can't open file: %s" % (fname))
-        sys.exit()
+    flist = sys.argv[1:]
+    if len(flist) == 0:
+        print("No such file or directory: %s" % (sys.argv[1:-1]))
+    else:
+        for fname in flist:
+            print(fname)
 
-    c = Check(yaml.load(data, Loader = yaml.FullLoader))
-    c.check_ignore_case()
+            try:
+                with open(fname, 'r') as inputfile:
+                    data = inputfile.read()
+            except:
+                print("Can't open file: %s" % (fname))
+                sys.exit()
+
+            c = Check(yaml.load(data, Loader = yaml.FullLoader))
+            c.check_ignore_case()
 
 
