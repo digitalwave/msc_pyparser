@@ -3,6 +3,8 @@ v1.0 - YYYY-MM-DD
   * Entire code base has been rewritten
     * see README.md for detailed changes
   * Added test cases for different rule sets
+  * Added more regression under tests/
+    Thanks @MirkoDziadzka
   * Added new example: example11_remove_auditlog.py
   * Documentation cleanup
 
