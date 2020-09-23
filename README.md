@@ -823,7 +823,21 @@ If you run into unexpected behavior, found a bug, or have a feature request, jus
 Known bugs
 ==========
 
-* if the end of the action list is a comma (`,` - eg. `"id:1,pass,"`), then parser will failed
-* if the action list are **not** quoted (eg. consider a chained rule: `SecRule ARGS "@rx foo" t:none`), then parser will failed
+Actually, there isn't any know bug.
+
+Testing rulesets
+================
+
+There are four set which has tested: CRS (of course), Comodo WAF rules, Atomicorp and TrustWave sets. All of them are parsable, but the comparison is a bit difficult. The reason is simple: `msc_pyparser` drops the control tokens and identations. Eg. if the rule uses mixed indentations, that will be replaced by a fix indent string (can be passed to writer class). Or if the rule uses `,` as variable separator, eg `ARGS,ARGS_NAMES`, then the written rules will have `|`. Action list will always quoted, eg: ` ...t:none` will be `... "t:none"`.
+
+There are four script in the `examples/` directory to help the reading and writing of each set:
+
+```bash
+xamples/atomicorp_check.sh
+examples/comodo_check.sh
+examples/comodo_check_nginx.sh
+examples/crs_check.sh
+```
+For more details, see the options for used `diff` command. Also a good idea to check the scrips, and the called Python programs.
 
 

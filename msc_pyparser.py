@@ -23,7 +23,7 @@ import os
 import os.path
 import glob
 
-__version__ = "1.0"
+__version__ = "1.0b"
 
 class MSCLexer(object):
     """Lexer class"""
@@ -87,7 +87,7 @@ class MSCLexer(object):
         ('STSECRULEVARIABLE',                               'exclusive'),
         ('STSECRULEOPERATOR',                               'exclusive'),
         ('STSECRULEQUOTEDOPERATOR',                         'exclusive'),
-        ('STSECRULEACTIONNEXT',                             'exclusive'),
+        #('STSECRULEACTIONNEXT',                             'exclusive'),
         ('STSECRULEACTION',                                 'exclusive'),
         ('STSECRULEACTIONARGUMENT',                         'exclusive'),
         ('STSECRULEACTIONARGUMENTQUOTES',                   'exclusive'),
@@ -101,6 +101,7 @@ class MSCLexer(object):
 
         self.st_continue = 0
         self.eolcount = 0
+        self.st_action_quote = 0
 
         self.default_config_simple_directives = [
             "SecAction",
@@ -393,6 +394,7 @@ class MSCLexer(object):
         r'\\[ \t]*(\r|\n)(\r|\n)'
         self.st_continue = 0
         t.lexer.begin('INITIAL')
+        self.st_action_quote = 0
         t.lexer.lineno += 1
 
     def t_ANY_T_BACKSLASH(self, t):
@@ -402,8 +404,12 @@ class MSCLexer(object):
 
     def t_ANY_newline(self, t):
         r'\n|\r\n'
+        # hack for unquoted action list
+        if t.lexer.lexstate[0:15] == "STSECRULEACTION": # any kind of action state
+            self.st_continue = 0
         if self.st_continue == 0:
             t.lexer.begin('INITIAL')
+            self.st_action_quote = 0
         else:
             self.st_continue = 0
         t.lexer.lineno += 1
@@ -412,7 +418,7 @@ class MSCLexer(object):
 
 # Comment
 
-    def t_ANY_T_COMMENT(self, t):
+    def t_INITIAL_T_COMMENT(self, t):
         r'\#([^\r\n]+|[\r\n])'
         self.parse_comment(t)
         if t.value[-1] == "\n":
@@ -534,16 +540,22 @@ class MSCLexer(object):
 
     def t_STSECRULEQUOTEDOPERATOR_T_SECRULE_OPERATOR_QUOTE_MARK(self, t):
         r'"'
-        t.lexer.begin('STSECRULEACTIONNEXT')
+        t.lexer.begin('STSECRULEACTION')
+        self.st_action_quote = 0
         return t
 
 # END Secrule operator and operator argument
 
 # Secrule actions and actions arguments
 
-    def t_STSECRULEACTIONNEXT_T_SECRULE_ACTION_QUOTE_MARK(self, t):
+    def t_STSECRULEACTION_T_SECRULE_ACTION_QUOTE_MARK(self, t):
         r'"'
-        t.lexer.begin('STSECRULEACTION')
+        if self.st_action_quote == 0:
+            self.st_action_quote = 1
+        else:
+            self.st_action_quote = 1
+            t.lexer.begin("INITIAL")
+        #t.lexer.begin('STSECRULEACTION')
         return t
 
     def t_STSECRULEACTION_T_SECRULE_ACTION(self, t):
@@ -632,7 +644,8 @@ class MSCLexer(object):
                     t.lexer.begin('STSECRULEVARIABLENEXT')
                     return 'T_CONFIG_DIRECTIVE_SECRULE'
                 if d.lower() == "secaction":
-                    t.lexer.begin('STSECRULEACTIONNEXT')
+                    t.lexer.begin('STSECRULEACTION')
+                    self.st_action_quote = 0
                     return 'T_CONFIG_DIRECTIVE_SECACTION'
                 t.lexer.begin('STCONFIGDIRECTIVE')
                 return 'T_CONFIG_DIRECTIVE'
@@ -676,7 +689,8 @@ class MSCLexer(object):
                     return 'T_SECRULE_OPERATOR'
 
         if t.lexer.lexstate == 'STSECRULEOPERATOR':
-            t.lexer.begin('STSECRULEACTIONNEXT')
+            t.lexer.begin('STSECRULEACTION')
+            self.st_action_quote = 0
         return 'T_SECRULE_OPERATOR_ARGUMENT'
 
     def parse_config_secrule_action(self, t):
@@ -854,7 +868,7 @@ class MSCParser(object):
 
     def p_secrule_variable_exclusion(self, p):
         """secrule_variable_exclusion : T_EXCLUSION_MARK  T_SECRULE_VARIABLE"""
-        self.secrule['variables'].append({'variable': p[1], 'variable_part': "", 'quote_type': 'no_quote', 'negated': True, 'counter': False})
+        self.secrule['variables'].append({'variable': p[2], 'variable_part': "", 'quote_type': 'no_quote', 'negated': True, 'counter': False})
 
     def p_secrule_variable_with_part(self, p):
         """secrule_variable_with_part : T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
@@ -956,17 +970,18 @@ class MSCParser(object):
         self.secrule['operator_argument'] = p[2]
 
     def p_secrule_actions(self, p):
-        """secrule_actions : T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK"""
+        """secrule_actions : T_SECRULE_ACTION_QUOTE_MARK secrule_actions_list T_SECRULE_ACTION_QUOTE_MARK
+                           | secrule_actions_list"""
         pass
 
     def p_secrule_actions_list(self, p):
         """secrule_actions_list : secaction_expr
-                                | secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr"""
+                                | secaction_expr_list secaction_expr"""
         pass
 
     def p_secaction_expr_list(self, p):
         """secaction_expr_list  : secaction_expr
-                                | secaction_expr_list T_SECRULE_ACTION_SEPARATOR secaction_expr"""
+                                | secaction_expr_list secaction_expr"""
         pass
 
     def p_secaction_expr(self, p):
@@ -975,7 +990,8 @@ class MSCParser(object):
                           | secaction_with_quoted_argument
                           | secaction_with_argument_with_value
                           | secaction_with_argument_with_value_and_param
-                          | secaction_with_argument_with_value_and_param_paramarg"""
+                          | secaction_with_argument_with_value_and_param_paramarg
+                          | T_SECRULE_ACTION_SEPARATOR"""
         pass
 
     def p_secaction_single(self, p):
