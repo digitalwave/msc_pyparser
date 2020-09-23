@@ -21,7 +21,8 @@ def test_comment(mlexer, read_config_file):
     tok = mlexer.lexer.token()
 
     # Read Comment first
-    assert tok.type == "COMMENT"
+    print(tok.type)
+    assert tok.type == "T_COMMENT"
     assert tok.lineno == 1
 
 def test_secrule(mlexer, read_config_file):
@@ -30,10 +31,10 @@ def test_secrule(mlexer, read_config_file):
     # Read SecRule now
     tok = mlexer.lexer.token()
 
-    assert tok.type == "CONFDIR_SECRULE"
+    assert tok.type == "T_CONFIG_DIRECTIVE_SECRULE"
     assert tok.lineno == 1
 
     # Read Complex SecRule now
     tok = mlexer.lexer.token()
 
-    assert tok.type == "SECRULE_VARIABLE"
+    assert tok.type == "T_SECRULE_VARIABLE"
