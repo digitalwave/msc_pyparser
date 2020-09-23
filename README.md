@@ -833,11 +833,20 @@ There are four set which has tested: CRS (of course), Comodo WAF rules, Atomicor
 There are four script in the `examples/` directory to help the reading and writing of each set:
 
 ```bash
-xamples/atomicorp_check.sh
+examples/atomicorp_check.sh
 examples/comodo_check.sh
 examples/comodo_check_nginx.sh
 examples/crs_check.sh
 ```
 For more details, see the options for used `diff` command. Also a good idea to check the scrips, and the called Python programs.
+
+To run the tests, please make a copy of the affected ruleset into the source directory which placed in test file, eg:
+```bash
+mkdir coreruleset coreruleset_out
+cp -Rp /path/to/coreruleset/rules/*.conf coreruleset/
+./crs_check.sh
+```
+
+If everything is fine, don't forget to remote these directories.
 
 
