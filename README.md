@@ -33,7 +33,7 @@ The module is published as a pip3 module.
 **Method 1** You can install it using:
 
 ```
-pip3 install msc-pyparser==0.3
+pip3 install msc-pyparser==1.0
 ```
 
 That will install it system-wide.
@@ -189,7 +189,7 @@ The `MSCParser` class is a wrapper for Ply's `parser` object. The parser object 
 Here is a simple example:
 
 ```python
-python3
+$ python3
 Python 3.8.5 (default, Aug  2 2020, 15:09:07) 
 [GCC 10.2.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
@@ -828,7 +828,7 @@ Actually, there isn't any know bug.
 Testing rulesets
 ================
 
-There are four set which has tested: CRS (of course), Comodo WAF rules, Atomicorp and TrustWave sets. All of them are parsable, but the comparison is a bit difficult. The reason is simple: `msc_pyparser` drops the control tokens and identations. Eg. if the rule uses mixed indentations, that will be replaced by a fix indent string (can be passed to writer class). Or if the rule uses `,` as variable separator, eg `ARGS,ARGS_NAMES`, then the written rules will have `|`. Action list will always quoted, eg: ` ...t:none` will be `... "t:none"`.
+There are four set which has tested: CRS (of course), Comodo WAF rules and Atomicorp sets. All of them are parsable, but the comparison is a bit difficult. The reason is simple: `msc_pyparser` drops the control tokens and identations. Eg. if the rule uses mixed indentations, that will be replaced by a fix indent string (can be passed to writer class). Or if the rule uses `,` as variable separator, eg `ARGS,ARGS_NAMES`, then the written rules will have `|`. Action list will always quoted, eg: ` ...t:none` will be `... "t:none"`.
 
 There are four script in the `examples/` directory to help the reading and writing of each set:
 

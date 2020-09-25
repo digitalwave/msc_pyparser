@@ -23,7 +23,7 @@ import os
 import os.path
 import glob
 
-__version__ = "1.0b"
+__version__ = "1.0"
 
 class MSCLexer(object):
     """Lexer class"""
