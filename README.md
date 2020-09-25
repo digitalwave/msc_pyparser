@@ -33,7 +33,7 @@ The module is published as a pip3 module.
 **Method 1** You can install it using:
 
 ```
-pip3 install msc-pyparser==0.3
+pip3 install msc-pyparser==1.0
 ```
 
 That will install it system-wide.
@@ -189,7 +189,7 @@ The `MSCParser` class is a wrapper for Ply's `parser` object. The parser object 
 Here is a simple example:
 
 ```python
-python3
+$ python3
 Python 3.8.5 (default, Aug  2 2020, 15:09:07) 
 [GCC 10.2.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
