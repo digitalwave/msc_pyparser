@@ -443,12 +443,14 @@ class MSCLexer(object):
     def t_STINCLUDEDIRECTIVE_T_INCLUDE_DIRECTIVE_ARGUMENT(self, t):
         r'[0-9A-Za-z_\/\.\-\*\:]+'
         #self.parse_seclang_config(t)
+        t.lexer.begin('INITIAL')
         return t
 
     def t_STINCLUDEDIRECTIVE_T_INCLUDE_DIRECTIVE_ARGUMENT_QUOTED(self, t):
         r'"[0-9A-Za-z_\/\.\-\*\:]+"'
         #self.parse_seclang_config(t)
         t.value = t.value.strip("\"")
+        t.lexer.begin('INITIAL')
         return t
 
 # END Handle include directive
@@ -574,7 +576,7 @@ class MSCLexer(object):
         return t
 
     def t_STSECRULEACTIONARGUMENTQUOTES_T_SECRULE_ACTION_ARGUMENT(self, t):
-        r'((?:[^\\\']|\\.)+)'
+        r'((?:[^\']|\\.)+)'
         self.eolcount = len(t.value.split("\n"))-1
         t.lexer.lineno += self.eolcount
         return t
