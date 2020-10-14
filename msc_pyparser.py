@@ -23,7 +23,7 @@ import os
 import os.path
 import glob
 
-__version__ = "1.0"
+__version__ = "1.1"
 
 class MSCLexer(object):
     """Lexer class"""
@@ -470,11 +470,11 @@ class MSCLexer(object):
 
 # END Simple configuration directives
 
+# Apache Locaition directive
+
     def t_INITIAL_T_APACHE_LOCATION_DIRECTIVE(self, t):
         r'<(/|)Location.*>'
         return t
-
-# Apache Locaition directive
 
 # END Apache Locaition directive
 
@@ -576,7 +576,7 @@ class MSCLexer(object):
         return t
 
     def t_STSECRULEACTIONARGUMENTQUOTES_T_SECRULE_ACTION_ARGUMENT(self, t):
-        r'((?:[^\']|\\.)+)'
+        r'((?:[^\\\']|\\(.|\s))+)'
         self.eolcount = len(t.value.split("\n"))-1
         t.lexer.lineno += self.eolcount
         return t

@@ -1,0 +1,17 @@
+script: example12_walk_recurse.txt
+
+description:
+this program expects one argument: the root configuration file.
+
+Eg. I set up in my webservers an "include" file:
+/etc/apache2/modsecurity_includes.conf
+/etc/nginx/modsecurity_includes.conf
+
+Both files contains only two lines:
+
+include modsecurity.conf
+include /usr/share/modsecurity-crs/owasp-crs.load
+
+I just pass this file to the script, and it loads all included files,
+and parses them. Finally, it dumps to an indented JSON file, called
+output.json.
