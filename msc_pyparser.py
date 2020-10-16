@@ -134,6 +134,7 @@ class MSCLexer(object):
             "SecAuditLogType",
             "SecAuditLogFormat",
             "SecAuditLog",
+            "SecAuditLogStorageDir",
             "SecArgumentSeparator",
             "SecCookieFormat",
             "SecStatusEngine",
