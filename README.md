@@ -33,7 +33,7 @@ The module is published as a pip3 module.
 **Method 1** You can install it using:
 
 ```
-pip3 install msc-pyparser==1.0
+pip3 install msc-pyparser==1.1
 ```
 
 That will install it system-wide.
@@ -116,14 +116,14 @@ Module Contents
 
 ## Module version
 
-Before you start to work with `msc_pyparser`, please check the version to make sure you have the current one (`1.0`):
+Before you start to work with `msc_pyparser`, please check the version to make sure you have the current one (`1.1`):
 
 ```python
 $ python3
 ...
 >>> import msc_pyparser
 >>> print(msc_pyparser.__version__)
-1.0
+1.1
 >>>
 
 ```

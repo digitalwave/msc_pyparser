@@ -16,7 +16,7 @@ write back the modified config.
 """,
             python_requires=">=3",
             license="""GPLv3""",
-            version = "1.0",
+            version = "1.1",
             author = "Ervin Hegedus",
             author_email = "airween@digitalwave.hu",
             maintainer = "Ervin Hegedus",
@@ -30,7 +30,7 @@ write back the modified config.
               'Topic :: Text Processing'
             ],
             data_files = [
-              ('../../', ['parsetab.py', 'parser.out'])
+              ('.', ['parsetab.py', 'parser.out'])
             ],
             include_package_data = True,
             zip_safe = False
