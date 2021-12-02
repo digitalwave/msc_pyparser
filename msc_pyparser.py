@@ -902,7 +902,7 @@ class MSCParser(object):
 
     def p_secrule_variable_counter_only(self, p):
         """secrule_variable_counter_only : T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE"""
-        self.secrule['variables'].append({'variable': p[2], 'variable_part': "", 'quote_type': "", 'negated': False, 'counter': True})
+        self.secrule['variables'].append({'variable': p[2], 'variable_part': "", 'quote_type': "no_quote", 'negated': False, 'counter': True})
 
     def p_secrule_variable_counter_with_var(self, p):
         """secrule_variable_counter_with_var : T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
