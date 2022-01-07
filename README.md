@@ -33,7 +33,7 @@ The module is published as a pip3 module.
 **Method 1** You can install it using:
 
 ```
-pip3 install msc-pyparser==1.1
+pip3 install msc-pyparser>=1.2.0
 ```
 
 That will install it system-wide.
@@ -65,6 +65,10 @@ That will create the proper virtual environment and you can now switch to it usi
 #### :point_right: Important notes after 1.0 :point_left:
 
 After v1.0 the inside API has changed. The parser has extended with new capabilities, and the inside structure was aligned.
+
+#### :point_right: Important notes after 1.2.0 :point_left:
+
+After v1.2.0 the versioning structure has changed: from two digits (eg. 1.1) we have switched to three digits (1.2.0). The other important change is the lexer and parser exceptions contain extra information about the exception cause and position.
 
 🎉 That's it!
 
@@ -104,6 +108,21 @@ New features and changes in 1.0
 but of course, it works for a single file too:
 `./example3_addtag.py crsyaml/specific_ruleset.yml mod_specific_ruleset.yml`
 
+New features and changes in 1.2.0
+=================================
+
+* `msc_pyparser` has a new version format with three digits `1.2.0`:
+* the exceptions of MSCLexer and MSCParser modules have an extra argument in their exceptions. It's a dictionary:
+
+```
+{
+  'cause': <class 'str'> one of the "lexer" or "parser",
+  'line': <class 'int'>,
+  'column': <class 'int'>,
+  'position': <class 'int'>
+}
+```
+
 Module Contents
 ===============
 
@@ -123,7 +142,7 @@ $ python3
 ...
 >>> import msc_pyparser
 >>> print(msc_pyparser.__version__)
-1.1
+1.2.0
 >>>
 
 ```
@@ -179,6 +198,33 @@ LexToken(T_SECRULE_ACTION_QUOTE_MARK,'"',1,120)
 
 **Note**: the token list has changed in version 1.0.
 
+Now see the exception:
+
+```python
+>>> import msc_pyparser
+>>>
+>>> rule = """\nSecRule ARGS1 "@rx foo" "phase:1,id:1,block" """
+>>> mlexer = msc_pyparser.MSCLexer()
+>>> mlexer.lexer.input(rule)
+>>> while True:
+...     try:
+...         tok = mlexer.lexer.token()
+...         if not tok:
+...             break
+...         print(tok)
+...     except Exception as e:
+...         print(e.args[0])
+...         print(e.args[1])
+...         break
+...
+LexToken(T_CONFIG_DIRECTIVE_SECRULE,'SecRule',2,1)
+Lexer error: illegal token found in line 2 at pos 14, column 13
+SecRule ARGS1 "@rx foo" "phase:1,id:1,block"
+~~~~~~~~~~~~~^
+{'cause': 'lexer', 'line': 2, 'position': 14, 'column': 13}
+```
+Please note, that the given target does not exist.
+
 For a more detailed example, see `test_lexer.py` in the `examples` directory.
 
 MSCParser
@@ -227,6 +273,24 @@ PLY: PARSE DEBUG END
 ```
 
 **Note**: the list of grammar rules has changed in version 1.0.
+
+Now let's see an example for the exception:
+
+```python
+>>> import msc_pyparser
+>>> rule = """\nSecRule ARGS "@rx foo "phase:1,id:1,block" """
+>>> mparser = msc_pyparser.MSCParser()
+>>> try:
+...     mparser.parser.parse(rule, debug = False)
+... except Exception as e:
+...     print(e.args[0])
+...     print(e.args[1])
+...
+Parser error: syntax error in line 2 at pos 43, column 42
+SecRule ARGS "@rx foo "phase:1,id:1,block"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+{'cause': 'parser', 'line': 2, 'position': 43, 'column': 42}
+```
 
 For a detailed example, see `test_parser.py` program in the `examples` directory.
 

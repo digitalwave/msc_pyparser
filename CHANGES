@@ -1,5 +1,7 @@
-v1.2 - YYYY-MM-DD
+v1.2.0 - 2022-01-07
 -----------------
+  * add location and source (cause, line, column, position) to
+    lexer and parser exceptions
 
 v1.1.2 - 2021-12-02
 -------------------
