@@ -23,7 +23,7 @@ import os
 import os.path
 import glob
 
-__version__ = "1.1"
+__version__ = "1.2.0"
 
 class MSCLexer(object):
     """Lexer class"""
@@ -381,8 +381,8 @@ class MSCLexer(object):
         aff_line = a_data[li]
         pos = t.lexer.lexpos - pos_data[li]
         output = ("Lexer error: illegal token found in line %d at pos %d, column %d\n%s\n%s^" % \
-                    (li, t.lexer.lexpos, pos, aff_line, (pos * "~")))
-        raise Exception(output)
+                    (li+1, t.lexer.lexpos, pos, aff_line, (pos * "~")))
+        raise Exception(output, {'cause': "lexer", 'line': li+1, 'position': t.lexer.lexpos, 'column': pos})
 
 # END Generic error handling
 
@@ -652,7 +652,7 @@ class MSCLexer(object):
                     return 'T_CONFIG_DIRECTIVE_SECACTION'
                 t.lexer.begin('STCONFIGDIRECTIVE')
                 return 'T_CONFIG_DIRECTIVE'
-        return None
+        self.t_ANY_error(t)
 
     def parse_config_directive_argument(self, t):
         if t.value[0] == '"' and t.value[-1] == '"':
@@ -673,8 +673,7 @@ class MSCLexer(object):
             if d.lower() == t.value.lower():
                 t.lexer.begin('STSECRULEVARIABLE')
                 return 'T_SECRULE_VARIABLE'
-
-        return None
+        self.t_ANY_error(t)
 
     def parse_config_secrule_operator(self, t):
         if t.value[0] == "!" and t.value[1] == '@':
@@ -700,7 +699,7 @@ class MSCLexer(object):
         for d in self.default_secrule_actions:
             if d.lower() == t.value.lower():
                 return 'T_SECRULE_ACTION'
-        return None
+        self.t_ANY_error(t)
 
 # END Helper functions for scanner
 # END Lexer class
@@ -1038,7 +1037,7 @@ class MSCParser(object):
             pos = p.lexer.lexpos - pos_data[li]
             output = ("Parser error: syntax error in line %d at pos %d, column %d\n%s\n%s^" % \
                     (li+1, p.lexer.lexpos, pos, aff_line, (pos * "~")))
-            raise Exception(output)
+            raise Exception(output, {'cause': "parser", 'line': li+1, 'position': p.lexer.lexpos, 'column': pos})
         else:
             secrule = {}
 
