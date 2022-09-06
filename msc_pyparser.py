@@ -23,7 +23,7 @@ import os
 import os.path
 import glob
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 class MSCLexer(object):
     """Lexer class"""
@@ -189,6 +189,7 @@ class MSCLexer(object):
             "MULTIPART_INVALID_HEADER_FOLDING",
             "MULTIPART_INVALID_PART",
             "MULTIPART_FILE_LIMIT_EXCEEDED",
+            "MULTIPART_PART_HEADERS",
             "OUTBOUND_DATA_ERROR",
             "PATH_INFO",
             "PERF_ALL",

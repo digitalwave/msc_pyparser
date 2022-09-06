@@ -1,3 +1,7 @@
+v1.2.1 - 2022-09-06
+-----------------
+  * added MULTIPART_PART_HEADER collection
+
 v1.2.0 - 2022-01-07
 -----------------
   * add location and source (cause, line, column, position) to

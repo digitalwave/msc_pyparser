@@ -16,7 +16,7 @@ write back the modified config.
 """,
             python_requires=">=3",
             license="""GPLv3""",
-            version = "1.2.0",
+            version = "1.2.1",
             author = "Ervin Hegedus",
             author_email = "airween@digitalwave.hu",
             maintainer = "Ervin Hegedus",
