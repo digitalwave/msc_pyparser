@@ -23,7 +23,7 @@ import os
 import os.path
 import glob
 
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 
 class MSCLexer(object):
     """Lexer class"""
@@ -56,6 +56,7 @@ class MSCLexer(object):
         'T_SECRULE_VARIABLE_PART',
         'T_SECRULE_VARIABLE_PART_QUOTED',
         'T_SECRULE_VARIABLE_PART_QUOTED_REGEX',
+        'T_SECRULE_VARIABLE_PART_UNQUOTED_REGEX',
 
         'T_SECRULE_OPERATOR',
         'T_SECRULE_OPERATOR_WITH_EXCLAMMARK',
@@ -504,6 +505,11 @@ class MSCLexer(object):
         t.value = t.value[1:]
         return t
 
+    def t_STSECRULEVARIABLE_T_SECRULE_VARIABLE_PART_UNQUOTED_REGEX(self, t):
+        r":(/([^\/ \t\n\|])+/)"
+        t.value = t.value[1:]
+        return t
+
     def t_STSECRULEVARIABLE_T_SECRULE_VARIABLE_PART_QUOTED(self, t):
         r":'([^'\"\ \t\n])+'"
         t.value = t.value[1:]
@@ -876,7 +882,8 @@ class MSCParser(object):
     def p_secrule_variable_with_part(self, p):
         """secrule_variable_with_part : T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
                                       | T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
-                                      | T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX"""
+                                      | T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
+                                      | T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_UNQUOTED_REGEX"""
         var = p[2]
         qtype = 'no_quote'
         if var[0] == "'" and var[-1] == "'":
@@ -887,7 +894,8 @@ class MSCParser(object):
     def p_secrule_variable_exclusion_with_part(self, p):
         """secrule_variable_exclusion_with_part : T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
                                                 | T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
-                                                | T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX"""
+                                                | T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
+                                                | T_EXCLUSION_MARK T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_UNQUOTED_REGEX"""
         var = p[3]
         qtype = 'no_quote'
         if var[0] == "'" and var[-1] == "'":
@@ -907,7 +915,8 @@ class MSCParser(object):
     def p_secrule_variable_counter_with_var(self, p):
         """secrule_variable_counter_with_var : T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART
                                              | T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED
-                                             | T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX"""
+                                             | T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_QUOTED_REGEX
+                                             | T_SECRULE_VARIABLE_COUNTER T_SECRULE_VARIABLE T_SECRULE_VARIABLE_PART_UNQUOTED_REGEX"""
         var = p[3]
         qtype = 'no_quote'
         if var != None:
