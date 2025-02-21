@@ -1,3 +1,7 @@
+v1.2.2 - 2025-02-21
+-----------------
+  * make parser capable to parse variable part
+
 v1.2.1 - 2022-09-06
 -----------------
   * added MULTIPART_PART_HEADER collection
